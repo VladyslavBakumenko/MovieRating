@@ -1,5 +1,6 @@
 package com.example.movierating.presentation.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -32,7 +33,8 @@ class RegistrationActivity: AppCompatActivity() {
 
         registrationButton.setOnClickListener {
             if(viewModel.addUserToData(etEMail.text.toString(), etPassword.text.toString(),this)) {
-                finish()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
         }
     }
