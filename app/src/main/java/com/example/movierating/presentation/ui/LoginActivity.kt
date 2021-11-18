@@ -35,7 +35,10 @@ class LoginActivity : AppCompatActivity() {
 
 
         registrationButton.setOnClickListener {
-            val intent = Intent(this, RegistrationActivity::class.java)
+       //     val intent = Intent(this, RegistrationActivity::class.java)
+      //      startActivity(intent)
+
+            val intent = Intent(this, TestActivity::class.java)
             startActivity(intent)
         }
 
