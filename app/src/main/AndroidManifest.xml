@@ -12,20 +12,24 @@
         android:theme="@style/Theme.MovieRating">
 
         <activity
-            android:name=".presentation.ui.MainActivity"
+            android:name=".presentation.ui.TestActivity2"
             android:label="@string/app_name"
             android:theme="@style/Theme.MovieRating.NoActionBar"
             android:exported="true"/>
 
-        <activity android:name=".presentation.ui.TestActivity"
+        <activity android:name=".presentation.ui.test.TestActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"/>
 
-        <activity android:name=".presentation.ui.RegistrationActivity"
+        <activity android:name=".presentation.ui.main.MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"/>
 
-            <activity android:name=".presentation.ui.LoginActivity"
+        <activity android:name=".presentation.ui.regestration.RegistrationActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"/>
+
+            <activity android:name=".presentation.ui.login.LoginActivity"
                 android:windowSoftInputMode="adjustResize"
                 android:exported="true">
             <intent-filter>

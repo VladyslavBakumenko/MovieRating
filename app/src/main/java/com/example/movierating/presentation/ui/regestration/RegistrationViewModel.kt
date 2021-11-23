@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui
+package com.example.movierating.presentation.ui.regestration
 
 import android.app.Application
 import android.content.Context

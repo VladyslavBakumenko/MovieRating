@@ -7,15 +7,15 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.movierating.presentation.ui.home.HomeFragment"
+        android:name="com.example.movierating.presentation.ui.table_fragment.TabelFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_tabду" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.movierating.presentation.ui.gallery.GalleryFragment"
+        android:name="com.example.movierating.presentation.ui.gallery.LinealFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_lineal" />
 
     <fragment
         android:id="@+id/nav_slideshow"

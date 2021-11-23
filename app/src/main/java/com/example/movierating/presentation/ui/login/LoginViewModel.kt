@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui
+package com.example.movierating.presentation.ui.login
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
