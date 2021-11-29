@@ -10,6 +10,7 @@ import com.example.movierating.R
 import com.example.movierating.domain.MovieItem
 import com.example.movierating.presentation.ui.recycler_views.MovieListLinealAdapter
 import com.example.movierating.presentation.ui.recycler_views.MovieListTableAdapter
+import io.reactivex.disposables.CompositeDisposable
 
 class TabelFragment : Fragment() {
 
@@ -17,6 +18,7 @@ class TabelFragment : Fragment() {
 
     private lateinit var rvTableMovieList: RecyclerView
     private lateinit var movieListTableAdapter: MovieListTableAdapter
+    private lateinit var compositeDisposable : CompositeDisposable
 
 
 
@@ -30,6 +32,7 @@ class TabelFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         rvTableMovieList = view.findViewById(R.id.rv_table_film_list)
         movieListTableAdapter = MovieListTableAdapter()

@@ -10,4 +10,3 @@ data class UsersDatabase(
 
     var password: String
 )
-

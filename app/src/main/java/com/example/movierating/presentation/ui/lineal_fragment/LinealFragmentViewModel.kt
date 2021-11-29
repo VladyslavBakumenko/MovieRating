@@ -1,13 +1,18 @@
 package com.example.movierating.presentation.ui.lineal_fragment
 
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.movierating.data.internet.ApiFactory
+import com.example.movierating.data.internet.MoviePages
+import com.example.movierating.data.internet.MovieResult
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
-class LinealFragmentViewModel : ViewModel() {
+class LinealFragmentViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
 }

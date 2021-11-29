@@ -44,13 +44,7 @@ class TestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setContentView(R.layout.activity_test)
-        initViews()
-        //    setUpRecyclerViews()
-        getMoviesData()
 
-        changeRecyclerViewButton.setOnClickListener {
-            changeRecyclerView()
-        }
 
 
 
@@ -67,83 +61,12 @@ class TestActivity : AppCompatActivity() {
         }
 
         val rvLinealMovieList = findViewById<RecyclerView>(R.id.rv_lineal_movie_list)
-        movieListLinealAdapter = MovieListLinealAdapter()
-        movieListLinealAdapter.movieList = movieList
+     //   movieListLinealAdapter = MovieListLinealAdapter()
+     ////   movieListLinealAdapter.movieList = movieList
 
         rvLinealMovieList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL ,false)
         rvLinealMovieList.adapter = movieListLinealAdapter
     }
 
-
-
-    private fun getMoviesData() {
-
-
-        val disposable = ApiFactory.movieApi.getMovie(page = PAGE)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Log.d("Test_OF_LOAD_DATA", it.toString())
-            }, {
-                var error: String? = it.message
-                var errorMessage: String = ""
-                error?.let {
-                    errorMessage = error
-                }
-                Log.d("Test_OF_LOAD_DATA", errorMessage)
-            })
-        compositeDisposable.add(disposable)
-
-    }
-
-    private fun changeRecyclerView() {
-        if (viewModel.fragmentStatus.value == null) {
-            viewModel.changeModeToLineal()
-        }
-        when (viewModel.fragmentStatus.value) {
-
-            LINEAL_MODE -> {
-
-
-            }
-            TABEL_MODE -> {
-
-            }
-            else -> throw RuntimeException("Unknown fragment mode")
-        }
-    }
-
-    private fun setUpRecyclerViews() {
-        rvLineal = findViewById(R.id.rv_lineal_movie_list)
-        rvTable = findViewById(R.id.rv_table_film_list)
-
-        movieListTableAdapter = MovieListTableAdapter()
-        viewModel.movieList.observe(this) {
-            movieListTableAdapter.movieList = it
-        }
-
-        rvTable.adapter = movieListTableAdapter
-
-        movieListLinealAdapter = MovieListLinealAdapter()
-        viewModel.movieList.observe(this) {
-            movieListLinealAdapter.movieList = it
-        }
-        rvLineal.adapter = movieListLinealAdapter
-
-
-    }
-
-    fun initViews() {
-        movieListLinealAdapter = MovieListLinealAdapter()
-        movieListTableAdapter = MovieListTableAdapter()
-        changeRecyclerViewButton = findViewById(R.id.button)
-
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.dispose()
-    }
 
 }

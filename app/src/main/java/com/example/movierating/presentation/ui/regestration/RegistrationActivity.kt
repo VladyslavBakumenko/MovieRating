@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
+import com.example.movierating.presentation.ui.login.LoginActivity
 import com.example.movierating.presentation.ui.main.MainActivity
 import com.google.android.material.textfield.TextInputLayout
 
@@ -35,6 +36,7 @@ class RegistrationActivity: AppCompatActivity() {
         registrationButton.setOnClickListener {
             if(viewModel.addUserToData(etEMail.text.toString(), etPassword.text.toString(),this)) {
                 val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra(USER_REGISTRATION_ACTIVITY, etEMail.text.toString())
                 startActivity(intent)
             }
         }
@@ -91,5 +93,9 @@ class RegistrationActivity: AppCompatActivity() {
             }
             tilPassword.error = message
         }
+    }
+
+    companion object{
+        const val USER_REGISTRATION_ACTIVITY = "userRegistrationActivity"
     }
 }

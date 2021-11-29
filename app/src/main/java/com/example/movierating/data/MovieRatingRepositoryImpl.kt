@@ -5,30 +5,80 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.movierating.data.internet.ApiFactory
+import com.example.movierating.data.internet.MoviePages
+import com.example.movierating.domain.FormattedTotalMovieData
 import com.example.movierating.domain.MovieItem
 import com.example.movierating.domain.MovieRatingRepositiry
-import com.example.movierating.presentation.ui.test.TestActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.regex.Pattern
 
 object MovieRatingRepositoryImpl : MovieRatingRepositiry {
 
+    private val movieListData = ArrayList<MoviePages>()
+    private var moviesData: FormattedTotalMovieData
+
+    private val formattedTotalTitles = mutableListOf<String?>()
+    private val formattedTotalBackdropPaths = mutableListOf<String?>()
+    private val formattedTotalOriginalLanguages = mutableListOf<String?>()
+    private val formattedTotalOverviews = mutableListOf<String?>()
+    private val formattedTotalReleaseDates = mutableListOf<String?>()
+    private val formattedTotalPopularity = mutableListOf<Double?>()
+    private val formattedTotalAverage = mutableListOf<Double?>()
+    private val formattedPosterPatches = mutableListOf<String?>()
+
     private val movieItemLD = MutableLiveData<List<MovieItem>>()
-    private val movieList = sortedSetOf<MovieItem>({ o1, o2 -> o1.id.compareTo(o2.id) })
+    private val movieList = mutableListOf<MovieItem>()
+
 
 
     init {
-        for (i in 0 until MovieRatingRepositiry.TOTAL_MOVIE) {
-            val item = MovieItem(i, "$i", "$i", "$i", i.toDouble(), " ")
-            addMovieItem(item)
+        for(i in 1..MovieRatingRepositiry.LOAD_PAGES){
+            loadData(i)
+        }
+        formattedData()
+        Log.d("fddfdbcvfgfd", formattedTotalAverage.size.toString())
+        moviesData = FormattedTotalMovieData(
+            formattedTotalTitles,
+            formattedTotalBackdropPaths,
+            formattedTotalOriginalLanguages,
+            formattedTotalOverviews,
+            formattedTotalReleaseDates,
+            formattedTotalPopularity,
+            formattedTotalAverage,
+            formattedPosterPatches)
+    }
+
+    override fun getMoviesDataUseCase(): FormattedTotalMovieData {
+        return moviesData
+    }
+
+    private fun loadData(page: Int){
+        val api = ApiFactory.movieApi
+        val moviesData = api.getMovie(page = page)
+            .subscribeOn(Schedulers.io())
+        //   .observeOn(AndroidSchedulers.mainThread())
+        movieListData.add(moviesData.blockingGet())
+    }
+
+    private fun formattedData() {
+        movieListData.map {
+            val pageResult = it.results
+
+            pageResult?.let {
+                for (i in pageResult) {
+                    formattedTotalTitles.add(i.title)
+                    formattedTotalBackdropPaths.add(i.backdropPath)
+                    formattedTotalOriginalLanguages.add(i.originalLanguage)
+                    formattedTotalOverviews.add(i.overview)
+                    formattedTotalReleaseDates.add(i.releaseDate)
+                    formattedTotalPopularity.add(i.popularity)
+                    formattedTotalAverage.add(i.voteAverage)
+                    formattedPosterPatches.add(i.posterPath)
+                }
+            }
         }
     }
 
-    override fun addMovieItem(movieItem: MovieItem) {
-        movieList.add(movieItem)
-        updateList()
-    }
 
     override fun getMovieList(): LiveData<List<MovieItem>> {
         return movieItemLD
@@ -64,24 +114,22 @@ object MovieRatingRepositoryImpl : MovieRatingRepositiry {
         return result == MovieRatingRepositiry.RETURN_TRUE_IF_FIELDS_VALID
     }
 
-    private fun updateList() {
-        movieItemLD.value = movieList.toList()
-    }
 
-    private fun loadData() {
-        val disposable = ApiFactory.movieApi.getMovie(page = 1)
+    private fun lnoadData(page: Int) {
+        val disposable = ApiFactory.movieApi.getMovie(page = page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Log.d("Test_OF_LOAD_DATA", it.toString())
             }, {
-                var error: String? = it.message
+                val error: String? = it.message
                 var errorMessage: String = ""
                 error?.let {
                     errorMessage = error
                 }
                 Log.d("Test_OF_LOAD_DATA", errorMessage)
             })
+
     }
 
 

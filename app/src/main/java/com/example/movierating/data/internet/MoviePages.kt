@@ -1,7 +1,9 @@
 package com.example.movierating.data.internet
 
+import androidx.room.Entity
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+
 
 data class MoviePages(
     @SerializedName("page")
