@@ -1,9 +1,11 @@
-package com.example.movierating.presentation.ui
+package com.example.movierating.presentation.ui.login
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -11,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
 import com.example.movierating.R
-import com.example.movierating.presentation.ui.MainActivity
+import com.example.movierating.presentation.ui.test.TestActivity
+import com.example.movierating.presentation.ui.main.MainActivity
+import com.example.movierating.presentation.ui.regestration.RegistrationActivity
 import com.google.android.material.textfield.TextInputLayout
 
 class LoginActivity : AppCompatActivity() {
@@ -28,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         initViews()
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         addTextChangeListeners()
@@ -36,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
 
         registrationButton.setOnClickListener {
             val intent = Intent(this, RegistrationActivity::class.java)
+          //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
 
@@ -46,6 +52,7 @@ class LoginActivity : AppCompatActivity() {
             )
             if (loginStatus) {
                 val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra(USER_LOGIN_ACTIVITY, etEMail.text.toString())
                 startActivity(intent)
             } else {
                 val toast = Toast.makeText(
@@ -113,5 +120,9 @@ class LoginActivity : AppCompatActivity() {
         etPassword = findViewById(R.id.etPassword)
         registrationButton = findViewById(R.id.registrationButton)
         loginButton = findViewById(R.id.loginButton)
+    }
+
+    companion object{
+        const val USER_LOGIN_ACTIVITY = "userLoginActivity"
     }
 }

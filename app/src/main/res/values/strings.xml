@@ -21,4 +21,6 @@
     <string name="user_successfully_registered">Користувач успішно зареєстрований</string>
     <string name="user_with_this_email_is_already_registered">Користувач успішно зареєстрований</string>
     <string name="login_error">Не вірна пара логін-пароль</string>
+    <string name="LogOut">Вийти</string>
+    <string name="Profile">Профіль</string>
 </resources>
