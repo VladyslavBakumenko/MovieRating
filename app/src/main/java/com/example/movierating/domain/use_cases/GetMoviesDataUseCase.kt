@@ -1,6 +1,7 @@
-package com.example.movierating.domain
+package com.example.movierating.domain.use_cases
 
-import androidx.lifecycle.LiveData
+import com.example.movierating.domain.FormattedTotalMovieData
+import com.example.movierating.domain.MovieRatingRepositiry
 
 class GetMoviesDataUseCase(private val movieRatingRepositiry: MovieRatingRepositiry) {
 

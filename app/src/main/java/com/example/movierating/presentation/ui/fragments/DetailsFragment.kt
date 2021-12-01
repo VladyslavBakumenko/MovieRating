@@ -1,8 +1,7 @@
-package com.example.movierating.presentation.ui.details_fragment
+package com.example.movierating.presentation.ui.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.movierating.R
 import com.example.movierating.data.internet.MovieApi
-import com.example.movierating.presentation.ui.lineal_fragment.LinealFragment
 import com.squareup.picasso.Picasso
 
 
@@ -32,7 +30,6 @@ class DetailsFragment : Fragment() {
     private lateinit var movieRate: TextView
     private lateinit var movieOriginalLanguage: TextView
     private lateinit var moviePopularity: TextView
-
 
 
     override fun onCreateView(
@@ -74,9 +71,7 @@ class DetailsFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun setFields() {
-        Log.d("fdgfgfd", image)
-        Log.d("fdgfgfd", "${MovieApi.IMAGE_TMDB_POSTER}$image")
-        Picasso.get().load("${MovieApi.IMAGE_TMDB_POSTER}$image").into(movieImage)
+        Picasso.get().load("${MovieApi.IMAGE_TMDB_BEST_QUALITY}$image").into(movieImage)
         movieTitle.text = "Title: $title"
         movieDescription.text = "Description: $description"
         movieRealise.text = "Realise: $realise"
@@ -86,12 +81,3 @@ class DetailsFragment : Fragment() {
     }
 
 }
-
-
-
-
-
-
-
-
-

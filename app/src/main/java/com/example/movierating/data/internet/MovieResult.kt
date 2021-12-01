@@ -1,6 +1,5 @@
 package com.example.movierating.data.internet
 
-import androidx.room.Entity
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -55,7 +54,7 @@ data class MovieResult(
 
     @SerializedName("vote_average")
     @Expose
-    var voteAverage: Double?  = null,
+    var voteAverage: Double? = null,
 
     @SerializedName("vote_count")
     @Expose
