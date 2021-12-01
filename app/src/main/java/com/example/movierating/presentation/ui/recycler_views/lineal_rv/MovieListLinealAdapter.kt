@@ -1,5 +1,4 @@
-
-package com.example.movierating.presentation.ui.recycler_views
+package com.example.movierating.presentation.ui.recycler_views.lineal_rv
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -11,16 +10,16 @@ import com.example.movierating.domain.FormattedTotalMovieData
 import com.example.movierating.domain.MovieItem
 import com.squareup.picasso.Picasso
 
-class MovieListLinealAdapter(formattedTotalMovieData: FormattedTotalMovieData): RecyclerView.Adapter<MovieItemLinealViewHolder>() {
+class MovieListLinealAdapter(formattedTotalMovieData: FormattedTotalMovieData) :
+    RecyclerView.Adapter<MovieItemLinealViewHolder>() {
 
     private val movieDataList = formattedTotalMovieData
 
-    var movieList = listOf<MovieItem>()
+    var linealMovieList = listOf<MovieItem>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
-
 
 
     var onMovieClickListener: OnMovieClickListener? = null
@@ -62,7 +61,7 @@ class MovieListLinealAdapter(formattedTotalMovieData: FormattedTotalMovieData): 
     }
 
     override fun getItemCount(): Int {
-        return movieList.size
+        return linealMovieList.size
     }
 
     interface OnMovieClickListener {

@@ -4,12 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.table_fragment.TabelFragment">
+    tools:context=".presentation.ui.fragments.TabelFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_table_film_list"
-
-
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -18,4 +16,16 @@
         android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/table_movie_item" />
+
+    <Button
+        android:id="@+id/change_fragment_to_lineal_button"
+        android:layout_width="152dp"
+        android:layout_height="64dp"
+        android:text="@string/change_format"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.979" />
 </androidx.constraintlayout.widget.ConstraintLayout>

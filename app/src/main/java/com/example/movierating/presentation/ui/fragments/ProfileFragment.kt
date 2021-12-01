@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui
+package com.example.movierating.presentation.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.movierating.R
-import com.example.movierating.presentation.ui.login.LoginActivity
-import com.example.movierating.presentation.ui.regestration.RegistrationActivity
+import com.example.movierating.presentation.ui.login_activity.LoginActivity
+import com.example.movierating.presentation.ui.regestration_activity.RegistrationActivity
 
 class ProfileFragment : Fragment() {
     private lateinit var userTextView: TextView
@@ -31,9 +31,9 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         userTextView = view.findViewById(R.id.text_view_profile)
 
-        if(userFromLoginActivity == "null") {
+        if (userFromLoginActivity == "null") {
             userTextView.text = userFromRegistrationActivity
-        }else{
+        } else {
             userTextView.text = userFromLoginActivity
         }
     }

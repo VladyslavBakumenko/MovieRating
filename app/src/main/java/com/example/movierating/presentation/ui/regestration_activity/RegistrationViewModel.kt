@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.regestration
+package com.example.movierating.presentation.ui.regestration_activity
 
 import android.app.Application
 import android.content.Context
@@ -8,11 +8,11 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.movierating.data.MovieRatingRepositoryImpl
+import com.example.movierating.data.repositorys_impl.MovieRatingRepositoryImpl
 import com.example.movierating.data.database.AppDataBase
 import com.example.movierating.data.database.UsersDatabase
-import com.example.movierating.domain.CheckEmailOnValidUseCase
-import com.example.movierating.domain.CheckPasswordOnValidUseCase
+import com.example.movierating.domain.use_cases.CheckEmailOnValidUseCase
+import com.example.movierating.domain.use_cases.CheckPasswordOnValidUseCase
 import com.example.movierating.domain.MovieRatingRepositiry
 
 
@@ -49,7 +49,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
                 )
                 toast.show()
                 result = true
-            }catch (e: SQLiteConstraintException) {
+            } catch (e: SQLiteConstraintException) {
                 val toast = Toast.makeText(
                     context,
                     "Користувач з таким eMail уже зареєстрований",
@@ -64,10 +64,9 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
     private fun setEMileError(eMail: String): Boolean {
         var result = false
-        if(checkEmailOnValidUseCase.checkEmailOnValid(eMail)) {
+        if (checkEmailOnValidUseCase.checkEmailOnValid(eMail)) {
             result = true
-        }
-        else {
+        } else {
             _errorInputEMail.value = true
         }
         return result
@@ -75,10 +74,9 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
     private fun setPasswordError(password: String): Boolean {
         var result = false
-        if(checkPasswordOnValidUseCase.checkPasswordOnValid(password)) {
+        if (checkPasswordOnValidUseCase.checkPasswordOnValid(password)) {
             result = true
-        }
-        else {
+        } else {
             _errorInputPassword.value = true
         }
         return result

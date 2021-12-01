@@ -45,16 +45,17 @@
 
         <TextView
             android:id="@+id/tv_movie_description_lineal"
-            android:layout_width="177dp"
+            android:layout_width="157dp"
             android:layout_height="87dp"
             android:background="@drawable/rectangle"
+            android:ellipsize="end"
+            android:maxLines="4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.82"
+            app:layout_constraintHorizontal_bias="0.967"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:ellipsize="end"
-            android:maxLines="4"/>
+            app:layout_constraintVertical_bias="0.491" />
 
         <TextView
             android:id="@+id/tv_movie_rate_lineal"
@@ -63,7 +64,7 @@
             android:background="@drawable/rectangle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.588"
+            app:layout_constraintHorizontal_bias="0.77"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.062" />
@@ -75,7 +76,7 @@
             android:background="@drawable/rectangle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.872"
+            app:layout_constraintHorizontal_bias="0.975"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.968" />

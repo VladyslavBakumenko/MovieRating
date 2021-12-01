@@ -1,4 +1,4 @@
-package com.example.movierating.domain
+package com.example.movierating.domain.use_cases
 
 import com.example.movierating.domain.MovieRatingRepositiry
 

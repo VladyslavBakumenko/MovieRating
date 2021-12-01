@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.recycler_views
+package com.example.movierating.presentation.ui.recycler_views.lineal_rv
 
 import android.view.View
 import android.widget.ImageView
@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.R
 
-class MovieItemLinealViewHolder(val view: View): RecyclerView.ViewHolder(view) {
+class MovieItemLinealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val imageMovie = view.findViewById<ImageView>(R.id.image_movie_item_lineal)
     val tvMovieName = view.findViewById<TextView>(R.id.tv_movie_name_lineal)
     val tvMovieDescription = view.findViewById<TextView>(R.id.tv_movie_description_lineal)

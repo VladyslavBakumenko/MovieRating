@@ -1,14 +1,14 @@
-package com.example.movierating.presentation.ui.login
+package com.example.movierating.presentation.ui.login_activity
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.movierating.data.MovieRatingRepositoryImpl
+import com.example.movierating.data.repositorys_impl.MovieRatingRepositoryImpl
 import com.example.movierating.data.database.AppDataBase
 import com.example.movierating.data.database.UsersDatabase
-import com.example.movierating.domain.CheckEmailOnValidUseCase
-import com.example.movierating.domain.CheckPasswordOnValidUseCase
+import com.example.movierating.domain.use_cases.CheckEmailOnValidUseCase
+import com.example.movierating.domain.use_cases.CheckPasswordOnValidUseCase
 import com.example.movierating.domain.MovieRatingRepositiry
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
