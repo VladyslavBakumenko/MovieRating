@@ -37,9 +37,6 @@ class MovieListTableAdapter(formattedTotalMovieData: FormattedTotalMovieData) :
             0 -> {
                 setFirstMovieItem(position, viewHolder)
             }
-            1 -> {
-                setSecondMovieItem(position, viewHolder)
-            }
             else -> {
                 with(viewHolder) {
                     Picasso
@@ -162,27 +159,6 @@ class MovieListTableAdapter(formattedTotalMovieData: FormattedTotalMovieData) :
         viewHolder.thirdNameMovie.text = movieDataList.formattedTotalTitles[position + 2]
     }
 
-    private fun setSecondMovieItem(position: Int, viewHolder: MovieItemTableViewHolder) {
-        Picasso
-            .get()
-            .load("${MovieApi.IMAGE_TMDB}${movieDataList.formattedPosterPatches[position * 2 + position]}")
-            .into(viewHolder.firstImageMovie)
-        viewHolder.firstNameMovie.text = movieDataList.formattedTotalTitles[position * 2 + position]
-
-        Picasso
-            .get()
-            .load("${MovieApi.IMAGE_TMDB}${movieDataList.formattedPosterPatches[position * 2 + position + 1]}")
-            .into(viewHolder.secondImageMovie)
-        viewHolder.secondNameMovie.text =
-            movieDataList.formattedTotalTitles[position * 2 + position + 1]
-
-        Picasso
-            .get()
-            .load("${MovieApi.IMAGE_TMDB}${movieDataList.formattedPosterPatches[position * 2 + position + 2]}")
-            .into(viewHolder.thirdImageMovie)
-        viewHolder.thirdNameMovie.text =
-            movieDataList.formattedTotalTitles[position * 2 + position + 2]
-    }
 
 }
 
