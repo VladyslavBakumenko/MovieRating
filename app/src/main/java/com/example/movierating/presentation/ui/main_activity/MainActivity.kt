@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var result = false
         if (id == R.id.profile) {
             result = true
-            drawerLayout.closeDrawer(Gravity.LEFT, false)
+            drawerLayout.closeDrawer(Gravity.LEFT, true)
             launchProfileFragment(profileFragment)
         }
         if (id == R.id.exit) {
