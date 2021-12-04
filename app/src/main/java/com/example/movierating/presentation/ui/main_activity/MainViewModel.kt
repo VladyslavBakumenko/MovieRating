@@ -2,20 +2,45 @@ package com.example.movierating.presentation.ui.main_activity
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.example.movierating.data.repositorys_impl.MovieRatingRepositoryImpl
-import com.example.movierating.domain.use_cases.GetMovieListLinealUseCase
-import com.example.movierating.domain.use_cases.GetMovieTableListUseCase
-import com.example.movierating.domain.use_cases.GetMoviesDataUseCase
+import androidx.lifecycle.LiveData
+import com.example.movierating.data.database.AppDataBase
+import com.example.movierating.data.internet.ApiFactory
+import com.example.movierating.data.internet.MovieResult
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
+    private val compositeDisposable = CompositeDisposable()
+
+    private val db = AppDataBase.getInstance(application)
+    private val moviesDatabaseDao = db.moviesDatabaseDao()
 
 
-    private val repository = MovieRatingRepositoryImpl
-    private val getMoviesDataUseCase = GetMoviesDataUseCase(repository)
-    private val getMovieLinealListUseCase = GetMovieListLinealUseCase(repository)
-    private val getMovieTableListUseCase = GetMovieTableListUseCase(repository)
+    fun loadData() {
+        moviesDatabaseDao.deleteOllMovies()
 
-    val linealMovieList = getMovieLinealListUseCase.getMovieLinealList()
-    val tableMovieList = getMovieTableListUseCase.getMovieTableList()
-    val movieDataList = getMoviesDataUseCase.getMoviesDataUseCase()
+        for (i in LOAD_PAGES downTo 1) {
+
+            val disposable = ApiFactory.movieApi.getMovie(page = i)
+                .map { it.results }
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    moviesDatabaseDao.addMoviesToDatabase(it)
+                }, {
+
+                })
+            compositeDisposable.add(disposable)
+
+        }
+
+    }
+
+    fun getMoviesData(): LiveData<List<MovieResult>> {
+        return moviesDatabaseDao.getMoviesFromDatabase()
+    }
+
+    companion object {
+        const val LOAD_PAGES = 100
+    }
+
 }

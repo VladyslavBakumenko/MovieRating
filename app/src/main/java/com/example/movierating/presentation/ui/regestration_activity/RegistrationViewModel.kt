@@ -19,7 +19,7 @@ import com.example.movierating.domain.MovieRatingRepositiry
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = AppDataBase.getInstance(application)
-    private val usersDataBaseDao = db.usersDataBaseDao()
+    private val usersDataBaseDao = db.usersDatabaseDao()
 
     private val checkPasswordOnValidUseCase = CheckPasswordOnValidUseCase(MovieRatingRepositoryImpl)
     private val checkEmailOnValidUseCase = CheckEmailOnValidUseCase(MovieRatingRepositoryImpl)

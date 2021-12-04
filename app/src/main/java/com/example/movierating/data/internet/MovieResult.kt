@@ -1,9 +1,15 @@
 package com.example.movierating.data.internet
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "movies_info")
 data class MovieResult(
+
+
+
     @SerializedName("adult")
     @Expose
     var adult: Boolean? = null,
@@ -12,10 +18,7 @@ data class MovieResult(
     @Expose
     var backdropPath: String? = null,
 
-    @SerializedName("genre_ids")
-    @Expose
-    var genreIds: List<Int>? = null,
-
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     var id: Int? = null,

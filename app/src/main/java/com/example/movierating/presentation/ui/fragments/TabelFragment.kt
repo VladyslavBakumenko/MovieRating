@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.R
@@ -34,7 +35,8 @@ class TabelFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         changeFragmentToLineal = view.findViewById(R.id.change_fragment_to_lineal_button)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        setUpRecyclerView(view)
+        setUpRecyclerView()
+
         detailsFragment = DetailsFragment()
 
         linealFragment = LinealFragment()
@@ -131,13 +133,16 @@ class TabelFragment : Fragment() {
             .commit()
     }
 
-    private fun setUpRecyclerView(view: View) {
-        val tableMovieList = viewModel.tableMovieList
-        val formattedTotalMovieData = viewModel.movieDataList
+    private fun setUpRecyclerView() {
 
-        rvTableMovieList = view.findViewById(R.id.rv_table_film_list)
-        movieListTableAdapter = MovieListTableAdapter(formattedTotalMovieData)
-        movieListTableAdapter.tableMovieList = tableMovieList
+        rvTableMovieList = requireActivity().findViewById(R.id.rv_table_film_list)
+        movieListTableAdapter = MovieListTableAdapter()
         rvTableMovieList.adapter = movieListTableAdapter
+        viewModel.getMoviesData().observe(viewLifecycleOwner, Observer {
+
+            val sortedMovieList = it.sortedBy { it.popularity }.reversed()
+
+            movieListTableAdapter.movieDataList = sortedMovieList
+        })
     }
 }
