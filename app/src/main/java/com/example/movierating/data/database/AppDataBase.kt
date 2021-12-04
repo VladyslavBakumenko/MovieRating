@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.movierating.data.internet.MovieResult
 
-@Database(entities = [UsersDatabase::class], version = 1, exportSchema = false)
+@Database(entities = [UsersDatabase::class, MovieResult::class], version = 2, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
+
     companion object {
 
         private var db: AppDataBase? = null
@@ -22,12 +24,16 @@ abstract class AppDataBase : RoomDatabase() {
                         AppDataBase::class.java,
                         DB_NAME
                     ).allowMainThreadQueries()
+                        .fallbackToDestructiveMigration()
                         .build()
                 db = instance
                 return instance
             }
         }
+        
     }
 
-    abstract fun usersDataBaseDao(): UsersDataBaseDao
+    abstract fun usersDatabaseDao(): UsersDataBaseDao
+    abstract fun moviesDatabaseDao(): MoviesDatabaseDao
+
 }

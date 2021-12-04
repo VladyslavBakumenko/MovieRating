@@ -1,25 +1,25 @@
 package com.example.movierating.presentation.ui.recycler_views.table_rv
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.R
 import com.example.movierating.data.internet.MovieApi
-import com.example.movierating.domain.FormattedTotalMovieData
-import com.example.movierating.domain.MovieItem
+import com.example.movierating.data.internet.MovieResult
 import com.squareup.picasso.Picasso
 
-class MovieListTableAdapter(formattedTotalMovieData: FormattedTotalMovieData) :
+class MovieListTableAdapter() :
     RecyclerView.Adapter<MovieItemTableViewHolder>() {
 
-    private val movieDataList = formattedTotalMovieData
 
-
-    var tableMovieList = listOf<MovieItem>()
+    var movieDataList: List<MovieResult> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+
+
 
     var onMovieClickListener: OnMovieClickListener? = null
 
@@ -41,21 +41,21 @@ class MovieListTableAdapter(formattedTotalMovieData: FormattedTotalMovieData) :
                 with(viewHolder) {
                     Picasso
                         .get()
-                        .load("${MovieApi.IMAGE_TMDB}${movieDataList.formattedPosterPatches[position * 3]}")
+                        .load("${MovieApi.IMAGE_TMDB}${movieDataList[position * 3].posterPath}")
                         .into(viewHolder.firstImageMovie)
-                    firstNameMovie.text = movieDataList.formattedTotalTitles[position * 3]
+                    firstNameMovie.text = movieDataList[position * 3].title
 
                     Picasso
                         .get()
-                        .load("${MovieApi.IMAGE_TMDB}${movieDataList.formattedPosterPatches[position * 3 + 1]}")
+                        .load("${MovieApi.IMAGE_TMDB}${movieDataList[position * 3 + 1].posterPath}")
                         .into(viewHolder.secondImageMovie)
-                    secondNameMovie.text = movieDataList.formattedTotalTitles[position * 3 + 1]
+                    secondNameMovie.text = movieDataList[position * 3 + 1].title
 
                     Picasso
                         .get()
-                        .load("${MovieApi.IMAGE_TMDB}${movieDataList.formattedPosterPatches[position * 3 + 2]}")
+                        .load("${MovieApi.IMAGE_TMDB}${movieDataList[position * 3 + 2].posterPath}")
                         .into(viewHolder.thirdImageMovie)
-                    thirdNameMovie.text = movieDataList.formattedTotalTitles[position * 3 + 2]
+                    thirdNameMovie.text = movieDataList[position * 3 + 2].title
                 }
 
             }
@@ -64,45 +64,45 @@ class MovieListTableAdapter(formattedTotalMovieData: FormattedTotalMovieData) :
 
         viewHolder.firstMovieCardView.setOnClickListener {
             onMovieClickListener?.onFirstMovieClick(
-                movieDataList.formattedTotalTitles[position * 3],
-                movieDataList.formattedTotalOverviews[position * 3],
-                movieDataList.formattedTotalReleaseDates[position * 3].toString(),
-                movieDataList.formattedTotalAverage[position * 3].toString(),
-                movieDataList.formattedTotalOriginalLanguages[position * 3],
-                movieDataList.formattedTotalPopularity[position * 3].toString(),
-                "${movieDataList.formattedPosterPatches[position * 3]}"
+                movieDataList[position * 3].title,
+                movieDataList[position * 3].overview,
+                movieDataList[position * 3].releaseDate.toString(),
+                movieDataList[position * 3].voteAverage.toString(),
+                movieDataList[position * 3].originalLanguage,
+                movieDataList[position * 3].popularity.toString(),
+                "${movieDataList[position * 3].posterPath}"
 
             )
         }
 
         viewHolder.secondMovieCardView.setOnClickListener {
             onMovieClickListener?.onSecondMovieClick(
-                movieDataList.formattedTotalTitles[position * 3 + 1],
-                movieDataList.formattedTotalOverviews[position * 3 + 1],
-                movieDataList.formattedTotalReleaseDates[position * 3 + 1].toString(),
-                movieDataList.formattedTotalAverage[position * 3 + 1].toString(),
-                movieDataList.formattedTotalOriginalLanguages[position * 3 + 1],
-                movieDataList.formattedTotalPopularity[position * 3 + 1].toString(),
-                "${movieDataList.formattedPosterPatches[position * 3 + 1]}"
+                movieDataList[position * 3 + 1].title,
+                movieDataList[position * 3 + 1].overview,
+                movieDataList[position * 3 + 1].releaseDate.toString(),
+                movieDataList[position * 3 + 1].voteAverage.toString(),
+                movieDataList[position * 3 + 1].originalLanguage,
+                movieDataList[position * 3 + 1].popularity.toString(),
+                "${movieDataList[position * 3 + 1].posterPath}"
             )
         }
 
         viewHolder.thirdMovieCardView.setOnClickListener {
             onMovieClickListener?.onThirdMovieClick(
-                movieDataList.formattedTotalTitles[position * 3 + 2],
-                movieDataList.formattedTotalOverviews[position * 3 + 2],
-                movieDataList.formattedTotalReleaseDates[position * 3 + 2].toString(),
-                movieDataList.formattedTotalAverage[position * 3 + 2].toString(),
-                movieDataList.formattedTotalOriginalLanguages[position * 3 + 2],
-                movieDataList.formattedTotalPopularity[position * 3 + 2].toString(),
-                "${movieDataList.formattedPosterPatches[position * 3 + 2]}"
+                movieDataList[position * 3 + 2].title,
+                movieDataList[position * 3 + 2].overview,
+                movieDataList[position * 3 + 2].releaseDate.toString(),
+                movieDataList[position * 3 + 2].voteAverage.toString(),
+                movieDataList[position * 3 + 2].originalLanguage,
+                movieDataList[position * 3 + 2].popularity.toString(),
+                "${movieDataList[position * 3 + 2].posterPath}"
             )
         }
 
     }
 
     override fun getItemCount(): Int {
-        return tableMovieList.size
+        return movieDataList.size / MOVIES_IN_ONE_ITEM
     }
 
 
@@ -142,24 +142,26 @@ class MovieListTableAdapter(formattedTotalMovieData: FormattedTotalMovieData) :
     private fun setFirstMovieItem(position: Int, viewHolder: MovieItemTableViewHolder) {
         Picasso
             .get()
-            .load("${MovieApi.IMAGE_TMDB}${movieDataList.formattedPosterPatches[position]}")
+            .load("${MovieApi.IMAGE_TMDB}${movieDataList[position].posterPath}")
             .into(viewHolder.firstImageMovie)
-        viewHolder.firstNameMovie.text = movieDataList.formattedTotalTitles[position]
+        viewHolder.firstNameMovie.text = movieDataList[position].title
 
         Picasso
             .get()
-            .load("${MovieApi.IMAGE_TMDB}${movieDataList.formattedPosterPatches[position + 1]}")
+            .load("${MovieApi.IMAGE_TMDB}${movieDataList[position + 1].posterPath}")
             .into(viewHolder.secondImageMovie)
-        viewHolder.secondNameMovie.text = movieDataList.formattedTotalTitles[position + 1]
+        viewHolder.secondNameMovie.text = movieDataList[position + 1].title
 
         Picasso
             .get()
-            .load("${MovieApi.IMAGE_TMDB}${movieDataList.formattedPosterPatches[position + 2]}")
+            .load("${MovieApi.IMAGE_TMDB}${movieDataList[position + 2].posterPath}")
             .into(viewHolder.thirdImageMovie)
-        viewHolder.thirdNameMovie.text = movieDataList.formattedTotalTitles[position + 2]
+        viewHolder.thirdNameMovie.text = movieDataList[position + 2].title
     }
 
-
+    companion object {
+        const val MOVIES_IN_ONE_ITEM = 3
+    }
 }
 
 

@@ -4,12 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.movierating.data.repositorys_impl.MovieRatingRepositoryImpl
 import com.example.movierating.data.database.AppDataBase
 import com.example.movierating.data.database.UsersDatabase
+import com.example.movierating.data.repositorys_impl.MovieRatingRepositoryImpl
+import com.example.movierating.domain.MovieRatingRepositiry
 import com.example.movierating.domain.use_cases.CheckEmailOnValidUseCase
 import com.example.movierating.domain.use_cases.CheckPasswordOnValidUseCase
-import com.example.movierating.domain.MovieRatingRepositiry
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -31,6 +31,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         var result = false
         if(validateInput(eMail, password)) {
             val usersArray = getUsers()
+
             usersArray.forEachIndexed { index, usersArray ->
                 if (usersArray.eMail == eMail) {
                     if (usersArray.password == password) {
@@ -44,7 +45,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
 
     private fun getUsers(): Array<UsersDatabase> {
-        return db.usersDataBaseDao().getOllUsersRegistrationInfo()
+        return db.usersDatabaseDao().getOllUsersRegistrationInfo()
     }
 
 

@@ -39,6 +39,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navigationView.itemIconTintList
         navigationView.setNavigationItemSelectedListener(this)
+        viewModel.loadData()
+
+
+
     }
 
     private fun startFirstFragment(linealFragment: LinealFragment) {
