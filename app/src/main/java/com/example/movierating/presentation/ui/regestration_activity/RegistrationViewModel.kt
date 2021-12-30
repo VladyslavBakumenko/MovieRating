@@ -14,9 +14,16 @@ import com.example.movierating.data.database.UsersDatabase
 import com.example.movierating.domain.use_cases.CheckEmailOnValidUseCase
 import com.example.movierating.domain.use_cases.CheckPasswordOnValidUseCase
 import com.example.movierating.domain.MovieRatingRepositiry
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
+    private val coroutineScopeMain = CoroutineScope(Dispatchers.Main)
 
     private val db = AppDataBase.getInstance(application)
     private val usersDataBaseDao = db.usersDatabaseDao()
@@ -32,6 +39,10 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
     val errorInputPassword: LiveData<Boolean>
         get() = _errorInputPassword
 
+    private val _userAddedSuccessfully = MutableLiveData<Boolean>()
+    val userAddedSuccessfully: LiveData<Boolean>
+        get() = _userAddedSuccessfully
+
 
     fun addUserToData(eMail: String, password: String, context: Context): Boolean {
         Log.d("TestInput", "$eMail\n$password")
@@ -39,23 +50,31 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
         val fieldsValid = validateInput(eMail, password)
         if (fieldsValid) {
-            try {
-                val user = UsersDatabase(eMail, password)
-                usersDataBaseDao.addUser(user)
-                val toast = Toast.makeText(
-                    context,
-                    "Користувач успішно зареєстрований",
-                    Toast.LENGTH_SHORT
-                )
-                toast.show()
-                result = true
-            } catch (e: SQLiteConstraintException) {
-                val toast = Toast.makeText(
-                    context,
-                    "Користувач з таким eMail уже зареєстрований",
-                    Toast.LENGTH_SHORT
-                )
-                toast.show()
+
+            val user = UsersDatabase(eMail, password)
+            coroutineScopeIO.launch {
+                try {
+                    usersDataBaseDao.addUser(user)
+                    coroutineScopeMain.launch {
+                        _userAddedSuccessfully.value = true
+                        val toast = Toast.makeText(
+                            context,
+                            "Користувач успішно зареєстрований",
+                            Toast.LENGTH_SHORT
+                        )
+                        toast.show()
+                    }
+
+                } catch (e: SQLiteConstraintException) {
+                    coroutineScopeMain.launch {
+                        val toast = Toast.makeText(
+                            context,
+                            "Користувач з таким eMail уже зареєстрований",
+                            Toast.LENGTH_SHORT
+                        )
+                        toast.show()
+                    }
+                }
             }
         }
         return result

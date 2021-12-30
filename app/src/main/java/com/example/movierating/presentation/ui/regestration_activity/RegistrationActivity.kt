@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -32,18 +33,16 @@ class RegistrationActivity : AppCompatActivity() {
         addTextChangeListeners()
         observeViewModel()
 
+
         registrationButton.setOnClickListener {
-            if (viewModel.addUserToData(
-                    etEMail.text.toString(),
-                    etPassword.text.toString(),
-                    this
-                )
-            ) {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(USER_REGISTRATION_ACTIVITY, etEMail.text.toString())
-                startActivity(intent)
-            }
+
+            viewModel.addUserToData(
+                etEMail.text.toString(),
+                etPassword.text.toString(),
+                applicationContext
+            )
         }
+
     }
 
     private fun initViews() {
@@ -97,6 +96,15 @@ class RegistrationActivity : AppCompatActivity() {
             }
             tilPassword.error = message
         }
+
+        viewModel.userAddedSuccessfully.observe(this) {
+            if (it) {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra(USER_REGISTRATION_ACTIVITY, etEMail.text.toString())
+                startActivity(intent)
+            }
+        }
+
     }
 
     companion object {

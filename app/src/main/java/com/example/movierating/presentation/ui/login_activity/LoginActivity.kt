@@ -43,22 +43,12 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginButton.setOnClickListener {
-            val loginStatus = viewModel.checkUserInDatabase(
+            viewModel.checkUserInDatabase(
                 etEMail.text.toString(),
                 etPassword.text.toString()
             )
-            if (loginStatus) {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(USER_LOGIN_ACTIVITY, etEMail.text.toString())
-                startActivity(intent)
-            } else {
-                val toast = Toast.makeText(
-                    this,
-                    resources.getString(R.string.login_error),
-                    Toast.LENGTH_SHORT
-                )
-                toast.show()
-            }
+
+
         }
 
     }
@@ -105,6 +95,21 @@ class LoginActivity : AppCompatActivity() {
                 null
             }
             tilPassword.error = message
+        }
+
+        viewModel.userFound.observe(this) {
+            if (it) {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra(USER_LOGIN_ACTIVITY, etEMail.text.toString())
+                startActivity(intent)
+            } else {
+                val toast = Toast.makeText(
+                    this,
+                    resources.getString(R.string.login_error),
+                    Toast.LENGTH_SHORT
+                )
+                toast.show()
+            }
         }
 
     }
