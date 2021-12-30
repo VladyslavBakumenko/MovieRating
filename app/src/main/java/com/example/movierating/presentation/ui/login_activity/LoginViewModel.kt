@@ -13,12 +13,13 @@ import com.example.movierating.domain.use_cases.CheckEmailOnValidUseCase
 import com.example.movierating.domain.use_cases.CheckPasswordOnValidUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = AppDataBase.getInstance(application)
-    private val corutineScope = CoroutineScope(Dispatchers.IO)
+    private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
 
     private val checkPasswordOnValidUseCase = CheckPasswordOnValidUseCase(MovieRatingRepositoryImpl)
     private val checkEmailOnValidUseCase = CheckEmailOnValidUseCase(MovieRatingRepositoryImpl)
@@ -40,7 +41,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     fun checkUserInDatabase(eMail: String, password: String) {
 
         if (validateInput(eMail, password)) {
-            corutineScope.launch {
+            coroutineScopeIO.launch {
 
                 val usersArray = db.usersDatabaseDao().getOllUsersRegistrationInfo()
                 for(i in usersArray) {
@@ -95,5 +96,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         _errorInputPassword.value = false
     }
 
-
+    override fun onCleared() {
+        super.onCleared()
+        coroutineScopeIO.cancel()
+    }
 }

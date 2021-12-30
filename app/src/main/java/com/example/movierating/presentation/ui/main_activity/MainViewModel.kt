@@ -10,6 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -52,4 +53,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         const val LOAD_PAGES = 100
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        coroutineScope.cancel()
+    }
 }

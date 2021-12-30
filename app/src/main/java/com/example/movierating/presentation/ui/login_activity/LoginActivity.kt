@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputLayout
 
 class LoginActivity : AppCompatActivity() {
 
+
     private lateinit var viewModel: LoginViewModel
 
     private lateinit var tilEMail: TextInputLayout

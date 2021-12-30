@@ -16,6 +16,7 @@ import com.example.movierating.domain.use_cases.CheckPasswordOnValidUseCase
 import com.example.movierating.domain.MovieRatingRepositiry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
@@ -119,5 +120,11 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
     fun resetErrorInputPassword() {
         _errorInputPassword.value = false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineScopeMain.cancel()
+        coroutineScopeIO.cancel()
     }
 }
