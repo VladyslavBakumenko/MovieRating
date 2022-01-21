@@ -32,9 +32,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 .map { it.results }
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    coroutineScope.launch {
-                        moviesDatabaseDao.addMoviesToDatabase(it)
-                    }
+                    moviesDatabaseDao.addMoviesToDatabase(it)
                 }, {
 
                 })
