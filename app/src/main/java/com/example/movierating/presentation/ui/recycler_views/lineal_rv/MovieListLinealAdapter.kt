@@ -1,24 +1,20 @@
 package com.example.movierating.presentation.ui.recycler_views.lineal_rv
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import com.example.movierating.R
 import com.example.movierating.data.internet.MovieApi
 import com.example.movierating.data.internet.MovieResult
 
 import com.squareup.picasso.Picasso
 
-class MovieListLinealAdapter() :
-    RecyclerView.Adapter<MovieItemLinealViewHolder>() {
+class MovieListLinealAdapter() : ListAdapter<MovieResult, MovieItemLinealViewHolder>(linealDiffCallback()) {
     var count: Int = 0
     var count1: Int = 0
-    var movieDataList: List<MovieResult> = listOf()
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+
     var onMovieClickListener: OnMovieClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemLinealViewHolder {
@@ -32,6 +28,7 @@ class MovieListLinealAdapter() :
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MovieItemLinealViewHolder, position: Int) {
         Log.d("onBindViewHolder", count1++.toString())
 
@@ -39,31 +36,28 @@ class MovieListLinealAdapter() :
         with(holder) {
             Picasso
                 .get()
-                .load("${MovieApi.IMAGE_TMDB}${movieDataList[position].backdropPath}")
+                .load("${MovieApi.IMAGE_TMDB}${getItem(position).backdropPath}")
                 .into(holder.imageMovie)
-            tvMovieDescription.text = movieDataList[position].overview
-            tvMovieName.text = movieDataList[position].title
-            tvMovieRelise.text = movieDataList[position].releaseDate.toString()
-            tvMovieRate.text = "Rate: ${movieDataList[position].voteAverage.toString()}"
+            tvMovieDescription.text = getItem(position).overview
+            tvMovieName.text = getItem(position).title
+            tvMovieRelise.text = getItem(position).releaseDate.toString()
+            tvMovieRate.text = "Rate: ${getItem(position).voteAverage.toString()}"
 
             itemView.setOnClickListener {
                 onMovieClickListener?.onMovieClick(
-                    movieDataList[position].title,
-                    movieDataList[position].overview,
-                    movieDataList[position].releaseDate,
-                    movieDataList[position].voteAverage.toString(),
-                    movieDataList[position].originalLanguage,
-                    movieDataList[position].popularity.toString(),
-                    "${movieDataList[position].posterPath}"
+                    getItem(position).title,
+                    getItem(position).overview,
+                    getItem(position).releaseDate,
+                    getItem(position).voteAverage.toString(),
+                    getItem(position).originalLanguage,
+                    getItem(position).popularity.toString(),
+                    "${getItem(position).posterPath}"
                 )
             }
         }
 
     }
 
-    override fun getItemCount(): Int {
-        return movieDataList.size
-    }
 
     interface OnMovieClickListener {
         fun onMovieClick(

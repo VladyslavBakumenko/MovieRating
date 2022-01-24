@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.movierating">
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -10,9 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.MovieRating">
-
-
+        android:theme="@style/Theme.MovieRating"
+        tools:targetApi="m">
 
         <activity android:name=".presentation.ui.main_activity.MainActivity"
             android:windowSoftInputMode="adjustResize"

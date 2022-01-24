@@ -82,7 +82,7 @@ class LinealFragment : Fragment() {
         viewModel.getMoviesData().observe(viewLifecycleOwner, Observer {
 
             val sortedMovieList = it.sortedBy { it.popularity }.reversed()
-            movieListLinealAdapter.movieDataList = sortedMovieList
+            movieListLinealAdapter.submitList(sortedMovieList)
         })
     }
 
