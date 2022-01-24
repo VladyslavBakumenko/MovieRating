@@ -100,6 +100,7 @@ class RegistrationActivity : AppCompatActivity() {
         viewModel.userAddedSuccessfully.observe(this) {
             if (it) {
                 val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 intent.putExtra(USER_REGISTRATION_ACTIVITY, etEMail.text.toString())
                 startActivity(intent)
             }

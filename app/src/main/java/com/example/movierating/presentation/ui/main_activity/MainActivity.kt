@@ -40,9 +40,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.itemIconTintList
         navigationView.setNavigationItemSelectedListener(this)
         viewModel.loadData()
-
-
-
     }
 
     private fun startFirstFragment(linealFragment: LinealFragment) {
@@ -98,6 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (id == R.id.exit) {
             result = true
             val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
         return result

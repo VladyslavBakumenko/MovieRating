@@ -1,7 +1,6 @@
 package com.example.movierating.presentation.ui.recycler_views.lineal_rv
 
-
-import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,22 +12,17 @@ import com.squareup.picasso.Picasso
 
 class MovieListLinealAdapter() :
     RecyclerView.Adapter<MovieItemLinealViewHolder>() {
-
-
-
+    var count: Int = 0
+    var count1: Int = 0
     var movieDataList: List<MovieResult> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-
-
-
-
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
     var onMovieClickListener: OnMovieClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemLinealViewHolder {
+        Log.d("onCreateViewHolder", count++.toString())
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.lineal_movie_item,
             parent,
@@ -39,6 +33,8 @@ class MovieListLinealAdapter() :
 
 
     override fun onBindViewHolder(holder: MovieItemLinealViewHolder, position: Int) {
+        Log.d("onBindViewHolder", count1++.toString())
+
 
         with(holder) {
             Picasso

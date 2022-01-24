@@ -1,6 +1,7 @@
 package com.example.movierating.presentation.ui.main_activity
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.movierating.data.database.AppDataBase
@@ -21,21 +22,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-
     fun loadData() {
         coroutineScope.launch {
             moviesDatabaseDao.deleteOllMovies()
         }
 
-        for (i in LOAD_PAGES downTo 1) {
+        for (i in 1..LOAD_PAGES) {
 
             val disposable = ApiFactory.movieApi.getMovie(page = i)
                 .map { it.results }
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    coroutineScope.launch {
-                        moviesDatabaseDao.addMoviesToDatabase(it)
-                    }
+                    moviesDatabaseDao.addMoviesToDatabase(it)
                 }, {
 
                 })
@@ -44,6 +42,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
 
     }
+
 
     fun getMoviesData(): LiveData<List<MovieResult>> {
         return moviesDatabaseDao.getMoviesFromDatabase()

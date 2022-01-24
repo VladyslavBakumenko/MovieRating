@@ -14,13 +14,10 @@ class MovieListTableAdapter() :
 
 
     var movieDataList: List<MovieResult> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-
-
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
     var onMovieClickListener: OnMovieClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemTableViewHolder {

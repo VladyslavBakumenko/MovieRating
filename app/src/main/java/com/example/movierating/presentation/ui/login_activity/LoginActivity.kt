@@ -13,7 +13,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
 import com.example.movierating.presentation.ui.main_activity.MainActivity
 import com.example.movierating.presentation.ui.regestration_activity.RegistrationActivity
+import com.example.movierating.presentation.ui.test.TestActivity
 import com.google.android.material.textfield.TextInputLayout
+import java.util.jar.Manifest
+import android.content.pm.PackageManager
+
+import android.content.ComponentName
+
+
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -30,7 +38,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         initViews()
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         addTextChangeListeners()
@@ -39,7 +46,6 @@ class LoginActivity : AppCompatActivity() {
 
         registrationButton.setOnClickListener {
             val intent = Intent(this, RegistrationActivity::class.java)
-            //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
 
@@ -48,8 +54,6 @@ class LoginActivity : AppCompatActivity() {
                 etEMail.text.toString(),
                 etPassword.text.toString()
             )
-
-
         }
 
     }
@@ -101,6 +105,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.userFound.observe(this) {
             if (it) {
                 val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 intent.putExtra(USER_LOGIN_ACTIVITY, etEMail.text.toString())
                 startActivity(intent)
             } else {
