@@ -40,7 +40,6 @@ class RegistrationActivity : AppCompatActivity() {
             viewModel.addUserToData(
                 etEMail.text.toString(),
                 etPassword.text.toString(),
-                applicationContext
             )
         }
 
