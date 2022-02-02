@@ -8,7 +8,7 @@ import com.example.movierating.data.internet.MovieResult
 interface MoviesDatabaseDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun addMoviesToDatabase(movieResult: List<MovieResult>?)
+    fun addMoviesToDatabase(movieResult: List<MovieResult>)
 
     @Query("SELECT * FROM movies_info")
     fun getMoviesFromDatabase(): LiveData<List<MovieResult>>

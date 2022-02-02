@@ -6,14 +6,11 @@ import androidx.lifecycle.LiveData
 import com.example.movierating.data.database.AppDataBase
 import com.example.movierating.data.internet.ApiFactory
 import com.example.movierating.data.internet.MovieResult
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val compositeDisposable = CompositeDisposable()
 
     private val db = AppDataBase.getInstance(application)
     private val moviesDatabaseDao = db.moviesDatabaseDao()
@@ -24,22 +21,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun loadData() {
         coroutineScope.launch {
             moviesDatabaseDao.deleteOllMovies()
+            for (page in 1..LOAD_PAGES) {
+                val moviePage = ApiFactory.movieApi.getMovie(page = page).map { it.results }
+                moviePage.blockingGet()?.let { moviesDatabaseDao.addMoviesToDatabase(it) }
+            }
         }
-
-        for (i in LOAD_PAGES downTo 1) {
-
-            val disposable = ApiFactory.movieApi.getMovie(page = i)
-                .map { it.results }
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    moviesDatabaseDao.addMoviesToDatabase(it)
-                }, {
-
-                })
-            compositeDisposable.add(disposable)
-
-        }
-
     }
 
     fun getMoviesData(): LiveData<List<MovieResult>> {
