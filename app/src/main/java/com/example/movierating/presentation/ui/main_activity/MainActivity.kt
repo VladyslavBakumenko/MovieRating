@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
+import com.example.movierating.databinding.ActivityLoginBinding
+import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.fragments.DetailsFragment
 import com.example.movierating.presentation.ui.fragments.LinealFragment
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
@@ -18,9 +20,9 @@ import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationView: NavigationView
+
 
     private lateinit var linealFragment: LinealFragment
     private lateinit var tableFragment: TabelFragment
@@ -31,14 +33,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         initFragments()
-        initViews()
         startFirstFragment(linealFragment)
 
-        navigationView.itemIconTintList
-        navigationView.setNavigationItemSelectedListener(this)
+        binding.navigationView.itemIconTintList
+        binding.navigationView.setNavigationItemSelectedListener(this)
         viewModel.loadData()
 
 
@@ -72,12 +75,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .commit()
     }
 
-    private fun initViews() {
 
-        drawerLayout = findViewById(R.id.drawer_layout)
-        navigationView = findViewById(R.id.navigationView)
-        navigationView.itemIconTintList
-    }
 
     private fun initFragments() {
         linealFragment = LinealFragment()
@@ -92,7 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var result = false
         if (id == R.id.profile) {
             result = true
-            drawerLayout.closeDrawer(Gravity.LEFT, true)
+           binding.drawerLayout.closeDrawer(Gravity.LEFT, true)
             launchProfileFragment(profileFragment)
         }
         if (id == R.id.exit) {

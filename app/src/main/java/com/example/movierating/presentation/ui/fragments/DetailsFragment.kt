@@ -10,11 +10,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.movierating.R
 import com.example.movierating.data.internet.MovieApi
+import com.example.movierating.databinding.FragmentDetailsBinding
 import com.squareup.picasso.Picasso
 
 
 class DetailsFragment : Fragment() {
-
+    private lateinit var binding: FragmentDetailsBinding
     private lateinit var title: String
     private lateinit var description: String
     private lateinit var realise: String

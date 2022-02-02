@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDataBase.getInstance(application)
 
+
     private val userRepository = UserRepositoryImpl()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 

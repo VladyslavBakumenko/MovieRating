@@ -11,50 +11,38 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
+import com.example.movierating.databinding.ActivityRegestrationBinding
 import com.example.movierating.presentation.ui.main_activity.MainActivity
 import com.google.android.material.textfield.TextInputLayout
 
 class RegistrationActivity : AppCompatActivity() {
 
     private lateinit var viewModel: RegistrationViewModel
-
-
-    private lateinit var tilEMail: TextInputLayout
-    private lateinit var tilPassword: TextInputLayout
-    private lateinit var etEMail: EditText
-    private lateinit var etPassword: EditText
-    private lateinit var registrationButton: Button
-
+    private lateinit var binding: ActivityRegestrationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_regestration)
+        binding = ActivityRegestrationBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         viewModel = ViewModelProvider(this)[RegistrationViewModel::class.java]
-        initViews()
         addTextChangeListeners()
         observeViewModel()
 
 
-        registrationButton.setOnClickListener {
+        binding.registrationButtonRegistrationActivity.setOnClickListener {
 
             viewModel.addUserToData(
-                etEMail.text.toString(),
-                etPassword.text.toString(),
+               binding.etEMailRegistrationActivity.text.toString(),
+               binding.etPasswordRegistrationActivity.text.toString(),
             )
         }
 
     }
 
-    private fun initViews() {
-        tilEMail = findViewById(R.id.tilEMailRegistrationActivity)
-        tilPassword = findViewById(R.id.tilPasswordRegistrationActivity)
-        etEMail = findViewById(R.id.etEMailRegistrationActivity)
-        etPassword = findViewById(R.id.etPasswordRegistrationActivity)
-        registrationButton = findViewById(R.id.registrationButtonRegistrationActivity)
-    }
 
     private fun addTextChangeListeners() {
-        etEMail.addTextChangedListener(object : TextWatcher {
+       binding.etEMailRegistrationActivity.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -66,7 +54,7 @@ class RegistrationActivity : AppCompatActivity() {
             }
         })
 
-        etPassword.addTextChangedListener(object : TextWatcher {
+        binding.etPasswordRegistrationActivity.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -86,7 +74,7 @@ class RegistrationActivity : AppCompatActivity() {
             } else {
                 null
             }
-            tilEMail.error = message
+           binding.tilEMailRegistrationActivity.error = message
         }
         viewModel.errorInputPassword.observe(this) {
             val message = if (it) {
@@ -94,7 +82,7 @@ class RegistrationActivity : AppCompatActivity() {
             } else {
                 null
             }
-            tilPassword.error = message
+           binding.tilPasswordRegistrationActivity.error = message
         }
 
         viewModel.userAddedSuccessfully.observe(this) {
@@ -107,7 +95,7 @@ class RegistrationActivity : AppCompatActivity() {
                 toast.show()
 
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(USER_REGISTRATION_ACTIVITY, etEMail.text.toString())
+                intent.putExtra(USER_REGISTRATION_ACTIVITY, binding.etEMailRegistrationActivity.text.toString())
                 startActivity(intent)
             } else {
                 val toast = Toast.makeText(

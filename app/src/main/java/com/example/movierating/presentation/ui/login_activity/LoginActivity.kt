@@ -4,31 +4,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-
 import com.example.movierating.R
+import com.example.movierating.databinding.ActivityLoginBinding
 import com.example.movierating.presentation.ui.main_activity.MainActivity
 import com.example.movierating.presentation.ui.regestration_activity.RegistrationActivity
-import com.google.android.material.textfield.TextInputLayout
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var viewModel: LoginViewModel
+    private lateinit var binding: ActivityLoginBinding
 
-    private lateinit var tilEMail: TextInputLayout
-    private lateinit var tilPassword: TextInputLayout
-    private lateinit var etEMail: EditText
-    private lateinit var etPassword: EditText
-    private lateinit var registrationButton: Button
-    private lateinit var loginButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
 
         initViews()
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
@@ -36,23 +31,23 @@ class LoginActivity : AppCompatActivity() {
         observeViewModel()
 
 
-        registrationButton.setOnClickListener {
+        binding.registrationButton.setOnClickListener {
             val intent = Intent(this, RegistrationActivity::class.java)
             //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
 
-        loginButton.setOnClickListener {
+        binding.loginButton.setOnClickListener {
             viewModel.checkUserInDatabase(
-                etEMail.text.toString(),
-                etPassword.text.toString()
+               binding.etEMail.text.toString(),
+               binding.etPassword.text.toString()
             )
         }
 
     }
 
     private fun addTextChangeListeners() {
-        etEMail.addTextChangedListener(object : TextWatcher {
+        binding.etEMail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -64,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        etPassword.addTextChangedListener(object : TextWatcher {
+        binding.etPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -84,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 null
             }
-            tilEMail.error = message
+           binding.tilEMail.error = message
         }
         viewModel.errorInputPassword.observe(this) {
             val message = if (it) {
@@ -92,13 +87,13 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 null
             }
-            tilPassword.error = message
+            binding.tilPassword.error = message
         }
 
         viewModel.userFound.observe(this) {
             if (it) {
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(USER_LOGIN_ACTIVITY, etEMail.text.toString())
+                intent.putExtra(USER_LOGIN_ACTIVITY, binding.etEMail.text.toString())
                 startActivity(intent)
             } else {
                 val toast = Toast.makeText(
@@ -114,12 +109,7 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun initViews() {
-        tilEMail = findViewById(R.id.tilEMail)
-        tilPassword = findViewById(R.id.tilPassword)
-        etEMail = findViewById(R.id.etEMail)
-        etPassword = findViewById(R.id.etPassword)
-        registrationButton = findViewById(R.id.registrationButton)
-        loginButton = findViewById(R.id.loginButton)
+
     }
 
     companion object {
