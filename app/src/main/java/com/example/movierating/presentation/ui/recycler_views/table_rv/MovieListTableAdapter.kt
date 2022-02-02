@@ -1,6 +1,5 @@
 package com.example.movierating.presentation.ui.recycler_views.table_rv
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

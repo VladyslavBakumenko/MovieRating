@@ -8,26 +8,23 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.movierating.data.repositorys_impl.MovieRatingRepositoryImpl
-import com.example.movierating.data.database.AppDataBase
 import com.example.movierating.data.database.UsersDatabase
-import com.example.movierating.domain.use_cases.CheckEmailOnValidUseCase
-import com.example.movierating.domain.use_cases.CheckPasswordOnValidUseCase
-import com.example.movierating.domain.MovieRatingRepositiry
+import com.example.movierating.data.repositorys_impl.UserRepositoryImpl
+import com.example.movierating.utils.ExtAuthorization
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
 
 
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
 
+
+    private val extAuthorization = ExtAuthorization()
+
     private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
     private val coroutineScopeMain = CoroutineScope(Dispatchers.Main)
 
-    private val db = AppDataBase.getInstance(application)
-    private val usersDataBaseDao = db.usersDatabaseDao()
-
+    private val userRepository = UserRepositoryImpl()
 
     private val _errorInputEMail = MutableLiveData<Boolean>()
     val errorInputEMail: LiveData<Boolean>
@@ -43,7 +40,6 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
 
     fun addUserToData(eMail: String, password: String, context: Context): Boolean {
-        Log.d("TestInput", "$eMail\n$password")
         var result = false
 
         val fieldsValid = validateInput(eMail, password)
@@ -52,7 +48,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
             val user = UsersDatabase(eMail, password)
             coroutineScopeIO.launch {
                 try {
-                    usersDataBaseDao.addUser(user)
+                    userRepository.addUserToDatabase(user)
                     coroutineScopeMain.launch {
                         _userAddedSuccessfully.value = true
                         val toast = Toast.makeText(
@@ -81,7 +77,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
     private fun setEMileError(eMail: String): Boolean {
         var result = false
-        if (checkEmailOnValid(eMail)) {
+        if (extAuthorization.checkEmailOnValid(eMail)) {
             result = true
         } else {
             _errorInputEMail.value = true
@@ -91,7 +87,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
     private fun setPasswordError(password: String): Boolean {
         var result = false
-        if (checkPasswordOnValid(password)) {
+        if (extAuthorization.checkPasswordOnValid(password)) {
             result = true
         } else {
             _errorInputPassword.value = true
@@ -111,33 +107,15 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
 
     private fun validateInput(eMail: String, password: String): Boolean {
-        var result: Int = MovieRatingRepositiry.RETURN_FALSE_IF_FIELDS_INVALID
-
-        if (setEMileError(eMail)) {
-            result++
-        }
-        if (setPasswordError(password)) {
-            result++
-        }
-        return result == MovieRatingRepositiry.RETURN_TRUE_IF_FIELDS_VALID
-    }
-
-    private fun checkEmailOnValid(eMail: String): Boolean {
-        val validEMailAddress = Regex("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)\$")
         var result = false
-        if (validEMailAddress.matches(eMail)) {
+
+        if (setEMileError(eMail) && setPasswordError(password)) {
             result = true
         }
+
         return result
     }
 
-    private fun checkPasswordOnValid(password: String): Boolean {
-        var result = false
-        if (password.length in 4..20) {
-            result = true
-        }
-        return result
-    }
 
 
 }

@@ -5,19 +5,18 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.movierating.data.database.AppDataBase
-import com.example.movierating.data.repositorys_impl.MovieRatingRepositoryImpl
-import com.example.movierating.domain.MovieRatingRepositiry
-import com.example.movierating.domain.use_cases.CheckEmailOnValidUseCase
-import com.example.movierating.domain.use_cases.CheckPasswordOnValidUseCase
+import com.example.movierating.data.repositorys_impl.UserRepositoryImpl
+import com.example.movierating.utils.ExtAuthorization
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
-
     private val db = AppDataBase.getInstance(application)
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val extAuthorisation = ExtAuthorization()
 
+    private val userRepository = UserRepositoryImpl()
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     private val _errorInputEMail = MutableLiveData<Boolean>()
     val errorInputEMail: LiveData<Boolean>
@@ -38,7 +37,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         if (validateInput(eMail, password)) {
             coroutineScope.launch {
 
-                val usersArray = db.usersDatabaseDao().getOllUsersRegistrationInfo()
+                val usersArray = userRepository.getUsersFromDatabase()
                 for(i in usersArray) {
                     if(i.eMail == eMail) {
                         if(i.password == password) {
@@ -53,7 +52,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun setEMileError(eMail: String): Boolean {
         var result = false
-        if (checkEmailOnValid(eMail)) {
+        if (extAuthorisation.checkEmailOnValid(eMail)) {
             result = true
         } else {
             _errorInputEMail.value = true
@@ -63,7 +62,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun setPasswordError(password: String): Boolean {
         var result = false
-        if (checkPasswordOnValid(password)) {
+        if (extAuthorisation.checkPasswordOnValid(password)) {
             result = true
         } else {
             _errorInputPassword.value = true
@@ -71,34 +70,16 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         return result
     }
 
-    private fun validateInput(eMail: String, password: String): Boolean {
-        var result: Int = MovieRatingRepositiry.RETURN_FALSE_IF_FIELDS_INVALID
-
-        if (setEMileError(eMail)) {
-            result++
-        }
-        if (setPasswordError(password)) {
-            result++
-        }
-        return result == MovieRatingRepositiry.RETURN_TRUE_IF_FIELDS_VALID
-    }
-
-    private fun checkEmailOnValid(eMail: String): Boolean {
-        val validEMailAddress = Regex("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)\$")
+     private fun validateInput(eMail: String, password: String): Boolean {
         var result = false
-        if (validEMailAddress.matches(eMail)) {
+
+        if (setEMileError(eMail) && setPasswordError(password)) {
             result = true
         }
+
         return result
     }
 
-    private fun checkPasswordOnValid(password: String): Boolean {
-        var result = false
-        if (password.length in 4..20) {
-            result = true
-        }
-        return result
-    }
 
     fun resetErrorInputEMail() {
         _errorInputEMail.value = false
