@@ -28,8 +28,6 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
     private val db = AppDataBase.getInstance(application)
     private val usersDataBaseDao = db.usersDatabaseDao()
 
-    private val checkPasswordOnValidUseCase = CheckPasswordOnValidUseCase(MovieRatingRepositoryImpl)
-    private val checkEmailOnValidUseCase = CheckEmailOnValidUseCase(MovieRatingRepositoryImpl)
 
     private val _errorInputEMail = MutableLiveData<Boolean>()
     val errorInputEMail: LiveData<Boolean>
@@ -83,7 +81,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
     private fun setEMileError(eMail: String): Boolean {
         var result = false
-        if (checkEmailOnValidUseCase.checkEmailOnValid(eMail)) {
+        if (checkEmailOnValid(eMail)) {
             result = true
         } else {
             _errorInputEMail.value = true
@@ -93,13 +91,24 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
     private fun setPasswordError(password: String): Boolean {
         var result = false
-        if (checkPasswordOnValidUseCase.checkPasswordOnValid(password)) {
+        if (checkPasswordOnValid(password)) {
             result = true
         } else {
             _errorInputPassword.value = true
         }
         return result
     }
+
+
+
+    fun resetErrorInputEMail() {
+        _errorInputEMail.value = false
+    }
+
+    fun resetErrorInputPassword() {
+        _errorInputPassword.value = false
+    }
+
 
     private fun validateInput(eMail: String, password: String): Boolean {
         var result: Int = MovieRatingRepositiry.RETURN_FALSE_IF_FIELDS_INVALID
@@ -113,11 +122,22 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
         return result == MovieRatingRepositiry.RETURN_TRUE_IF_FIELDS_VALID
     }
 
-    fun resetErrorInputEMail() {
-        _errorInputEMail.value = false
+    private fun checkEmailOnValid(eMail: String): Boolean {
+        val validEMailAddress = Regex("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)\$")
+        var result = false
+        if (validEMailAddress.matches(eMail)) {
+            result = true
+        }
+        return result
     }
 
-    fun resetErrorInputPassword() {
-        _errorInputPassword.value = false
+    private fun checkPasswordOnValid(password: String): Boolean {
+        var result = false
+        if (password.length in 4..20) {
+            result = true
+        }
+        return result
     }
+
+
 }
