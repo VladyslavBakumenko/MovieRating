@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
@@ -99,9 +100,23 @@ class RegistrationActivity : AppCompatActivity() {
 
         viewModel.userAddedSuccessfully.observe(this) {
             if (it) {
+                val toast = Toast.makeText(
+                    this,
+                    "Користувач успішно зареєстрований",
+                    Toast.LENGTH_SHORT
+                )
+                toast.show()
+
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra(USER_REGISTRATION_ACTIVITY, etEMail.text.toString())
                 startActivity(intent)
+            } else {
+                val toast = Toast.makeText(
+                    this,
+                    "Користувач з таким eMail уже зареєстрований",
+                    Toast.LENGTH_SHORT
+                )
+                toast.show()
             }
         }
 

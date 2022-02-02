@@ -47,8 +47,6 @@ class LoginActivity : AppCompatActivity() {
                 etEMail.text.toString(),
                 etPassword.text.toString()
             )
-
-
         }
 
     }

@@ -6,14 +6,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.movierating.data.database.AppDataBase
 import com.example.movierating.data.repositorys_impl.UserRepositoryImpl
-import com.example.movierating.utils.ExtAuthorization
+import com.example.movierating.utils.checkEmailOnValid
+import com.example.movierating.utils.checkPasswordOnValid
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDataBase.getInstance(application)
-    private val extAuthorisation = ExtAuthorization()
 
     private val userRepository = UserRepositoryImpl()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -52,7 +52,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun setEMileError(eMail: String): Boolean {
         var result = false
-        if (extAuthorisation.checkEmailOnValid(eMail)) {
+        if (checkEmailOnValid(eMail)) {
             result = true
         } else {
             _errorInputEMail.value = true
@@ -62,7 +62,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun setPasswordError(password: String): Boolean {
         var result = false
-        if (extAuthorisation.checkPasswordOnValid(password)) {
+        if (checkPasswordOnValid(password)) {
             result = true
         } else {
             _errorInputPassword.value = true
@@ -88,6 +88,5 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     fun resetErrorInputPassword() {
         _errorInputPassword.value = false
     }
-
 
 }
