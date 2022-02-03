@@ -9,17 +9,31 @@ import androidx.fragment.app.Fragment
 import com.example.movierating.data.internet.MovieApi
 import com.example.movierating.databinding.FragmentDetailsBinding
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 class DetailsFragment : Fragment() {
     private var binding: FragmentDetailsBinding? = null
 
-    private lateinit var title: String
-    private lateinit var description: String
-    private lateinit var realise: String
-    private lateinit var rate: String
-    private lateinit var originalLanguage: String
-    private lateinit var popularity: String
-    private lateinit var image: String
+    @Inject
+    lateinit var title: String
+
+    @Inject
+    lateinit var description: String
+
+    @Inject
+    lateinit var realise: String
+
+    @Inject
+    lateinit var rate: String
+
+    @Inject
+    lateinit var originalLanguage: String
+
+    @Inject
+    lateinit var popularity: String
+
+    @Inject
+    lateinit var image: String
 
 
     override fun onCreateView(

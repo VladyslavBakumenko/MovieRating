@@ -8,12 +8,17 @@ import androidx.fragment.app.Fragment
 import com.example.movierating.databinding.FragmentProfileBinding
 import com.example.movierating.presentation.ui.loginActivity.LoginActivity
 import com.example.movierating.presentation.ui.registrationActivity.RegistrationActivity
+import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
+
     private var binding: FragmentProfileBinding? = null
 
-    private lateinit var userFromLoginActivity: String
-    private lateinit var userFromRegistrationActivity: String
+    @Inject
+    lateinit var userFromLoginActivity: String
+
+    @Inject
+    lateinit var userFromRegistrationActivity: String
 
     override fun onCreateView(
         inflater: LayoutInflater,

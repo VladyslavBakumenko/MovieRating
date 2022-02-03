@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityRegestrationBinding
 import com.example.movierating.presentation.ui.mainActivity.MainActivity

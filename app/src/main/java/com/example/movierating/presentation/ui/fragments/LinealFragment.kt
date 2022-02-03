@@ -7,20 +7,25 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
 import com.example.movierating.databinding.FragmentLinealBinding
 import com.example.movierating.presentation.ui.mainActivity.MainViewModel
 import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
+import javax.inject.Inject
 
 class LinealFragment : Fragment() {
 
     private var binding: FragmentLinealBinding? = null
-
-    private lateinit var movieListLinealAdapter: MovieListLinealAdapter
     private val viewModel: MainViewModel by viewModels()
-    private lateinit var detailsFragment: DetailsFragment
-    private lateinit var tableFragment: TableFragment
+
+    @Inject
+    lateinit var movieListLinealAdapter: MovieListLinealAdapter
+
+    @Inject
+    lateinit var detailsFragment: DetailsFragment
+
+    @Inject
+    lateinit var tableFragment: TableFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,

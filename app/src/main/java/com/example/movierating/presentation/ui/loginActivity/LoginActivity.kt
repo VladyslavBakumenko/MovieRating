@@ -12,7 +12,6 @@ import com.example.movierating.databinding.ActivityLoginBinding
 import com.example.movierating.presentation.ui.mainActivity.MainActivity
 import com.example.movierating.presentation.ui.registrationActivity.RegistrationActivity
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
