@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
@@ -15,11 +16,13 @@ import com.example.movierating.presentation.ui.fragments.TableFragment
 import com.example.movierating.presentation.ui.loginActivity.LoginActivity
 import com.example.movierating.presentation.ui.registrationActivity.RegistrationActivity
 import com.google.android.material.navigation.NavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var linealFragment: LinealFragment
     private lateinit var tableFragment: TableFragment
@@ -32,7 +35,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         initFragments()
         startFirstFragment(linealFragment)
 

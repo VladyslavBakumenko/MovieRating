@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
@@ -17,7 +18,7 @@ class LinealFragment : Fragment() {
     private var binding: FragmentLinealBinding? = null
 
     private lateinit var movieListLinealAdapter: MovieListLinealAdapter
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var detailsFragment: DetailsFragment
     private lateinit var tableFragment: TableFragment
 
@@ -32,7 +33,6 @@ class LinealFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setUpRecyclerView()
 
         tableFragment = TableFragment()

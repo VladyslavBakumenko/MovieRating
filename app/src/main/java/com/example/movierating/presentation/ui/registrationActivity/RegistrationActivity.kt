@@ -5,15 +5,18 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityRegestrationBinding
 import com.example.movierating.presentation.ui.mainActivity.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegistrationActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: RegistrationViewModel
+    private val viewModel: RegistrationViewModel by viewModels()
     private lateinit var binding: ActivityRegestrationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +24,6 @@ class RegistrationActivity : AppCompatActivity() {
         binding = ActivityRegestrationBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        viewModel = ViewModelProvider(this)[RegistrationViewModel::class.java]
         addTextChangeListeners()
         observeViewModel()
 

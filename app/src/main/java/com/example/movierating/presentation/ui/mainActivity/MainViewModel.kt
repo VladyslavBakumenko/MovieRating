@@ -6,11 +6,14 @@ import androidx.lifecycle.LiveData
 import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.data.repositoriesImpl.MovieRatingRepository
 import com.example.movierating.data.repositoriesImpl.MovieRatingRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class MainViewModel @Inject constructor (application: Application) : AndroidViewModel(application) {
     private val movieRepository: MovieRatingRepository = MovieRatingRepositoryImpl()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
