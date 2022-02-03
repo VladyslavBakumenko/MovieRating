@@ -5,31 +5,29 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityLoginBinding
 import com.example.movierating.presentation.ui.mainActivity.MainActivity
 import com.example.movierating.presentation.ui.registrationActivity.RegistrationActivity
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: LoginViewModel
-    private lateinit var binding: ActivityLoginBinding
+    private val viewModel: LoginViewModel by viewModels()
 
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
-
-        initViews()
-        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         addTextChangeListeners()
         observeViewModel()
-
 
         binding.registrationButton.setOnClickListener {
             val intent = Intent(this, RegistrationActivity::class.java)
@@ -43,7 +41,6 @@ class LoginActivity : AppCompatActivity() {
                 binding.etPassword.text.toString()
             )
         }
-
     }
 
     private fun addTextChangeListeners() {
@@ -98,12 +95,6 @@ class LoginActivity : AppCompatActivity() {
                 toast.show()
             }
         }
-
-    }
-
-
-    private fun initViews() {
-
     }
 
     companion object {

@@ -10,6 +10,7 @@
         android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".data.hilt.MyApplication"
         android:theme="@style/Theme.MovieRating">
 
 
