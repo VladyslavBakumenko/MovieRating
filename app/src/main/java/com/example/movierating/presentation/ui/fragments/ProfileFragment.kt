@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.movierating.databinding.FragmentProfileBinding
-import com.example.movierating.presentation.ui.login_activity.LoginActivity
-import com.example.movierating.presentation.ui.regestration_activity.RegistrationActivity
+import com.example.movierating.presentation.ui.loginActivity.LoginActivity
+import com.example.movierating.presentation.ui.registrationActivity.RegistrationActivity
 
 class ProfileFragment : Fragment() {
     private var binding: FragmentProfileBinding? = null

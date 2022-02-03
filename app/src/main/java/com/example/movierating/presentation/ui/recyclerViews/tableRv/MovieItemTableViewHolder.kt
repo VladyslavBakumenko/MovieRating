@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.recycler_views.table_rv
+package com.example.movierating.presentation.ui.recyclerViews.tableRv
 
 import android.view.View
 import android.widget.ImageView

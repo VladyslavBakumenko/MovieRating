@@ -9,6 +9,9 @@ import com.example.movierating.data.internet.MovieResult
 @Database(entities = [UsersDatabase::class, MovieResult::class], version = 2, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
 
+    abstract fun usersDatabaseDao(): UsersDataBaseDao
+    abstract fun moviesDatabaseDao(): MoviesDatabaseDao
+
     companion object {
 
         private var db: AppDataBase? = null
@@ -30,10 +33,5 @@ abstract class AppDataBase : RoomDatabase() {
                 return instance
             }
         }
-        
     }
-
-    abstract fun usersDatabaseDao(): UsersDataBaseDao
-    abstract fun moviesDatabaseDao(): MoviesDatabaseDao
-
 }

@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
 import com.example.movierating.databinding.FragmentTableBinding
-import com.example.movierating.presentation.ui.main_activity.MainViewModel
-import com.example.movierating.presentation.ui.recycler_views.table_rv.MovieListTableAdapter
+import com.example.movierating.presentation.ui.mainActivity.MainViewModel
+import com.example.movierating.presentation.ui.recyclerViews.tableRv.MovieListTableAdapter
 
 class TableFragment : Fragment() {
 

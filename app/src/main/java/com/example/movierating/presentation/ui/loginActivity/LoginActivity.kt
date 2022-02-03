@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.login_activity
+package com.example.movierating.presentation.ui.loginActivity
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityLoginBinding
-import com.example.movierating.presentation.ui.main_activity.MainActivity
-import com.example.movierating.presentation.ui.regestration_activity.RegistrationActivity
+import com.example.movierating.presentation.ui.mainActivity.MainActivity
+import com.example.movierating.presentation.ui.registrationActivity.RegistrationActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -39,8 +39,8 @@ class LoginActivity : AppCompatActivity() {
 
         binding.loginButton.setOnClickListener {
             viewModel.checkUserInDatabase(
-               binding.etEMail.text.toString(),
-               binding.etPassword.text.toString()
+                binding.etEMail.text.toString(),
+                binding.etPassword.text.toString()
             )
         }
 
@@ -74,19 +74,13 @@ class LoginActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.errorInputEMail.observe(this) {
-            val message = if (it) {
-                resources.getString(R.string.invalid_eMail)
-            } else {
-                null
-            }
-           binding.tilEMail.error = message
+            val message = if (it) resources.getString(R.string.invalid_eMail)
+            else null
+            binding.tilEMail.error = message
         }
         viewModel.errorInputPassword.observe(this) {
-            val message = if (it) {
-                resources.getString(R.string.invalid_password)
-            } else {
-                null
-            }
+            val message = if (it) resources.getString(R.string.invalid_password)
+            else null
             binding.tilPassword.error = message
         }
 

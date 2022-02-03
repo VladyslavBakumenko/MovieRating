@@ -1,14 +1,13 @@
-package com.example.movierating.presentation.ui.main_activity
+package com.example.movierating.presentation.ui.mainActivity
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.movierating.data.internet.MovieResult
-import com.example.movierating.data.repositorys_impl.MovieRatingRepository
-import com.example.movierating.data.repositorys_impl.MovieRatingRepositoryImpl
+import com.example.movierating.data.repositoriesImpl.MovieRatingRepository
+import com.example.movierating.data.repositoriesImpl.MovieRatingRepositoryImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {

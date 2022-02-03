@@ -15,5 +15,4 @@ interface MoviesDatabaseDao {
 
     @Query("DELETE from movies_info")
     fun deleteOllMovies()
-
 }

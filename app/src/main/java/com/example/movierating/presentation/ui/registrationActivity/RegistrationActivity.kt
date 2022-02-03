@@ -1,19 +1,15 @@
-package com.example.movierating.presentation.ui.regestration_activity
+package com.example.movierating.presentation.ui.registrationActivity
 
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityRegestrationBinding
-import com.example.movierating.presentation.ui.main_activity.MainActivity
-import com.google.android.material.textfield.TextInputLayout
+import com.example.movierating.presentation.ui.mainActivity.MainActivity
 
 class RegistrationActivity : AppCompatActivity() {
 
@@ -33,16 +29,15 @@ class RegistrationActivity : AppCompatActivity() {
         binding.registrationButtonRegistrationActivity.setOnClickListener {
 
             viewModel.addUserToData(
-               binding.etEMailRegistrationActivity.text.toString(),
-               binding.etPasswordRegistrationActivity.text.toString(),
+                binding.etEMailRegistrationActivity.text.toString(),
+                binding.etPasswordRegistrationActivity.text.toString(),
             )
         }
-
     }
 
 
     private fun addTextChangeListeners() {
-       binding.etEMailRegistrationActivity.addTextChangedListener(object : TextWatcher {
+        binding.etEMailRegistrationActivity.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -69,20 +64,14 @@ class RegistrationActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.errorInputEMail.observe(this) {
-            val message = if (it) {
-                resources.getString(R.string.invalid_eMail)
-            } else {
-                null
-            }
-           binding.tilEMailRegistrationActivity.error = message
+            val message = if (it) resources.getString(R.string.invalid_eMail)
+            else null
+            binding.tilEMailRegistrationActivity.error = message
         }
         viewModel.errorInputPassword.observe(this) {
-            val message = if (it) {
-                resources.getString(R.string.invalid_password)
-            } else {
-                null
-            }
-           binding.tilPasswordRegistrationActivity.error = message
+            val message = if (it) resources.getString(R.string.invalid_password)
+            else null
+            binding.tilPasswordRegistrationActivity.error = message
         }
 
         viewModel.userAddedSuccessfully.observe(this) {
@@ -95,7 +84,10 @@ class RegistrationActivity : AppCompatActivity() {
                 toast.show()
 
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(USER_REGISTRATION_ACTIVITY, binding.etEMailRegistrationActivity.text.toString())
+                intent.putExtra(
+                    USER_REGISTRATION_ACTIVITY,
+                    binding.etEMailRegistrationActivity.text.toString()
+                )
                 startActivity(intent)
             } else {
                 val toast = Toast.makeText(
@@ -106,7 +98,6 @@ class RegistrationActivity : AppCompatActivity() {
                 toast.show()
             }
         }
-
     }
 
     companion object {

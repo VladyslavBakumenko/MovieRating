@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.recycler_views.lineal_rv
+package com.example.movierating.presentation.ui.recyclerViews.linealRv
 
 import android.view.View
 import android.widget.ImageView

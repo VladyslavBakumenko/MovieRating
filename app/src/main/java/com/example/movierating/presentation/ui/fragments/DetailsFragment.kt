@@ -38,7 +38,6 @@ class DetailsFragment : Fragment() {
     }
 
 
-
     private fun initArgs() {
         arguments?.let {
             title = it.getString(LinealFragment.TITLE).toString()
@@ -70,5 +69,4 @@ class DetailsFragment : Fragment() {
         super.onDestroy()
         binding = null
     }
-
 }

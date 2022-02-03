@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
 import com.example.movierating.databinding.FragmentLinealBinding
-import com.example.movierating.presentation.ui.main_activity.MainViewModel
-import com.example.movierating.presentation.ui.recycler_views.lineal_rv.MovieListLinealAdapter
+import com.example.movierating.presentation.ui.mainActivity.MainViewModel
+import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
 
 class LinealFragment : Fragment() {
 
@@ -34,7 +34,6 @@ class LinealFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-
         setUpRecyclerView()
 
         tableFragment = TableFragment()
@@ -69,17 +68,14 @@ class LinealFragment : Fragment() {
                         .replace(R.id.fragmentContainerView, detailsFragment)
                         .commit()
                 }
-
             }
     }
 
     private fun setUpRecyclerView() {
         movieListLinealAdapter = MovieListLinealAdapter()
-
         binding?.rvLinealMovieList?.adapter = movieListLinealAdapter
 
         viewModel.getMoviesData().observe(viewLifecycleOwner, Observer {
-
             val sortedMovieList = it.sortedBy { it.popularity }.reversed()
             movieListLinealAdapter.movieDataList = sortedMovieList
         })

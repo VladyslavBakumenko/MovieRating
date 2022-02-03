@@ -1,11 +1,11 @@
-package com.example.movierating.presentation.ui.login_activity
+package com.example.movierating.presentation.ui.loginActivity
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.movierating.data.database.AppDataBase
-import com.example.movierating.data.repositorys_impl.UserRepositoryImpl
+import com.example.movierating.data.repositoriesImpl.UserRepositoryImpl
 import com.example.movierating.utils.checkEmailOnValid
 import com.example.movierating.utils.checkPasswordOnValid
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDataBase.getInstance(application)
 
-
     private val userRepository = UserRepositoryImpl()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
@@ -23,7 +22,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val errorInputEMail: LiveData<Boolean>
         get() = _errorInputEMail
 
-    private val _userFound= MutableLiveData<Boolean>()
+    private val _userFound = MutableLiveData<Boolean>()
     val userFound: LiveData<Boolean>
         get() = _userFound
 
@@ -32,16 +31,15 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         get() = _errorInputPassword
 
 
-
     fun checkUserInDatabase(eMail: String, password: String) {
 
         if (validateInput(eMail, password)) {
             coroutineScope.launch {
 
                 val usersArray = userRepository.getUsersFromDatabase()
-                for(i in usersArray) {
-                    if(i.eMail == eMail) {
-                        if(i.password == password) {
+                for (i in usersArray) {
+                    if (i.eMail == eMail) {
+                        if (i.password == password) {
                             _userFound.postValue(true)
                         }
                     }
@@ -61,6 +59,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         return result
     }
 
+    fun resetErrorInputEMail() {
+        _errorInputEMail.value = false
+    }
+
     private fun setPasswordError(password: String): Boolean {
         var result = false
         if (checkPasswordOnValid(password)) {
@@ -71,23 +73,19 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         return result
     }
 
-     private fun validateInput(eMail: String, password: String): Boolean {
+    fun resetErrorInputPassword() {
+        _errorInputPassword.value = false
+    }
+
+    private fun validateInput(eMail: String, password: String): Boolean {
         var result = false
 
-        if (setEMileError(eMail) && setPasswordError(password)) {
+        if (setEMileError(eMail) &&
+            setPasswordError(password)
+        ) {
             result = true
         }
 
         return result
     }
-
-
-    fun resetErrorInputEMail() {
-        _errorInputEMail.value = false
-    }
-
-    fun resetErrorInputPassword() {
-        _errorInputPassword.value = false
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.main_activity
+package com.example.movierating.presentation.ui.mainActivity
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,8 +12,8 @@ import com.example.movierating.presentation.ui.fragments.DetailsFragment
 import com.example.movierating.presentation.ui.fragments.LinealFragment
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
 import com.example.movierating.presentation.ui.fragments.TableFragment
-import com.example.movierating.presentation.ui.login_activity.LoginActivity
-import com.example.movierating.presentation.ui.regestration_activity.RegistrationActivity
+import com.example.movierating.presentation.ui.loginActivity.LoginActivity
+import com.example.movierating.presentation.ui.registrationActivity.RegistrationActivity
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -21,12 +21,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
 
-
     private lateinit var linealFragment: LinealFragment
     private lateinit var tableFragment: TableFragment
     private lateinit var detailsFragment: DetailsFragment
     private lateinit var profileFragment: ProfileFragment
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,9 +39,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.navigationView.itemIconTintList
         binding.navigationView.setNavigationItemSelectedListener(this)
         viewModel.loadData()
+    }
 
-
-
+    private fun initFragments() {
+        linealFragment = LinealFragment()
+        tableFragment = TableFragment()
+        detailsFragment = DetailsFragment()
+        profileFragment = ProfileFragment()
     }
 
     private fun startFirstFragment(linealFragment: LinealFragment) {
@@ -74,21 +76,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
-    private fun initFragments() {
-        linealFragment = LinealFragment()
-        tableFragment = TableFragment()
-        detailsFragment = DetailsFragment()
-        profileFragment = ProfileFragment()
-    }
-
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         var result = false
         if (id == R.id.profile) {
             result = true
-           binding.drawerLayout.closeDrawer(Gravity.LEFT, true)
+            binding.drawerLayout.closeDrawer(Gravity.LEFT, true)
             launchProfileFragment(profileFragment)
         }
         if (id == R.id.exit) {

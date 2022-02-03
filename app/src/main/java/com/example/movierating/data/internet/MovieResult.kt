@@ -8,8 +8,6 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "movies_info")
 data class MovieResult(
 
-
-
     @SerializedName("adult")
     @Expose
     var adult: Boolean? = null,

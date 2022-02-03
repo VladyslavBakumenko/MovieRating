@@ -8,11 +8,9 @@ interface MovieApi {
 
     @GET("/3/movie/popular/")
     fun getMovie(
-
         @Query(QUERY_PARAM_API_KEY) api_key: String = API_KEY,
         @Query(QUERY_PARAM_LANGUAGE) language: String = ENGLISH,
         @Query(QUERY_PARAM_PAGE) page: Int
-
     ): Single<MoviePages>
 
 

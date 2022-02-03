@@ -1,4 +1,4 @@
-package com.example.movierating.data.repositorys_impl
+package com.example.movierating.data.repositoriesImpl
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -18,7 +18,6 @@ class MovieRatingRepositoryImpl : MovieRatingRepository {
 
     private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
 
-
     override fun loadData() {
         coroutineScopeIO.launch {
             moviesDatabaseDao.deleteOllMovies()
@@ -30,15 +29,11 @@ class MovieRatingRepositoryImpl : MovieRatingRepository {
     }
 
 
-   override fun getMoviesData(): LiveData<List<MovieResult>> {
+    override fun getMoviesData(): LiveData<List<MovieResult>> {
         return moviesDatabaseDao.getMoviesFromDatabase()
     }
-
-
 
     companion object {
         private const val LOAD_PAGES = 100
     }
-
-
 }

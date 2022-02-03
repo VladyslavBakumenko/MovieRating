@@ -1,4 +1,4 @@
-package com.example.movierating.data.repositorys_impl
+package com.example.movierating.data.repositoriesImpl
 
 import com.example.movierating.data.database.UsersDatabase
 

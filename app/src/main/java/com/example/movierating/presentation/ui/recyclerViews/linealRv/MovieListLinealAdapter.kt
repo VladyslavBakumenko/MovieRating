@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.recycler_views.lineal_rv
+package com.example.movierating.presentation.ui.recyclerViews.linealRv
 
 
 import android.view.LayoutInflater
@@ -14,15 +14,11 @@ class MovieListLinealAdapter() :
     RecyclerView.Adapter<MovieItemLinealViewHolder>() {
 
 
-
     var movieDataList: List<MovieResult> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
-
-
-
 
 
     var onMovieClickListener: OnMovieClickListener? = null
@@ -35,7 +31,6 @@ class MovieListLinealAdapter() :
         )
         return MovieItemLinealViewHolder(view)
     }
-
 
     override fun onBindViewHolder(holder: MovieItemLinealViewHolder, position: Int) {
 
@@ -61,7 +56,6 @@ class MovieListLinealAdapter() :
                 )
             }
         }
-
     }
 
     override fun getItemCount(): Int {

@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.recycler_views.table_rv
+package com.example.movierating.presentation.ui.recyclerViews.tableRv
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -17,7 +17,6 @@ class MovieListTableAdapter() :
             field = value
             notifyDataSetChanged()
         }
-
 
 
     var onMovieClickListener: OnMovieClickListener? = null

@@ -8,11 +8,11 @@ object ApiFactory {
 
     private const val BASE_URL = "https://api.themoviedb.org"
 
-    private val retrofit = Retrofit.Builder()
+    private val RETROFIT = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .baseUrl(BASE_URL)
         .build()
 
-    val movieApi = retrofit.create(MovieApi::class.java)
+    val movieApi: MovieApi = RETROFIT.create(MovieApi::class.java)
 }
