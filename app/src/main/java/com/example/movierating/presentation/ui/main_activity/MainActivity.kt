@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
-import com.example.movierating.databinding.ActivityLoginBinding
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.fragments.DetailsFragment
 import com.example.movierating.presentation.ui.fragments.LinealFragment
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
-import com.example.movierating.presentation.ui.fragments.TabelFragment
+import com.example.movierating.presentation.ui.fragments.TableFragment
 import com.example.movierating.presentation.ui.login_activity.LoginActivity
 import com.example.movierating.presentation.ui.regestration_activity.RegistrationActivity
 import com.google.android.material.navigation.NavigationView
@@ -25,7 +23,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     private lateinit var linealFragment: LinealFragment
-    private lateinit var tableFragment: TabelFragment
+    private lateinit var tableFragment: TableFragment
     private lateinit var detailsFragment: DetailsFragment
     private lateinit var profileFragment: ProfileFragment
 
@@ -79,7 +77,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun initFragments() {
         linealFragment = LinealFragment()
-        tableFragment = TabelFragment()
+        tableFragment = TableFragment()
         detailsFragment = DetailsFragment()
         profileFragment = ProfileFragment()
     }

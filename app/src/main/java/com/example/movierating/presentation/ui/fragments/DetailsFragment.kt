@@ -5,17 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.movierating.R
 import com.example.movierating.data.internet.MovieApi
 import com.example.movierating.databinding.FragmentDetailsBinding
 import com.squareup.picasso.Picasso
 
-
 class DetailsFragment : Fragment() {
-    private lateinit var binding: FragmentDetailsBinding
+    private var binding: FragmentDetailsBinding? = null
+
     private lateinit var title: String
     private lateinit var description: String
     private lateinit var realise: String
@@ -24,39 +21,23 @@ class DetailsFragment : Fragment() {
     private lateinit var popularity: String
     private lateinit var image: String
 
-    private lateinit var movieImage: ImageView
-    private lateinit var movieTitle: TextView
-    private lateinit var movieDescription: TextView
-    private lateinit var movieRealise: TextView
-    private lateinit var movieRate: TextView
-    private lateinit var movieOriginalLanguage: TextView
-    private lateinit var moviePopularity: TextView
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         initArgs()
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews(view)
         setFields()
     }
 
-    private fun initViews(view: View) {
-        movieImage = view.findViewById(R.id.image_details_fragment)
-        movieTitle = view.findViewById(R.id.movie_name_details_fragment)
-        movieDescription = view.findViewById(R.id.movie_average_details_fragment)
-        movieRealise = view.findViewById(R.id.movie_release_details_fragment)
-        movieRate = view.findViewById(R.id.movie_rate_details_fragment)
-        movieOriginalLanguage = view.findViewById(R.id.movie_original_language_details_fragment)
-        moviePopularity = view.findViewById(R.id.movie_popularity_details_fragment)
-    }
+
 
     private fun initArgs() {
         arguments?.let {
@@ -72,13 +53,22 @@ class DetailsFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun setFields() {
-        Picasso.get().load("${MovieApi.IMAGE_TMDB_BEST_QUALITY}$image").into(movieImage)
-        movieTitle.text = "Title: $title"
-        movieDescription.text = "Description: $description"
-        movieRealise.text = "Realise: $realise"
-        movieRate.text = "Rate: $rate"
-        movieOriginalLanguage.text = "Original language: $originalLanguage"
-        moviePopularity.text = "Popularity: $popularity"
+        binding?.let {
+            Picasso.get().load("${MovieApi.IMAGE_TMDB_BEST_QUALITY}$image")
+                .into(it.imageDetailsFragment)
+            it.movieNameDetailsFragment.text = "Title: $title"
+            it.movieAverageDetailsFragment.text = "Description: $description"
+            it.movieReleaseDetailsFragment.text = "Realise: $realise"
+            it.movieRateDetailsFragment.text = "Rate: $rate"
+            it.movieOriginalLanguageDetailsFragment.text = "Original language: $originalLanguage"
+            it.moviePopularityDetailsFragment.text = "Popularity: $popularity"
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 
 }

@@ -4,43 +4,42 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.R
+import com.example.movierating.databinding.FragmentLinealBinding
 import com.example.movierating.presentation.ui.main_activity.MainViewModel
 import com.example.movierating.presentation.ui.recycler_views.lineal_rv.MovieListLinealAdapter
 
 class LinealFragment : Fragment() {
 
-    private lateinit var rvLinealMovieList: RecyclerView
+    private var binding: FragmentLinealBinding? = null
+
     private lateinit var movieListLinealAdapter: MovieListLinealAdapter
     private lateinit var viewModel: MainViewModel
     private lateinit var detailsFragment: DetailsFragment
-    private lateinit var tabelFragment: TabelFragment
-    private lateinit var changeFragmentToTable: Button
+    private lateinit var tableFragment: TableFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_lineal, container, false)
+    ): View {
+        binding = FragmentLinealBinding.inflate(inflater, container, false)
+        return binding!!.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        changeFragmentToTable = view.findViewById(R.id.change_fragment_to_table_button)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         setUpRecyclerView()
 
-        tabelFragment = TabelFragment()
-        changeFragmentToTable.setOnClickListener {
-            launchRightFragment(tabelFragment)
+        tableFragment = TableFragment()
+        binding?.changeFragmentToTableButton?.setOnClickListener {
+            launchRightFragment(tableFragment)
         }
 
         movieListLinealAdapter.onMovieClickListener =
@@ -75,10 +74,10 @@ class LinealFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-
-        rvLinealMovieList = requireActivity().findViewById(R.id.rv_lineal_movie_list)
         movieListLinealAdapter = MovieListLinealAdapter()
-        rvLinealMovieList.adapter = movieListLinealAdapter
+
+        binding?.rvLinealMovieList?.adapter = movieListLinealAdapter
+
         viewModel.getMoviesData().observe(viewLifecycleOwner, Observer {
 
             val sortedMovieList = it.sortedBy { it.popularity }.reversed()
@@ -86,9 +85,9 @@ class LinealFragment : Fragment() {
         })
     }
 
-    private fun launchRightFragment(tabelFragment: TabelFragment) {
+    private fun launchRightFragment(tableFragment: TableFragment) {
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, tabelFragment)
+            .replace(R.id.fragmentContainerView, tableFragment)
             .commit()
     }
 
