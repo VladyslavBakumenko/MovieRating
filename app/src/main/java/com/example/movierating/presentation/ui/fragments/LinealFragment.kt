@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.movierating.R
 import com.example.movierating.databinding.FragmentLinealBinding
-import com.example.movierating.presentation.ui.mainActivity.MainViewModel
+import com.example.movierating.presentation.ui.activitys.mainActivity.MainViewModel
 import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
 import javax.inject.Inject
 

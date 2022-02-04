@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.registrationActivity
+package com.example.movierating.presentation.ui.activitys.registrationActivity
 
 import android.app.Application
 import android.database.sqlite.SQLiteConstraintException
@@ -16,7 +16,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegistrationViewModel @Inject constructor (application: Application) : AndroidViewModel(application) {
+class RegistrationViewModel @Inject constructor(application: Application)
+    : AndroidViewModel(application) {
 
     private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
 

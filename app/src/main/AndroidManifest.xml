@@ -14,15 +14,15 @@
         android:theme="@style/Theme.MovieRating">
 
 
-        <activity android:name=".presentation.ui.mainActivity.MainActivity"
+        <activity android:name="com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"/>
 
-        <activity android:name=".presentation.ui.registrationActivity.RegistrationActivity"
+        <activity android:name="com.example.movierating.presentation.ui.activitys.registrationActivity.RegistrationActivity"
 
             android:exported="true"/>
 
-            <activity android:name=".presentation.ui.loginActivity.LoginActivity"
+            <activity android:name="com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity"
 
                 android:exported="true">
             <intent-filter>

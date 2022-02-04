@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.mainActivity
+package com.example.movierating.presentation.ui.activitys.mainActivity
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,15 +6,14 @@ import android.view.Gravity
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.fragments.DetailsFragment
 import com.example.movierating.presentation.ui.fragments.LinealFragment
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
 import com.example.movierating.presentation.ui.fragments.TableFragment
-import com.example.movierating.presentation.ui.loginActivity.LoginActivity
-import com.example.movierating.presentation.ui.registrationActivity.RegistrationActivity
+import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
+import com.example.movierating.presentation.ui.activitys.registrationActivity.RegistrationActivity
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,6 +22,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+
 
     private lateinit var linealFragment: LinealFragment
     private lateinit var tableFragment: TableFragment

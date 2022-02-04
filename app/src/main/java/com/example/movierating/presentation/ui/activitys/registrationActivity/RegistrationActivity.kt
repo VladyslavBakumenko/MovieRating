@@ -1,4 +1,4 @@
-package com.example.movierating.presentation.ui.loginActivity
+package com.example.movierating.presentation.ui.activitys.registrationActivity
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,42 +8,36 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movierating.R
-import com.example.movierating.databinding.ActivityLoginBinding
-import com.example.movierating.presentation.ui.mainActivity.MainActivity
-import com.example.movierating.presentation.ui.registrationActivity.RegistrationActivity
+import com.example.movierating.databinding.ActivityRegestrationBinding
+import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
+class RegistrationActivity : AppCompatActivity() {
 
-    private val viewModel: LoginViewModel by viewModels()
-
-    private lateinit var binding: ActivityLoginBinding
+    private val viewModel: RegistrationViewModel by viewModels()
+    private lateinit var binding: ActivityRegestrationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityRegestrationBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         addTextChangeListeners()
         observeViewModel()
 
-        binding.registrationButton.setOnClickListener {
-            val intent = Intent(this, RegistrationActivity::class.java)
-            //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-        }
+        binding.registrationButtonRegistrationActivity.setOnClickListener {
 
-        binding.loginButton.setOnClickListener {
-            viewModel.checkUserInDatabase(
-                binding.etEMail.text.toString(),
-                binding.etPassword.text.toString()
+            viewModel.addUserToData(
+                binding.etEMailRegistrationActivity.text.toString(),
+                binding.etPasswordRegistrationActivity.text.toString(),
             )
         }
     }
 
+
     private fun addTextChangeListeners() {
-        binding.etEMail.addTextChangedListener(object : TextWatcher {
+        binding.etEMailRegistrationActivity.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -55,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        binding.etPassword.addTextChangedListener(object : TextWatcher {
+        binding.etPasswordRegistrationActivity.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -72,23 +66,33 @@ class LoginActivity : AppCompatActivity() {
         viewModel.errorInputEMail.observe(this) {
             val message = if (it) resources.getString(R.string.invalid_eMail)
             else null
-            binding.tilEMail.error = message
+            binding.tilEMailRegistrationActivity.error = message
         }
         viewModel.errorInputPassword.observe(this) {
             val message = if (it) resources.getString(R.string.invalid_password)
             else null
-            binding.tilPassword.error = message
+            binding.tilPasswordRegistrationActivity.error = message
         }
 
-        viewModel.userFound.observe(this) {
+        viewModel.userAddedSuccessfully.observe(this) {
             if (it) {
+                val toast = Toast.makeText(
+                    this,
+                    "Користувач успішно зареєстрований",
+                    Toast.LENGTH_SHORT
+                )
+                toast.show()
+
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(USER_LOGIN_ACTIVITY, binding.etEMail.text.toString())
+                intent.putExtra(
+                    USER_REGISTRATION_ACTIVITY,
+                    binding.etEMailRegistrationActivity.text.toString()
+                )
                 startActivity(intent)
             } else {
                 val toast = Toast.makeText(
                     this,
-                    resources.getString(R.string.login_error),
+                    "Користувач з таким eMail уже зареєстрований",
                     Toast.LENGTH_SHORT
                 )
                 toast.show()
@@ -97,6 +101,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val USER_LOGIN_ACTIVITY = "userLoginActivity"
+        const val USER_REGISTRATION_ACTIVITY = "userRegistrationActivity"
     }
 }

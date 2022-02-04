@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.movierating.databinding.FragmentProfileBinding
-import com.example.movierating.presentation.ui.loginActivity.LoginActivity
-import com.example.movierating.presentation.ui.registrationActivity.RegistrationActivity
+import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
+import com.example.movierating.presentation.ui.activitys.registrationActivity.RegistrationActivity
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
