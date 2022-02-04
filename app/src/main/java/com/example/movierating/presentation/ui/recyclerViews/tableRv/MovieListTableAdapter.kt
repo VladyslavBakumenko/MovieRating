@@ -38,6 +38,19 @@ class MovieListTableAdapter() :
                 .into(viewHolder.imageMovie)
 
             nameMovie.text = movieDataList[position].originalTitle
+
+
+            itemView.setOnClickListener {
+                onMovieClickListener?.onMovieClickListener(
+                    movieDataList[position].title,
+                    movieDataList[position].overview,
+                    movieDataList[position].releaseDate,
+                    movieDataList[position].voteAverage.toString(),
+                    movieDataList[position].originalLanguage,
+                    movieDataList[position].popularity.toString(),
+                    "${movieDataList[position].posterPath}"
+                )
+            }
         }
     }
 
@@ -46,7 +59,7 @@ class MovieListTableAdapter() :
     }
 
     interface OnMovieClickListener {
-        fun movieClick(
+        fun onMovieClickListener(
             title: String?,
             description: String?,
             realise: String?,

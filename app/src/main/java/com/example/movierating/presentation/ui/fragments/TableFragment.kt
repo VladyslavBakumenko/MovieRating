@@ -51,12 +51,10 @@ class TableFragment : Fragment() {
         }
 
 
-      //  movieListTableAdapter.onMovieClickListener =
-     //       object : MovieListTableAdapter. {
+        movieListTableAdapter.onMovieClickListener =
+            object : MovieListTableAdapter.OnMovieClickListener {
 
-
-
-/*                override fun onFirstMovieClick(
+                override fun onMovieClickListener(
                     title: String?,
                     description: String?,
                     realise: String?,
@@ -81,9 +79,7 @@ class TableFragment : Fragment() {
                         .replace(R.id.fragmentContainerView, detailsFragment)
                         .commit()
                 }
-                */
-
-        //    }
+            }
     }
 
     private fun launchRightFragment(linealFragment: LinealFragment) {
@@ -102,7 +98,6 @@ class TableFragment : Fragment() {
         viewModel.getMoviesData().observe(viewLifecycleOwner, Observer {
 
             val sortedMovieList = it.sortedBy { it.popularity }.reversed()
-
             movieListTableAdapter.movieDataList = sortedMovieList
         })
     }
