@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movierating.R
 import com.example.movierating.databinding.FragmentTableBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainViewModel
 import com.example.movierating.presentation.ui.recyclerViews.tableRv.MovieListTableAdapter
 import javax.inject.Inject
+
 
 class TableFragment : Fragment() {
 
@@ -49,9 +51,12 @@ class TableFragment : Fragment() {
         }
 
 
-        movieListTableAdapter.onMovieClickListener =
-            object : MovieListTableAdapter.OnMovieClickListener {
-                override fun onFirstMovieClick(
+      //  movieListTableAdapter.onMovieClickListener =
+     //       object : MovieListTableAdapter. {
+
+
+
+/*                override fun onFirstMovieClick(
                     title: String?,
                     description: String?,
                     realise: String?,
@@ -76,59 +81,9 @@ class TableFragment : Fragment() {
                         .replace(R.id.fragmentContainerView, detailsFragment)
                         .commit()
                 }
+                */
 
-                override fun onSecondMovieClick(
-                    title: String?,
-                    description: String?,
-                    realise: String?,
-                    rate: String?,
-                    originalLanguage: String?,
-                    popularity: String?,
-                    posterImage: String?
-                ) {
-                    val args = Bundle()
-                    args.putString(LinealFragment.TITLE, title)
-                    args.putString(LinealFragment.DESCRIPTION, description)
-                    args.putString(LinealFragment.REALISE, realise)
-                    args.putString(LinealFragment.RATE, rate)
-                    args.putString(LinealFragment.ORIGINAL_LANGUAGE, originalLanguage)
-                    args.putString(LinealFragment.POPULARITY, popularity)
-                    args.putString(LinealFragment.IMAGE, posterImage)
-
-                    detailsFragment = DetailsFragment()
-                    detailsFragment.arguments = args
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.fragmentContainerView, detailsFragment)
-                        .commit()
-                }
-
-                override fun onThirdMovieClick(
-                    title: String?,
-                    description: String?,
-                    realise: String?,
-                    rate: String?,
-                    originalLanguage: String?,
-                    popularity: String?,
-                    posterImage: String?
-                ) {
-                    val args = Bundle()
-                    args.putString(LinealFragment.TITLE, title)
-                    args.putString(LinealFragment.DESCRIPTION, description)
-                    args.putString(LinealFragment.REALISE, realise)
-                    args.putString(LinealFragment.RATE, rate)
-                    args.putString(LinealFragment.ORIGINAL_LANGUAGE, originalLanguage)
-                    args.putString(LinealFragment.POPULARITY, popularity)
-                    args.putString(LinealFragment.IMAGE, posterImage)
-
-                    detailsFragment = DetailsFragment()
-                    detailsFragment.arguments = args
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.fragmentContainerView, detailsFragment)
-                        .commit()
-                }
-            }
+        //    }
     }
 
     private fun launchRightFragment(linealFragment: LinealFragment) {
@@ -138,7 +93,11 @@ class TableFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
+        val itemsInOneColumns = 3
+        val context = requireActivity().applicationContext
         movieListTableAdapter = MovieListTableAdapter()
+        binding?.rvTableFilmList?.layoutManager = GridLayoutManager(context, itemsInOneColumns)
+
         binding?.rvTableFilmList?.adapter = movieListTableAdapter
         viewModel.getMoviesData().observe(viewLifecycleOwner, Observer {
 
