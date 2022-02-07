@@ -14,6 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor (application: Application) : AndroidViewModel(application) {
+
     private val movieRepository: MovieRatingRepository = MovieRatingRepositoryImpl()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 

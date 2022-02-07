@@ -1,5 +1,6 @@
 package com.example.movierating.data.hilt.di
 
+import com.example.movierating.data.database.AppDataBase
 import com.example.movierating.data.repositoriesImpl.MovieRatingRepositoryImpl
 import com.example.movierating.data.repositoriesImpl.UserRepositoryImpl
 import dagger.Module
@@ -14,7 +15,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(): UserRepositoryImpl = UserRepositoryImpl()
+    fun provideUserRepository(db: AppDataBase): UserRepositoryImpl = UserRepositoryImpl()
 
 
 
