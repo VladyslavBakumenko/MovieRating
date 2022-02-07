@@ -1,12 +1,11 @@
 package com.example.movierating.presentation.ui.activitys.registrationActivity
 
-import android.app.Application
 import android.database.sqlite.SQLiteConstraintException
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.movierating.data.database.UsersDatabase
-import com.example.movierating.data.repositoriesImpl.UserRepositoryImpl
+import com.example.movierating.data.repositoriesImpl.UserRepository
 import com.example.movierating.utils.checkEmailOnValid
 import com.example.movierating.utils.checkPasswordOnValid
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,12 +15,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegistrationViewModel @Inject constructor(application: Application)
-    : AndroidViewModel(application) {
+class RegistrationViewModel @Inject constructor() : ViewModel() {
 
     private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
 
-    private val userRepository = UserRepositoryImpl()
+    @Inject
+    lateinit var userRepository: UserRepository
 
     private val _errorInputEMail = MutableLiveData<Boolean>()
     val errorInputEMail: LiveData<Boolean>

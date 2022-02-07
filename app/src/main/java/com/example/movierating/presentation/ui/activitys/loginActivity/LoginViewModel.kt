@@ -1,11 +1,9 @@
 package com.example.movierating.presentation.ui.activitys.loginActivity
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.movierating.data.database.AppDataBase
-import com.example.movierating.data.repositoriesImpl.UserRepositoryImpl
+import androidx.lifecycle.ViewModel
+import com.example.movierating.data.repositoriesImpl.UserRepository
 import com.example.movierating.utils.checkEmailOnValid
 import com.example.movierating.utils.checkPasswordOnValid
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,10 +13,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor (application: Application) : AndroidViewModel(application) {
-    private val db = AppDataBase.getInstance(application)
+class LoginViewModel @Inject constructor () : ViewModel() {
 
-    private val userRepositoryImpl = UserRepositoryImpl()
+    @Inject
+    lateinit var userRepository: UserRepository
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     private val _errorInputEMail = MutableLiveData<Boolean>()
@@ -39,7 +37,7 @@ class LoginViewModel @Inject constructor (application: Application) : AndroidVie
         if (validateInput(eMail, password)) {
             coroutineScope.launch {
 
-                val usersArray = userRepositoryImpl.getUsersFromDatabase()
+                val usersArray = userRepository.getUsersFromDatabase()
                 for (i in usersArray) {
                     if (i.eMail == eMail) {
                         if (i.password == password) {

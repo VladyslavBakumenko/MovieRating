@@ -1,6 +1,5 @@
 package com.example.movierating.utils
 
-
 fun checkEmailOnValid(eMail: String): Boolean {
     val validEMailAddress = Regex("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)\$")
     var result = false

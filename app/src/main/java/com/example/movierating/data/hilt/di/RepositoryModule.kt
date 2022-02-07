@@ -1,25 +1,23 @@
 package com.example.movierating.data.hilt.di
 
-import com.example.movierating.data.database.AppDataBase
+import com.example.movierating.data.repositoriesImpl.MovieRatingRepository
 import com.example.movierating.data.repositoriesImpl.MovieRatingRepositoryImpl
+import com.example.movierating.data.repositoriesImpl.UserRepository
 import com.example.movierating.data.repositoriesImpl.UserRepositoryImpl
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RepositoryModule {
+interface RepositoryModule {
 
-    @Provides
-    @Singleton
-    fun provideUserRepository(db: AppDataBase): UserRepositoryImpl = UserRepositoryImpl()
-
+    @Binds
+    fun provideUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
 
 
-    @Provides
-    @Singleton
-    fun provideMovieRepository(): MovieRatingRepositoryImpl = MovieRatingRepositoryImpl()
+    @Binds
+    fun provideMovieRepository(movieRepositoryImpl: MovieRatingRepositoryImpl): MovieRatingRepository
+
 }
