@@ -23,6 +23,7 @@
             android:id="@+id/etEMailRegistrationActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="test@test.com"
             android:hint="@string/eMail_hint"
             android:inputType="textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -42,6 +43,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPasswordRegistrationActivity"
             android:layout_width="match_parent"
+            android:text="1234"
             android:layout_height="57dp"
             android:hint="@string/password_hint"
             android:inputType="textPassword" />

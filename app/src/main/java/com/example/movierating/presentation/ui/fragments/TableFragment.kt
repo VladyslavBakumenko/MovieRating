@@ -82,5 +82,4 @@ class TableFragment : Fragment() {
         fun newInstance(): TableFragment = TableFragment()
     }
 
-
 }

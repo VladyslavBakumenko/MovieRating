@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.R
 import com.example.movierating.data.internet.MovieResult
 
-class MovieListTableAdapter() :
+class MovieListTableAdapter :
     RecyclerView.Adapter<MovieItemTableViewHolder>() {
 
 

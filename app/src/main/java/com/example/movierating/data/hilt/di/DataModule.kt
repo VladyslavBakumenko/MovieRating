@@ -1,11 +1,11 @@
 package com.example.movierating.data.hilt.di
 
-import com.example.movierating.data.repositoriesImpl.MovieRatingRepositoryImpl
-import com.example.movierating.data.repositoriesImpl.UserRepository
-import com.example.movierating.data.repositoriesImpl.UserRepositoryImpl
+import android.content.Context
+import com.example.movierating.data.database.AppDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -14,13 +14,7 @@ import javax.inject.Singleton
 class DataModule {
 
     @Provides
-    fun provideUserRepository(): UserRepository {
-        return UserRepositoryImpl()
-    }
-
-    @Provides
     @Singleton
-    fun movieRatingRepository(): MovieRatingRepositoryImpl {
-        return MovieRatingRepositoryImpl()
-    }
+    fun provideDatabase(@ApplicationContext context: Context)
+            : AppDataBase = AppDataBase.getInstance(context)
 }
