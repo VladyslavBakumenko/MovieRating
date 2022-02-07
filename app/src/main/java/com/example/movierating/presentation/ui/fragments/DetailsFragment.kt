@@ -7,41 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.movierating.data.internet.MovieApi
+import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.databinding.FragmentDetailsBinding
+import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import com.squareup.picasso.Picasso
-import javax.inject.Inject
 
 class DetailsFragment : Fragment() {
+
     private var binding: FragmentDetailsBinding? = null
-
-    @Inject
-    lateinit var title: String
-
-    @Inject
-    lateinit var description: String
-
-    @Inject
-    lateinit var realise: String
-
-    @Inject
-    lateinit var rate: String
-
-    @Inject
-    lateinit var originalLanguage: String
-
-    @Inject
-    lateinit var popularity: String
-
-    @Inject
-    lateinit var image: String
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initArgs()
+        parseArgs()
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding?.root
     }
@@ -52,29 +32,26 @@ class DetailsFragment : Fragment() {
     }
 
 
-    private fun initArgs() {
-        arguments?.let {
-            title = it.getString(LinealFragment.TITLE).toString()
-            description = it.getString(LinealFragment.DESCRIPTION).toString()
-            realise = it.getString(LinealFragment.REALISE).toString()
-            rate = it.getString(LinealFragment.RATE).toString()
-            originalLanguage = it.getString(LinealFragment.ORIGINAL_LANGUAGE).toString()
-            popularity = it.getString(LinealFragment.POPULARITY).toString()
-            image = it.getString(LinealFragment.IMAGE).toString()
-        }
+    private fun parseArgs(): MovieResult {
+        return requireArguments()
+            .getParcelable<MovieResult>(MainActivity.MOVIE_RESULT) as MovieResult
     }
 
     @SuppressLint("SetTextI18n")
     private fun setFields() {
+
         binding?.let {
-            Picasso.get().load("${MovieApi.IMAGE_TMDB_BEST_QUALITY}$image")
+            val args = parseArgs()
+
+            Picasso.get().load("${MovieApi.IMAGE_TMDB_BEST_QUALITY}${args.posterPath}")
                 .into(it.imageDetailsFragment)
-            it.movieNameDetailsFragment.text = "Title: $title"
-            it.movieAverageDetailsFragment.text = "Description: $description"
-            it.movieReleaseDetailsFragment.text = "Realise: $realise"
-            it.movieRateDetailsFragment.text = "Rate: $rate"
-            it.movieOriginalLanguageDetailsFragment.text = "Original language: $originalLanguage"
-            it.moviePopularityDetailsFragment.text = "Popularity: $popularity"
+            it.movieNameDetailsFragment.text = "Title: ${args.title}"
+            it.movieAverageDetailsFragment.text = "Description: ${args.overview}"
+            it.movieReleaseDetailsFragment.text = "Realise: ${args.releaseDate}"
+            it.movieRateDetailsFragment.text = "Rate: ${args.voteAverage}"
+            it.movieOriginalLanguageDetailsFragment.text =
+                "Original language: ${args.originalLanguage}"
+            it.moviePopularityDetailsFragment.text = "Popularity: ${args.popularity}"
         }
 
     }
@@ -82,5 +59,16 @@ class DetailsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+    }
+
+    companion object {
+        fun newInstance(movieResult: MovieResult): DetailsFragment {
+            val fragment = DetailsFragment()
+            val args = Bundle()
+            args.putParcelable(MainActivity.MOVIE_RESULT, movieResult)
+
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

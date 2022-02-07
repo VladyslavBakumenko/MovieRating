@@ -8,12 +8,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityMainBinding
-import com.example.movierating.presentation.ui.fragments.DetailsFragment
+import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
 import com.example.movierating.presentation.ui.fragments.LinealFragment
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
-import com.example.movierating.presentation.ui.fragments.TableFragment
-import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
-import com.example.movierating.presentation.ui.activitys.registrationActivity.RegistrationActivity
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,32 +20,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
 
-
-    private lateinit var linealFragment: LinealFragment
-    private lateinit var tableFragment: TableFragment
-    private lateinit var detailsFragment: DetailsFragment
-    private lateinit var profileFragment: ProfileFragment
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        initFragments()
-        startFirstFragment(linealFragment)
+        startFirstFragment(LinealFragment.newInstance())
 
         binding.navigationView.itemIconTintList
         binding.navigationView.setNavigationItemSelectedListener(this)
         viewModel.loadData()
     }
 
-    private fun initFragments() {
-        linealFragment = LinealFragment()
-        tableFragment = TableFragment()
-        detailsFragment = DetailsFragment()
-        profileFragment = ProfileFragment()
-    }
 
     private fun startFirstFragment(linealFragment: LinealFragment) {
         supportFragmentManager.beginTransaction()
@@ -56,24 +39,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .commit()
     }
 
-    private fun launchProfileFragment(profileFragment: ProfileFragment) {
-        val userFromLoginActivity: String =
-            intent.getStringExtra(LoginActivity.USER_LOGIN_ACTIVITY).toString()
-
-        val userFromRegistrationActivity: String =
-            intent.getStringExtra(RegistrationActivity.USER_REGISTRATION_ACTIVITY).toString()
-
-        val args = Bundle()
-        args.putString(LoginActivity.USER_LOGIN_ACTIVITY, userFromLoginActivity)
-        args.putString(
-            RegistrationActivity.USER_REGISTRATION_ACTIVITY,
-            userFromRegistrationActivity
-        )
-        profileFragment.arguments = args
-
+    private fun launchProfileFragment() {
         supportFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.fragmentContainerView, profileFragment)
+            .replace(R.id.fragmentContainerView, ProfileFragment.newInstance(intent))
             .commit()
     }
 
@@ -84,7 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (id == R.id.profile) {
             result = true
             binding.drawerLayout.closeDrawer(Gravity.LEFT, true)
-            launchProfileFragment(profileFragment)
+            launchProfileFragment()
         }
         if (id == R.id.exit) {
             result = true
@@ -92,5 +61,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
         return result
+    }
+
+    companion object{
+        const val MOVIE_RESULT = "movie_result"
     }
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.movierating.R
+import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.databinding.FragmentLinealBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainViewModel
 import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
@@ -21,11 +22,7 @@ class LinealFragment : Fragment() {
     @Inject
     lateinit var movieListLinealAdapter: MovieListLinealAdapter
 
-    @Inject
-    lateinit var detailsFragment: DetailsFragment
 
-    @Inject
-    lateinit var tableFragment: TableFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,37 +37,22 @@ class LinealFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
 
-        tableFragment = TableFragment()
         binding?.changeFragmentToTableButton?.setOnClickListener {
-            launchRightFragment(tableFragment)
+            launchRightFragment(TableFragment.newInstance())
         }
 
         movieListLinealAdapter.onMovieClickListener =
             object : MovieListLinealAdapter.OnMovieClickListener {
                 override fun onMovieClick(
-                    title: String?,
-                    description: String?,
-                    realise: String?,
-                    rate: String?,
-                    originalLanguage: String?,
-                    popularity: String?,
-                    posterImage: String?
+                    movieResult: MovieResult
                 ) {
-                    val args = Bundle()
-                    args.putString(TITLE, title)
-                    args.putString(DESCRIPTION, description)
-                    args.putString(REALISE, realise)
-                    args.putString(RATE, rate)
-                    args.putString(ORIGINAL_LANGUAGE, originalLanguage)
-                    args.putString(POPULARITY, popularity)
-                    args.putString(IMAGE, posterImage)
 
-                    detailsFragment = DetailsFragment()
-                    detailsFragment.arguments = args
                     requireActivity().supportFragmentManager.beginTransaction()
                         .addToBackStack(null)
-                        .replace(R.id.fragmentContainerView, detailsFragment)
-                        .commit()
+                        .replace(
+                            R.id.fragmentContainerView,
+                            DetailsFragment.newInstance(movieResult)
+                        ).commit()
                 }
             }
     }
@@ -92,13 +74,7 @@ class LinealFragment : Fragment() {
     }
 
     companion object {
-        const val TITLE = "title"
-        const val DESCRIPTION = "description"
-        const val REALISE = "realise"
-        const val RATE = "rate"
-        const val ORIGINAL_LANGUAGE = "originalLanguage"
-        const val POPULARITY = "popularity"
-        const val IMAGE = "image"
+        fun newInstance(): LinealFragment = LinealFragment()
     }
 }
 

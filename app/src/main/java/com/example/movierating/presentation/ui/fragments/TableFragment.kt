@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movierating.R
+import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.databinding.FragmentTableBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainViewModel
 import com.example.movierating.presentation.ui.recyclerViews.tableRv.MovieListTableAdapter
@@ -22,12 +23,6 @@ class TableFragment : Fragment() {
 
     @Inject
     lateinit var movieListTableAdapter: MovieListTableAdapter
-
-    @Inject
-    lateinit var detailsFragment: DetailsFragment
-
-    @Inject
-    lateinit var linealFragment: LinealFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,11 +38,8 @@ class TableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
 
-        detailsFragment = DetailsFragment()
-
-        linealFragment = LinealFragment()
         binding?.changeFragmentToLinealButton?.setOnClickListener {
-            launchRightFragment(linealFragment)
+            launchRightFragment(LinealFragment.newInstance())
         }
 
 
@@ -55,28 +47,12 @@ class TableFragment : Fragment() {
             object : MovieListTableAdapter.OnMovieClickListener {
 
                 override fun onMovieClickListener(
-                    title: String?,
-                    description: String?,
-                    realise: String?,
-                    rate: String?,
-                    originalLanguage: String?,
-                    popularity: String?,
-                    posterImage: String?
+                    movieResult: MovieResult
                 ) {
-                    val args = Bundle()
-                    args.putString(LinealFragment.TITLE, title)
-                    args.putString(LinealFragment.DESCRIPTION, description)
-                    args.putString(LinealFragment.REALISE, realise)
-                    args.putString(LinealFragment.RATE, rate)
-                    args.putString(LinealFragment.ORIGINAL_LANGUAGE, originalLanguage)
-                    args.putString(LinealFragment.POPULARITY, popularity)
-                    args.putString(LinealFragment.IMAGE, posterImage)
 
-                    detailsFragment = DetailsFragment()
-                    detailsFragment.arguments = args
                     requireActivity().supportFragmentManager.beginTransaction()
                         .addToBackStack(null)
-                        .replace(R.id.fragmentContainerView, detailsFragment)
+                        .replace(R.id.fragmentContainerView, DetailsFragment.newInstance(movieResult))
                         .commit()
                 }
             }
@@ -101,4 +77,10 @@ class TableFragment : Fragment() {
             movieListTableAdapter.movieDataList = sortedMovieList
         })
     }
+
+    companion object {
+        fun newInstance(): TableFragment = TableFragment()
+    }
+
+
 }

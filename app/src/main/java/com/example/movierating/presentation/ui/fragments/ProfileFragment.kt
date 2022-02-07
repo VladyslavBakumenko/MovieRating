@@ -1,5 +1,6 @@
 package com.example.movierating.presentation.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,5 +49,27 @@ class ProfileFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+    }
+
+    companion object {
+        fun newInstance(intent: Intent): ProfileFragment {
+            val fragment = ProfileFragment()
+            val args = Bundle()
+
+            val userFromLoginActivity: String =
+                intent.getStringExtra(LoginActivity.USER_LOGIN_ACTIVITY).toString()
+
+            val userFromRegistrationActivity: String =
+                intent.getStringExtra(RegistrationActivity.USER_REGISTRATION_ACTIVITY).toString()
+
+            args.putString(LoginActivity.USER_LOGIN_ACTIVITY, userFromLoginActivity)
+            args.putString(
+                RegistrationActivity.USER_REGISTRATION_ACTIVITY,
+                userFromRegistrationActivity
+            )
+
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

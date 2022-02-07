@@ -1,14 +1,35 @@
 package com.example.movierating.presentation.ui.recyclerViews.tableRv
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movierating.R
+import com.example.movierating.data.internet.MovieApi
+import com.example.movierating.data.internet.MovieResult
+import com.example.movierating.databinding.TableMovieItemBinding
+import com.squareup.picasso.Picasso
 
 class MovieItemTableViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val imageMovie = view.findViewById<ImageView>(R.id.film_image)
-    val nameMovie = view.findViewById<TextView>(R.id.film_name)
-    val movieCardView = view.findViewById<CardView>(R.id.movie_card_view)
+
+    private val binding = TableMovieItemBinding.bind(view)
+
+    private val imageMovie = binding.filmImage
+    private val nameMovie = binding.filmName
+
+
+    fun bind(
+        movieResult: MovieResult,
+        onMovieClickListener: MovieListTableAdapter.OnMovieClickListener?
+    ) {
+        with(movieResult) {
+            Picasso
+                .get()
+                .load("${MovieApi.IMAGE_TMDB}${posterPath}")
+                .into(imageMovie)
+
+            nameMovie.text = movieResult.originalTitle
+
+            itemView.setOnClickListener {
+                onMovieClickListener?.onMovieClickListener(movieResult)
+            }
+        }
+    }
 }

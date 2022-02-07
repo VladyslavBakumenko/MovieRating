@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.R
-import com.example.movierating.data.internet.MovieApi
 import com.example.movierating.data.internet.MovieResult
-
-import com.squareup.picasso.Picasso
 
 class MovieListLinealAdapter() :
     RecyclerView.Adapter<MovieItemLinealViewHolder>() {
@@ -19,7 +16,6 @@ class MovieListLinealAdapter() :
             field = value
             notifyDataSetChanged()
         }
-
 
     var onMovieClickListener: OnMovieClickListener? = null
 
@@ -33,29 +29,7 @@ class MovieListLinealAdapter() :
     }
 
     override fun onBindViewHolder(holder: MovieItemLinealViewHolder, position: Int) {
-
-        with(holder) {
-            Picasso
-                .get()
-                .load("${MovieApi.IMAGE_TMDB}${movieDataList[position].backdropPath}")
-                .into(holder.imageMovie)
-            tvMovieDescription.text = movieDataList[position].overview
-            tvMovieName.text = movieDataList[position].title
-            tvMovieRelise.text = movieDataList[position].releaseDate.toString()
-            tvMovieRate.text = "Rate: ${movieDataList[position].voteAverage.toString()}"
-
-            itemView.setOnClickListener {
-                onMovieClickListener?.onMovieClick(
-                    movieDataList[position].title,
-                    movieDataList[position].overview,
-                    movieDataList[position].releaseDate,
-                    movieDataList[position].voteAverage.toString(),
-                    movieDataList[position].originalLanguage,
-                    movieDataList[position].popularity.toString(),
-                    "${movieDataList[position].posterPath}"
-                )
-            }
-        }
+        holder.bind(movieDataList[position], onMovieClickListener)
     }
 
     override fun getItemCount(): Int {
@@ -63,15 +37,7 @@ class MovieListLinealAdapter() :
     }
 
     interface OnMovieClickListener {
-        fun onMovieClick(
-            title: String?,
-            description: String?,
-            realise: String?,
-            rate: String?,
-            originalLanguage: String?,
-            popularity: String?,
-            posterImage: String?
-        )
+        fun onMovieClick(movieResult: MovieResult)
     }
 }
 
