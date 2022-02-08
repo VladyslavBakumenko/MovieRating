@@ -18,7 +18,7 @@ class MovieRatingRepositoryImpl @Inject constructor(
 
     override fun loadData() {
         coroutineScopeIO.launch {
-            db.moviesDatabaseDao().deleteOllMovies()
+            deleteOllMovies()
             for (page in 1..LOAD_PAGES) {
                 val moviePage = ApiFactory.movieApi.getMovie(page = page).map { it.results }
                 moviePage.blockingGet()?.let { db.moviesDatabaseDao().addMoviesToDatabase(it) }
@@ -29,6 +29,10 @@ class MovieRatingRepositoryImpl @Inject constructor(
 
     override fun getMoviesData(): LiveData<List<MovieResult>> {
         return db.moviesDatabaseDao().getMoviesFromDatabase()
+    }
+
+    override fun deleteOllMovies() {
+        db.moviesDatabaseDao().deleteOllMovies()
     }
 
     companion object {

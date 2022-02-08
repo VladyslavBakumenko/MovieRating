@@ -1,12 +1,9 @@
 package com.example.movierating.presentation.ui.activitys.mainActivity
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.movierating.data.database.AppDataBase
+import androidx.lifecycle.ViewModel
 import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.data.repositoriesImpl.MovieRatingRepository
-import com.example.movierating.data.repositoriesImpl.MovieRatingRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,13 +11,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor (application: Application) : AndroidViewModel(application) {
+class MainViewModel @Inject constructor
+    (private val movieRepository: MovieRatingRepository) : ViewModel() {
 
-    private val db = AppDataBase.getInstance(application)
-
-   // @Inject
-   // lateinit var movieRepository: MovieRatingRepository
-    private val movieRepository: MovieRatingRepository = MovieRatingRepositoryImpl(db)
+    //@Inject
+    //lateinit var movieRepository: MovieRatingRepository
+   // private val movieRepository: MovieRatingRepository = MovieRatingRepositoryImpl()
 
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)

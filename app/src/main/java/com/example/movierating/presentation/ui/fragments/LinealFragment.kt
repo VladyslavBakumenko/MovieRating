@@ -12,8 +12,10 @@ import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.databinding.FragmentLinealBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainViewModel
 import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class LinealFragment : Fragment() {
 
     private var binding: FragmentLinealBinding? = null

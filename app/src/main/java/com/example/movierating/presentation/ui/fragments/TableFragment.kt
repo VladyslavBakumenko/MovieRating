@@ -13,9 +13,10 @@ import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.databinding.FragmentTableBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainViewModel
 import com.example.movierating.presentation.ui.recyclerViews.tableRv.MovieListTableAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class TableFragment : Fragment() {
 
     private var binding: FragmentTableBinding? = null
