@@ -1,12 +1,15 @@
 package com.example.movierating.presentation.ui.fragments
 
+import PaginationScrollListener
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierating.R
 import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.databinding.FragmentLinealBinding
@@ -23,7 +26,6 @@ class LinealFragment : Fragment() {
 
     @Inject
     lateinit var movieListLinealAdapter: MovieListLinealAdapter
-
 
 
     override fun onCreateView(
@@ -57,15 +59,40 @@ class LinealFragment : Fragment() {
                         ).commit()
                 }
             }
+
+        viewModel.movies.observe(viewLifecycleOwner, Observer {
+            Log.e("TAG", "onViewCreated: $it", )
+        })
+
+        viewModel.loadData(1)
     }
 
     private fun setUpRecyclerView() {
         movieListLinealAdapter = MovieListLinealAdapter()
         binding?.rvLinealMovieList?.adapter = movieListLinealAdapter
 
+        viewModel.movies.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                val sortedMovieList = it.sortedBy { it.popularity }.reversed()
+                movieListLinealAdapter.movieDataList = sortedMovieList
+            }
+        })
+        addPagination()
+/*
         viewModel.getMoviesData().observe(viewLifecycleOwner, Observer {
             val sortedMovieList = it.sortedBy { it.popularity }.reversed()
             movieListLinealAdapter.movieDataList = sortedMovieList
+        })*/
+
+    }
+
+    private fun addPagination() {
+        val layoutManager = binding?.rvLinealMovieList?.layoutManager as LinearLayoutManager
+        binding?.rvLinealMovieList?.addOnScrollListener(object :
+            PaginationScrollListener(layoutManager) {
+            override fun loadMoreItems(page: Int) {
+                viewModel.loadData(page)
+            }
         })
     }
 

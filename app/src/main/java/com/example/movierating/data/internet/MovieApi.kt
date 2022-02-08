@@ -1,17 +1,17 @@
 package com.example.movierating.data.internet
 
-import io.reactivex.Single
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface MovieApi {
 
     @GET("/3/movie/popular/")
-    fun getMovie(
+    suspend fun getMovie(
         @Query(QUERY_PARAM_API_KEY) api_key: String = API_KEY,
         @Query(QUERY_PARAM_LANGUAGE) language: String = ENGLISH,
         @Query(QUERY_PARAM_PAGE) page: Int
-    ): Single<MoviePages>
+    ): Response<MoviePages>
 
 
     companion object {
