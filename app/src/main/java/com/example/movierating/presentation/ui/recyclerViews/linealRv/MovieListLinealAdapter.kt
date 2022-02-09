@@ -11,14 +11,6 @@ class MovieListLinealAdapter() :
     RecyclerView.Adapter<MovieItemLinealViewHolder>() {
 
 
-    fun addData(listItems: ArrayList<MovieResult>) {
-        var size = listItems.size
-        listItems.addAll(listItems)
-        var sizeNew = listItems.size
-        notifyItemRangeChanged(size, sizeNew)
-    }
-
-
     var movieDataList: List<MovieResult> = listOf()
         set(value) {
             field = value

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class PaginationScrollListener(var layoutManager: LinearLayoutManager) :
     RecyclerView.OnScrollListener() {
 
-    private var currentPage = 0
+    private var currentPage = 1
     private var isLoading = true
     private var previousTotal = 0
 
@@ -15,10 +15,8 @@ abstract class PaginationScrollListener(var layoutManager: LinearLayoutManager) 
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
-        Log.d("fdgdfdggdf", "SCROLLLLLLLLl")
-        Log.d("fdgdfdggdf", layoutManager.childCount.toString())
-        Log.d("fdgdfdggdf", layoutManager.itemCount.toString())
-        Log.d("fdgdfdggdf", layoutManager.findFirstVisibleItemPosition().toString())
+
+
         val visibleItemCount = layoutManager.childCount
         val totalItemCount = layoutManager.itemCount
         val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
@@ -35,6 +33,7 @@ abstract class PaginationScrollListener(var layoutManager: LinearLayoutManager) 
             loadMoreItems(currentPage)
             isLoading = true
         }
+
     }
 
 
