@@ -29,7 +29,7 @@ class MovieListTableAdapter :
     }
 
     override fun onBindViewHolder(viewHolder: MovieItemTableViewHolder, position: Int) {
-        viewHolder.bind(movieDataList[position], onMovieClickListener)
+//        viewHolder.bind(movieDataList[position], onMovieClickListener)
     }
 
     override fun getItemCount(): Int {

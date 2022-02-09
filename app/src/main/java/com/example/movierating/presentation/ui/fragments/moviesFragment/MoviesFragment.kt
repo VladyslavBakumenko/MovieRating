@@ -15,7 +15,6 @@ import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.databinding.FragmentMoviesBinding
 import com.example.movierating.presentation.ui.fragments.DetailsFragment
 import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
-import com.example.movierating.presentation.ui.recyclerViews.tableRv.MovieListTableAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -28,8 +27,11 @@ class MoviesFragment : Fragment() {
     @Inject
     lateinit var movieListLinealAdapter: MovieListLinealAdapter
 
-    @Inject
-    lateinit var movieListTableAdapter: MovieListTableAdapter
+    private val linearLayoutManager by lazy { LinearLayoutManager(context) }
+    private val gridLayoutManager by lazy { GridLayoutManager(context, 3) }
+
+//    @Inject
+//    lateinit var movieListTableAdapter: MovieListTableAdapter
 
 
     override fun onCreateView(
@@ -44,11 +46,9 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadData(1)
-        changeRecyclerView()
-        viewModel.setValueToChangeRecyclerViewLiveData()
 
         binding?.changedFormat?.setOnClickListener {
-            viewModel.changeRecyclerView()
+            changeRecyclerView()
         }
 
         movieListLinealAdapter.onMovieClickListener =
@@ -64,48 +64,29 @@ class MoviesFragment : Fragment() {
                         ).commit()
                 }
             }
+
+        setUpRecyclerView()
     }
 
-    private fun setUpLinealRecyclerView() {
-        binding?.movieRecyclerView?.layoutManager = GridLayoutManager(context, 1)
-
+    private fun setUpRecyclerView() {
+        binding?.movieRecyclerView?.layoutManager = linearLayoutManager
         binding?.movieRecyclerView?.adapter = movieListLinealAdapter
-        movieListLinealAdapter.movieDataList = viewModel.getLoaded()
 
+        movieListLinealAdapter.setMovies(viewModel.getLoaded())
 
         viewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {
                 val sortedMovieList = it.sortedBy { it.popularity }.reversed()
-                movieListLinealAdapter.movieDataList
-                movieListLinealAdapter.movieDataList = sortedMovieList
+//                movieListLinealAdapter.movieDataList
+                movieListLinealAdapter.addMovies(sortedMovieList)
 
             }
         })
         addPagination()
     }
-
-
-    private fun setUpTableRecyclerView() {
-        binding?.movieRecyclerView?.layoutManager = GridLayoutManager(context, 3)
-
-        binding?.movieRecyclerView?.adapter = movieListTableAdapter
-        movieListTableAdapter.movieDataList = viewModel.getLoaded()
-
-
-        viewModel.movies.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                val sortedMovieList = it.sortedBy { it.popularity }.reversed()
-                movieListTableAdapter.movieDataList
-                movieListTableAdapter.movieDataList = sortedMovieList
-
-            }
-        })
-        addPagination()
-    }
-
 
     private fun addPagination() {
-        val layoutManager = binding?.movieRecyclerView?.layoutManager as LinearLayoutManager
+        val layoutManager = binding?.movieRecyclerView?.layoutManager
         binding?.movieRecyclerView?.addOnScrollListener(object :
             PaginationScrollListener(layoutManager) {
             override fun loadMoreItems(page: Int) {
@@ -115,12 +96,13 @@ class MoviesFragment : Fragment() {
     }
 
     private fun changeRecyclerView() {
-        viewModel.changeRecyclerView.observe(viewLifecycleOwner, Observer {
-            if (it == 0)
-                setUpLinealRecyclerView()
-            else
-                setUpTableRecyclerView()
-        })
+        if (movieListLinealAdapter.currentType == MovieListLinealAdapter.Type.LIST) {
+            movieListLinealAdapter.toggleType()
+            binding?.movieRecyclerView?.layoutManager = gridLayoutManager
+        } else {
+            movieListLinealAdapter.toggleType()
+            binding?.movieRecyclerView?.layoutManager = linearLayoutManager
+        }
     }
 
     companion object {

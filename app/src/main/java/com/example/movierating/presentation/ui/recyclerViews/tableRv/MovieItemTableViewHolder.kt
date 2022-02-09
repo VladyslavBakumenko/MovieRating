@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.data.internet.MovieApi
 import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.databinding.TableMovieItemBinding
+import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
 import com.squareup.picasso.Picasso
 
 class MovieItemTableViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -17,7 +18,7 @@ class MovieItemTableViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(
         movieResult: MovieResult,
-        onMovieClickListener: MovieListTableAdapter.OnMovieClickListener?
+        onMovieClickListener: MovieListLinealAdapter.OnMovieClickListener?
     ) {
         with(movieResult) {
             Picasso
@@ -28,7 +29,7 @@ class MovieItemTableViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             nameMovie.text = movieResult.originalTitle
 
             itemView.setOnClickListener {
-                onMovieClickListener?.onMovieClickListener(movieResult)
+                onMovieClickListener?.onMovieClick(movieResult)
             }
         }
     }

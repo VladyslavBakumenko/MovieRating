@@ -23,9 +23,9 @@ class MoviesFragmentViewModel @Inject constructor
     val movies: LiveData<List<MovieResult>?>
         get() = _movies
 
-    private val _changeRecyclerView = MutableLiveData<Int>()
-    val changeRecyclerView: LiveData<Int>
-        get() = _changeRecyclerView
+//    private val _changeRecyclerView = MutableLiveData<Int>()
+//    val changeRecyclerView: LiveData<Int>
+//        get() = _changeRecyclerView
 
     private val _page = MutableLiveData<Int>()
     val page: LiveData<Int>
@@ -36,29 +36,34 @@ class MoviesFragmentViewModel @Inject constructor
     fun loadData(page: Int) {
         coroutineScope.launch {
             val moviesData = movieRepository.loadData(page)
-            for (i in 0 until MOVIES_IN_ONE_PAGE) {
-                moviesData?.get(i)?.let {
-                    loadedMovies.add(it)
-                }
+
+            moviesData?.let {
+                loadedMovies.addAll(moviesData)
             }
+
+//            for (i in 0 until MOVIES_IN_ONE_PAGE) {
+//                moviesData?.get(i)?.let {
+//                    loadedMovies.add(it)
+//                }
+//            }
 
 
             Log.d("dfgfdghbghf", "loadData: ")
             Log.d("dfgfdghbghf", "${loadedMovies.size}")
-            _movies.postValue(loadedMovies)
+            _movies.postValue(moviesData)
         }
     }
 
-    fun changeRecyclerView() {
-        if (_changeRecyclerView.value == 0)
-            _changeRecyclerView.postValue(1)
-        else
-            _changeRecyclerView.postValue(0)
-    }
-
-    fun setValueToChangeRecyclerViewLiveData() {
-        _changeRecyclerView.postValue(0)
-    }
+//    fun changeRecyclerView() {
+//        if (_changeRecyclerView.value == 0)
+//            _changeRecyclerView.postValue(1)
+//        else
+//            _changeRecyclerView.postValue(0)
+//    }
+//
+//    fun setValueToChangeRecyclerViewLiveData() {
+//        _changeRecyclerView.postValue(0)
+//    }
 
 
     fun getLoaded(): List<MovieResult> {

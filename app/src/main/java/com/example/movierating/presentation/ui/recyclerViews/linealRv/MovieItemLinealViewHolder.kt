@@ -27,7 +27,7 @@ class MovieItemLinealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 .load("${MovieApi.IMAGE_TMDB}${backdropPath}")
                 .into(imageMovie)
             tvMovieDescription.text = overview
-            tvMovieName.text = title
+            tvMovieName.text = "$absoluteAdapterPosition $title"
             tvMovieRelise.text = releaseDate.toString()
             tvMovieRate.text = "Rate: ${voteAverage.toString()}"
 
