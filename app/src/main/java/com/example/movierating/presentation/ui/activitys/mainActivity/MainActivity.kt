@@ -2,16 +2,21 @@ package com.example.movierating.presentation.ui.activitys.mainActivity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movierating.R
+import com.example.movierating.data.internet.ApiFactory
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
-import com.example.movierating.presentation.ui.fragments.moviesFragment.MoviesFragment
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
+import com.example.movierating.presentation.ui.fragments.moviesFragment.MoviesFragment
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -27,6 +32,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         binding.navigationView.itemIconTintList
         binding.navigationView.setNavigationItemSelectedListener(this)
+
+        val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+
+        coroutineScope.launch {
+            val token = ApiFactory.movieApi.getRequestToken()
+            Log.d("gfhgfgghhgdg", token.body()?.requestToken.toString())
+
+           val result = ApiFactory.movieApi.authenticate(token.body()?.requestToken.toString())
+
+
+            Log.d("gfhgfgghhgdg", result.body()?.sessionId.toString())
+
+
+        }
 
     }
 
@@ -61,7 +81,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return result
     }
 
-    companion object{
+    companion object {
         const val MOVIE_RESULT = "movie_result"
     }
 }

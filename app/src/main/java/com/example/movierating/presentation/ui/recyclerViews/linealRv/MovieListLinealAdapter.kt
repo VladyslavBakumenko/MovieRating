@@ -7,20 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.R
 import com.example.movierating.data.internet.MovieResult
 import com.example.movierating.presentation.ui.recyclerViews.tableRv.MovieItemTableViewHolder
-import com.example.movierating.presentation.ui.recyclerViews.tableRv.MovieListTableAdapter
 
 class MovieListLinealAdapter() :
     RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
-
-//    var movieDataList: List<MovieResult> = listOf()
-//        set(value) {
-//            field = value
-//            notifyDataSetChanged()
-//        }
-
     var currentType = Type.LIST
-        private set
 
     private val movieDataList = mutableListOf<MovieResult>()
 

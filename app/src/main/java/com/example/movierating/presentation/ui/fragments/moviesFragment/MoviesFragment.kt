@@ -27,11 +27,8 @@ class MoviesFragment : Fragment() {
     @Inject
     lateinit var movieListLinealAdapter: MovieListLinealAdapter
 
-    private val linearLayoutManager by lazy { LinearLayoutManager(context) }
-    private val gridLayoutManager by lazy { GridLayoutManager(context, 3) }
-
-//    @Inject
-//    lateinit var movieListTableAdapter: MovieListTableAdapter
+    private var linearLayoutManager: LinearLayoutManager? = null
+    private var gridLayoutManager: GridLayoutManager? = null
 
 
     override fun onCreateView(
@@ -58,17 +55,18 @@ class MoviesFragment : Fragment() {
                 ) {
                     requireActivity().supportFragmentManager.beginTransaction()
                         .addToBackStack(null)
-                        .replace(
+                        .add(
                             R.id.fragmentContainerView,
                             DetailsFragment.newInstance(movieResult)
                         ).commit()
                 }
             }
-
         setUpRecyclerView()
     }
 
     private fun setUpRecyclerView() {
+        linearLayoutManager = LinearLayoutManager(context)
+
         binding?.movieRecyclerView?.layoutManager = linearLayoutManager
         binding?.movieRecyclerView?.adapter = movieListLinealAdapter
 
@@ -77,18 +75,14 @@ class MoviesFragment : Fragment() {
         viewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {
                 val sortedMovieList = it.sortedBy { it.popularity }.reversed()
-//                movieListLinealAdapter.movieDataList
                 movieListLinealAdapter.addMovies(sortedMovieList)
-
             }
         })
         addPagination()
     }
 
     private fun addPagination() {
-        val layoutManager = binding?.movieRecyclerView?.layoutManager
-        binding?.movieRecyclerView?.addOnScrollListener(object :
-            PaginationScrollListener(layoutManager) {
+        binding?.movieRecyclerView?.addOnScrollListener(object : PaginationScrollListener() {
             override fun loadMoreItems(page: Int) {
                 viewModel.loadData(page)
             }
@@ -98,15 +92,26 @@ class MoviesFragment : Fragment() {
     private fun changeRecyclerView() {
         if (movieListLinealAdapter.currentType == MovieListLinealAdapter.Type.LIST) {
             movieListLinealAdapter.toggleType()
+            if (gridLayoutManager == null) {
+                gridLayoutManager = GridLayoutManager(context, 3)
+            }
             binding?.movieRecyclerView?.layoutManager = gridLayoutManager
         } else {
             movieListLinealAdapter.toggleType()
+            if (linearLayoutManager == null) {
+                linearLayoutManager = LinearLayoutManager(context)
+            }
             binding?.movieRecyclerView?.layoutManager = linearLayoutManager
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        linearLayoutManager = null
+        gridLayoutManager = null
     }
 
     companion object {
         fun newInstance(): MoviesFragment = MoviesFragment()
     }
-
 }

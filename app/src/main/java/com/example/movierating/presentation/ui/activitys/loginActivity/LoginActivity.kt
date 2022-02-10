@@ -9,8 +9,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityLoginBinding
+import com.example.movierating.databinding.FragmentWebLoginBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import com.example.movierating.presentation.ui.activitys.registrationActivity.RegistrationActivity
+import com.example.movierating.presentation.ui.fragments.ProfileFragment
+import com.example.movierating.presentation.ui.fragments.WebLoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,7 +33,6 @@ class LoginActivity : AppCompatActivity() {
 
         binding.registrationButton.setOnClickListener {
             val intent = Intent(this, RegistrationActivity::class.java)
-            //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
 
@@ -39,6 +41,13 @@ class LoginActivity : AppCompatActivity() {
                 binding.etEMail.text.toString(),
                 binding.etPassword.text.toString()
             )
+        }
+
+        binding.testButton.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.containerForWenView, WebLoginFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
         }
     }
 
