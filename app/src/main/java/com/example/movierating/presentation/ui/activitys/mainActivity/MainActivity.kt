@@ -33,21 +33,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.navigationView.itemIconTintList
         binding.navigationView.setNavigationItemSelectedListener(this)
 
-        val coroutineScope = CoroutineScope(Dispatchers.IO)
-
-
-        coroutineScope.launch {
-            val token = ApiFactory.movieApi.getRequestToken()
-            Log.d("gfhgfgghhgdg", token.body()?.requestToken.toString())
-
-           val result = ApiFactory.movieApi.authenticate(token.body()?.requestToken.toString())
-
-
-            Log.d("gfhgfgghhgdg", result.body()?.sessionId.toString())
-
-
-        }
-
     }
 
 

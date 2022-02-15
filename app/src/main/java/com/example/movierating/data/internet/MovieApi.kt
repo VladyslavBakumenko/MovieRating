@@ -1,8 +1,8 @@
 package com.example.movierating.data.internet
 
 import com.example.movierating.data.internet.session.AuthRequest
-import com.example.movierating.data.internet.session.MovieSession
 import com.example.movierating.data.internet.session.MovieToken
+import com.example.movierating.data.internet.session.RequestToken
 import com.example.movierating.data.internet.session.SessionId
 import retrofit2.Response
 import retrofit2.http.Body
@@ -19,30 +19,22 @@ interface MovieApi {
         @Query(QUERY_PARAM_PAGE) page: Int
     ): Response<MoviePages>
 
-
     @GET("/3/authentication/token/new?")
     suspend fun getRequestToken(
         @Query(QUERY_PARAM_API_KEY) api_key: String = API_KEY
     ): Response<MovieToken>
 
-
-    @POST("/authenticate/")
-    suspend fun authenticate(
-        @Query("request_token") request_token: String
-    ): Response<MovieSession>
-
-
-    @POST("/3/authentication/create-session")
-    suspend fun createSession(
+    @POST("/3/authentication/token/validate_with_login")
+    suspend fun createSessionWithLogin(
         @Query(QUERY_PARAM_API_KEY) api_key: String = API_KEY,
         @Body request: AuthRequest
-    ): Response<MovieSession>
+    ): Response<MovieToken>
 
-    @POST("/authentication/session/new")
-    suspend fun newSession(
+    @POST("/3/authentication/session/new")
+    suspend fun createNewSession(
         @Query(QUERY_PARAM_API_KEY) api_key: String = API_KEY,
-        @Body requestToken: String
-        ): Response<SessionId>
+        @Body token: RequestToken
+    ): Response<SessionId>
 
 
     companion object {

@@ -1,9 +1,8 @@
 package com.example.movierating.utils
 
-fun checkEmailOnValid(eMail: String): Boolean {
-    val validEMailAddress = Regex("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)\$")
+fun checkEmailOnValid(userName: String): Boolean {
     var result = false
-    if (validEMailAddress.matches(eMail)) {
+    if (userName.length < 32) {
         result = true
     }
     return result
@@ -11,10 +10,12 @@ fun checkEmailOnValid(eMail: String): Boolean {
 
 fun checkPasswordOnValid(password: String): Boolean {
     var result = false
-    if (password.length in 4..20) {
+    if (password.length <= 4) {
         result = true
     }
     return result
+
 }
+
 
 

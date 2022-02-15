@@ -1,8 +1,12 @@
 package com.example.movierating.presentation.ui.activitys.loginActivity
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movierating.data.internet.ApiFactory
+import com.example.movierating.data.internet.session.AuthRequest
+import com.example.movierating.data.internet.session.RequestToken
 import com.example.movierating.data.repositoriesImpl.UserRepository
 import com.example.movierating.utils.checkEmailOnValid
 import com.example.movierating.utils.checkPasswordOnValid
@@ -13,38 +17,57 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor () : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val sharedPreferences: SharedPreferences
+) : ViewModel() {
 
     @Inject
     lateinit var userRepository: UserRepository
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val coroutineScopeIo = CoroutineScope(Dispatchers.IO)
 
     private val _errorInputEMail = MutableLiveData<Boolean>()
     val errorInputEMail: LiveData<Boolean>
         get() = _errorInputEMail
 
-    private val _userFound = MutableLiveData<Boolean>()
-    val userFound: LiveData<Boolean>
-        get() = _userFound
-
     private val _errorInputPassword = MutableLiveData<Boolean>()
     val errorInputPassword: LiveData<Boolean>
         get() = _errorInputPassword
 
+    private val _userFound = MutableLiveData<String>()
+    val userFound: LiveData<String>
+        get() = _userFound
 
-    fun checkUserInDatabase(eMail: String, password: String) {
 
-        if (validateInput(eMail, password)) {
-            coroutineScope.launch {
+    fun checkUserToLogin(): Boolean {
+        var result = true
+        if (!sharedPreferences.getBoolean(USER_LOGIN, false)) {
+            result = false
+        }
+        return result
+    }
 
-                val usersArray = userRepository.getUsersFromDatabase()
-                for (i in usersArray) {
-                    if (i.eMail == eMail) {
-                        if (i.password == password) {
-                            _userFound.postValue(true)
-                        }
-                    }
-                }
+    fun loginUser(userName: String, password: String) {
+        coroutineScopeIo.launch {
+            val requestToken = ApiFactory.movieApi.getRequestToken().body()
+                ?.requestToken.toString()
+
+            val requestTokenForCreateNewSession = ApiFactory
+                .movieApi
+                .createSessionWithLogin(
+                    request = AuthRequest(userName, password, requestToken)
+                ).body()?.requestToken.toString()
+
+            val sessionId = ApiFactory.movieApi.createNewSession(
+                token = RequestToken(requestTokenForCreateNewSession)
+            ).body()?.sessionId.toString()
+            _userFound.postValue(sessionId)
+
+            with(sharedPreferences) {
+                edit().putString(REQUEST_TOKEN, requestToken).commit()
+                edit().putString(REQUEST_TOKEN_FOR_CREATE_SESSION, requestTokenForCreateNewSession)
+                    .commit()
+                edit().putString(SESSION_ID, sessionId).commit()
+                edit().putBoolean(USER_LOGIN, true).commit()
             }
         }
     }
@@ -88,5 +111,13 @@ class LoginViewModel @Inject constructor () : ViewModel() {
         }
 
         return result
+    }
+
+
+    companion object {
+        private const val REQUEST_TOKEN = "requestToken"
+        private const val REQUEST_TOKEN_FOR_CREATE_SESSION = "tokenForCreateSession"
+        private const val SESSION_ID = "sessionId"
+        private const val USER_LOGIN = "userLogin"
     }
 }

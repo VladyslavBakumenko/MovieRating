@@ -9,11 +9,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityLoginBinding
-import com.example.movierating.databinding.FragmentWebLoginBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import com.example.movierating.presentation.ui.activitys.registrationActivity.RegistrationActivity
-import com.example.movierating.presentation.ui.fragments.ProfileFragment
-import com.example.movierating.presentation.ui.fragments.WebLoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,22 +34,15 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.loginButton.setOnClickListener {
-            viewModel.checkUserInDatabase(
-                binding.etEMail.text.toString(),
+            viewModel.loginUser(
+                binding.etUserName.text.toString(),
                 binding.etPassword.text.toString()
             )
-        }
-
-        binding.testButton.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.containerForWenView, WebLoginFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
         }
     }
 
     private fun addTextChangeListeners() {
-        binding.etEMail.addTextChangedListener(object : TextWatcher {
+        binding.etUserName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -79,9 +69,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.errorInputEMail.observe(this) {
-            val message = if (it) resources.getString(R.string.invalid_eMail)
+            val message = if (it) resources.getString(R.string.invalid_user_name)
             else null
-            binding.tilEMail.error = message
+            binding.tilUserName.error = message
         }
         viewModel.errorInputPassword.observe(this) {
             val message = if (it) resources.getString(R.string.invalid_password)
@@ -90,20 +80,20 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel.userFound.observe(this) {
-            if (it) {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(USER_LOGIN_ACTIVITY, binding.etEMail.text.toString())
-                startActivity(intent)
-            } else {
+            if (it == "null") {
                 val toast = Toast.makeText(
                     this,
                     resources.getString(R.string.login_error),
                     Toast.LENGTH_SHORT
                 )
                 toast.show()
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
         }
     }
+
 
     companion object {
         const val USER_LOGIN_ACTIVITY = "userLoginActivity"

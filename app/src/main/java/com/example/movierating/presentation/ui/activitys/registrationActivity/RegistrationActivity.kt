@@ -64,7 +64,7 @@ class RegistrationActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.errorInputEMail.observe(this) {
-            val message = if (it) resources.getString(R.string.invalid_eMail)
+            val message = if (it) resources.getString(R.string.invalid_user_name)
             else null
             binding.tilEMailRegistrationActivity.error = message
         }
