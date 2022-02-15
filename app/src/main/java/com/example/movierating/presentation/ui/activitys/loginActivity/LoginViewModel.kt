@@ -47,6 +47,8 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginUser(userName: String, password: String) {
+        setInputErrors(userName, password)
+
         coroutineScopeIo.launch {
             val requestToken = ApiFactory.movieApi.getRequestToken().body()
                 ?.requestToken.toString()
@@ -80,47 +82,18 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-
-    private fun setEMileError(eMail: String): Boolean {
-        var result = false
-        if (checkEmailOnValid(eMail)) {
-            result = true
-        } else {
-            _errorInputEMail.value = true
-        }
-        return result
+    private fun setInputErrors(userName: String, password: String) {
+        if(!checkEmailOnValid(userName)) _errorInputEMail.postValue(true)
+        if(!checkPasswordOnValid(password)) _errorInputPassword.postValue(true)
     }
 
     fun resetErrorInputEMail() {
         _errorInputEMail.value = false
     }
 
-    private fun setPasswordError(password: String): Boolean {
-        var result = false
-        if (checkPasswordOnValid(password)) {
-            result = true
-        } else {
-            _errorInputPassword.value = true
-        }
-        return result
-    }
-
     fun resetErrorInputPassword() {
         _errorInputPassword.value = false
     }
-
-    private fun validateInput(eMail: String, password: String): Boolean {
-        var result = false
-
-        if (setEMileError(eMail) &&
-            setPasswordError(password)
-        ) {
-            result = true
-        }
-
-        return result
-    }
-
 
     companion object {
         private const val REQUEST_TOKEN = "requestToken"

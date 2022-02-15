@@ -10,7 +10,7 @@ fun checkEmailOnValid(userName: String): Boolean {
 
 fun checkPasswordOnValid(password: String): Boolean {
     var result = false
-    if (password.length <= 4) {
+    if (password.length in 4..20) {
         result = true
     }
     return result
