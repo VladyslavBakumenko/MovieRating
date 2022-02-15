@@ -62,13 +62,21 @@ class LoginViewModel @Inject constructor(
             ).body()?.sessionId.toString()
             _userFound.postValue(sessionId)
 
-            with(sharedPreferences) {
-                edit().putString(REQUEST_TOKEN, requestToken).commit()
-                edit().putString(REQUEST_TOKEN_FOR_CREATE_SESSION, requestTokenForCreateNewSession)
-                    .commit()
-                edit().putString(SESSION_ID, sessionId).commit()
-                edit().putBoolean(USER_LOGIN, true).commit()
-            }
+            saveUserData(requestToken, requestTokenForCreateNewSession, sessionId)
+        }
+    }
+
+    private fun saveUserData(
+        requestToken: String,
+        requestTokenForCreateNewSession: String,
+        sessionId: String
+    ) {
+        with(sharedPreferences) {
+            edit().putString(REQUEST_TOKEN, requestToken).commit()
+            edit().putString(REQUEST_TOKEN_FOR_CREATE_SESSION, requestTokenForCreateNewSession)
+                .commit()
+            edit().putString(SESSION_ID, sessionId).commit()
+            edit().putBoolean(USER_LOGIN, true).commit()
         }
     }
 
