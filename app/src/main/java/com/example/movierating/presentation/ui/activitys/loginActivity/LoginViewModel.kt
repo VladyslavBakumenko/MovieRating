@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.example.movierating.data.internet.api.ApiFactory
 import com.example.movierating.data.internet.session.requests.AuthRequest
 import com.example.movierating.data.internet.session.requests.RequestToken
+import com.example.movierating.data.sharedPreferencesManager.ISharedPreferencesManager
+import com.example.movierating.data.sharedPreferencesManager.SharedPreferencesManager
 import com.example.movierating.utils.checkEmailOnValid
 import com.example.movierating.utils.checkPasswordOnValid
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,11 +38,14 @@ class LoginViewModel @Inject constructor(
 
 
     fun checkUserToLogin(): Boolean {
-        return sharedPreferences.getString(SESSION_ID, EMPTY_FIELD) != EMPTY_FIELD
+        return sharedPreferences.getString(
+            SharedPreferencesManager.SESSION_ID,
+            SharedPreferencesManager.EMPTY_FIELD
+        ) != SharedPreferencesManager.EMPTY_FIELD
     }
 
     fun loginUser(userName: String, password: String) {
-        if(setInputErrors(userName, password)) {
+        if (setInputErrors(userName, password)) {
             coroutineScopeIo.launch {
                 val requestToken = ApiFactory.movieApi.getRequestToken().body()
                     ?.requestToken
@@ -56,7 +61,7 @@ class LoginViewModel @Inject constructor(
                 ).body()?.sessionId
                 saveUserData(requestToken, requestTokenForCreateNewSession, sessionId)
 
-                if(sessionId != null) _userFound.postValue(true)
+                if (sessionId != null) _userFound.postValue(true)
             }
         }
     }
@@ -67,31 +72,27 @@ class LoginViewModel @Inject constructor(
         sessionId: String?
     ) {
 
-//        val manager = SharedPreferencesManager() as ISharedPreferencesManager
-//
-//        with(manager) {
-//            putString(SharedPreferencesManager.REQUEST_TOKEN, requestToken)
-//        }
-//
+        val sharedPreferencesManager =
+            SharedPreferencesManager(sharedPreferences) as ISharedPreferencesManager
 
-
-        with(sharedPreferences) {
-
-            edit().putString(REQUEST_TOKEN, requestToken).commit()
-            edit().putString(REQUEST_TOKEN_FOR_CREATE_SESSION, requestTokenForCreateNewSession)
-                .commit()
-            edit().putString(SESSION_ID, sessionId).commit()
+        with(sharedPreferencesManager) {
+            putString(SharedPreferencesManager.REQUEST_TOKEN, requestToken)
+            putString(
+                SharedPreferencesManager.REQUEST_TOKEN_FOR_CREATE_SESSION,
+                requestTokenForCreateNewSession
+            )
+            putString(SharedPreferencesManager.SESSION_ID, sessionId)
         }
     }
 
     private fun setInputErrors(userName: String, password: String): Boolean {
         var counter = 1
 
-        if(!checkEmailOnValid(userName)) {
+        if (!checkEmailOnValid(userName)) {
             _errorInputEMail.postValue(true)
             counter--
         }
-        if(!checkPasswordOnValid(password)) {
+        if (!checkPasswordOnValid(password)) {
             _errorInputPassword.postValue(true)
             counter--
         }
@@ -107,10 +108,10 @@ class LoginViewModel @Inject constructor(
     }
 
 
-    companion object {
+/*    companion object {
         private const val REQUEST_TOKEN = "requestToken"
         private const val REQUEST_TOKEN_FOR_CREATE_SESSION = "tokenForCreateSession"
-        private const val SESSION_ID = "sessionId"
-        private const val EMPTY_FIELD = "emptyField"
-    }
+        const val SESSION_ID = "sessionId"
+        const val EMPTY_FIELD = "emptyField"
+    }*/
 }

@@ -20,14 +20,8 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
 
-
-
         </activity>
 
-        <activity
-            android:name="com.example.movierating.presentation.ui.activitys.registrationActivity.RegistrationActivity"
-
-            android:exported="true" />
 
         <activity
             android:name="com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity"

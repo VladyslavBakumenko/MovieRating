@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
-import com.example.movierating.presentation.ui.activitys.loginActivity.LoginViewModel
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
 import com.example.movierating.presentation.ui.fragments.moviesFragment.MoviesFragment
 import com.google.android.material.navigation.NavigationView
@@ -28,7 +27,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val view = binding.root
         setContentView(view)
         launchMoviesFragment()
-
         binding.navigationView.itemIconTintList
         binding.navigationView.setNavigationItemSelectedListener(this)
 
@@ -59,8 +57,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         if (id == R.id.exit) {
             result = true
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+
+            viewModel.unLoginUser()
+            viewModel.unLoginSuccess.observe(this) {
+                if (it) {
+                    viewModel.removeUserData()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            }
         }
         return result
     }

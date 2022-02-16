@@ -1,4 +1,4 @@
-package com.example.movierating.utils
+package com.example.movierating.data.sharedPreferencesManager
 
 
 interface ISharedPreferencesManager {
@@ -12,6 +12,8 @@ interface ISharedPreferencesManager {
     fun putFloat(var1: String?, var2: Float)
 
     fun putBoolean(var1: String?, var2: Boolean)
+
+    fun getString(var1: String?, var2: String?)
 
     fun remove(var1: String?)
 

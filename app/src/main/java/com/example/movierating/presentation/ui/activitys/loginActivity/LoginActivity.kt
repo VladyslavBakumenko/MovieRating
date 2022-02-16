@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding.loginButton.setOnClickListener {
             viewModel.loginUser(
-                binding.etUserName.text.toString(),
+                binding.etUserName.text?.trim().toString(),
                 binding.etPassword.text.toString()
             )
         }

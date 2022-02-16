@@ -1,7 +1,7 @@
 package com.example.movierating.data.hilt.di
 
-import com.example.movierating.data.repositoriesImpl.movieRatingRepository.MovieRatingRepository
-import com.example.movierating.data.repositoriesImpl.movieRatingRepository.MovieRatingRepositoryImpl
+import com.example.movierating.data.movieRatingRepository.MovieRatingRepository
+import com.example.movierating.data.movieRatingRepository.MovieRatingRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

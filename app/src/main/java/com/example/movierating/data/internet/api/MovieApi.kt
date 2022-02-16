@@ -1,15 +1,15 @@
 package com.example.movierating.data.internet.api
 
+import androidx.room.Delete
 import com.example.movierating.data.internet.movies.MoviePages
+import com.example.movierating.data.internet.session.DeleteSessionResult
 import com.example.movierating.data.internet.session.requests.AuthRequest
 import com.example.movierating.data.internet.session.MovieToken
 import com.example.movierating.data.internet.session.requests.RequestToken
 import com.example.movierating.data.internet.session.SessionId
+import com.example.movierating.data.internet.session.requests.SessionIdRequest
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface MovieApi {
 
@@ -37,6 +37,20 @@ interface MovieApi {
         @Body token: RequestToken
     ): Response<SessionId>
 
+//    @DELETE("/3/authentication/session")
+//    suspend fun deleteSession(
+//        @Query(QUERY_PARAM_API_KEY) api_key: String = API_KEY,
+//        @Body sessionId: SessionIdRequest
+//    ): DeleteSessionResult
+
+
+    @HTTP(method = "DELETE", hasBody = true)
+    suspend fun deleteSession(
+        @Url url: String,
+        @Body sessionId: SessionIdRequest,
+        @Query(QUERY_PARAM_API_KEY) api_key: String = API_KEY
+    ): DeleteSessionResult
+
 
     companion object {
         private const val QUERY_PARAM_LANGUAGE = "language"
@@ -47,5 +61,7 @@ interface MovieApi {
 
         const val IMAGE_TMDB = "https://image.tmdb.org/t/p/w342"
         const val IMAGE_TMDB_BEST_QUALITY = "https://image.tmdb.org/t/p/w780"
+
+        const val URL_FOR_DELETE_SESSION = "/3/authentication/session"
     }
 }
