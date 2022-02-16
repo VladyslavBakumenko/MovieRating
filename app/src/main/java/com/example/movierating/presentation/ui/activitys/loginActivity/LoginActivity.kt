@@ -2,11 +2,10 @@ package com.example.movierating.presentation.ui.activitys.loginActivity
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityLoginBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
@@ -22,9 +21,10 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startMainActivityIfUserLogin()
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
         addTextChangeListeners()
         observeViewModel()
 
@@ -42,29 +42,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun addTextChangeListeners() {
-        binding.etUserName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.resetErrorInputEMail()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
-
-        binding.etPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.resetErrorInputPassword()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
+        binding.etUserName.doOnTextChanged { text, start, before, count ->
+            viewModel.resetErrorInputEMail()
+        }
+        binding.etPassword.doOnTextChanged { text, start, before, count ->
+            viewModel.resetErrorInputPassword()
+        }
     }
 
     private fun observeViewModel() {
@@ -80,18 +63,29 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel.userFound.observe(this) {
-            if (it == "null") {
+            if (it) {
+                startMainActivity()
+            } else {
                 val toast = Toast.makeText(
                     this,
                     resources.getString(R.string.login_error),
                     Toast.LENGTH_SHORT
                 )
                 toast.show()
-            } else {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
             }
         }
+    }
+
+    private fun startMainActivityIfUserLogin() {
+        if (viewModel.checkUserToLogin()) {
+            startMainActivity()
+        }
+    }
+
+    private fun startMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
 

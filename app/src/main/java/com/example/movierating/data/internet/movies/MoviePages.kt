@@ -1,4 +1,4 @@
-package com.example.movierating.data.internet
+package com.example.movierating.data.internet.movies
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

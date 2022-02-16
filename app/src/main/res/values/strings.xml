@@ -13,7 +13,7 @@
 
     <string name="login_btn">Увійти</string>
     <string name="registration_btn">Реєстрація</string>
-    <string name="eMail_hint">Enter your email</string>
+    <string name="user_name_hint">Enter your user name</string>
     <string name="password_hint">Enter your password</string>
     <string name="registration_btn_registration_activity">Реєстрація</string>
     <string name="invalid_user_name">Ім\'я користувача має містити до 32 символів</string>

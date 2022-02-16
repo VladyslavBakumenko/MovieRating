@@ -2,8 +2,8 @@ package com.example.movierating.presentation.ui.recyclerViews.tableRv
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movierating.data.internet.MovieApi
-import com.example.movierating.data.internet.MovieResult
+import com.example.movierating.data.internet.api.MovieApi
+import com.example.movierating.data.internet.movies.MovieResult
 import com.example.movierating.databinding.TableMovieItemBinding
 import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
 import com.squareup.picasso.Picasso

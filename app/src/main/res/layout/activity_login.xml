@@ -6,7 +6,6 @@
     android:layout_height="match_parent">
 
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilUserName"
         android:layout_width="0dp"
@@ -24,7 +23,7 @@
             android:id="@+id/etUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/eMail_hint"
+            android:hint="@string/user_name_hint"
             android:inputType="textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
 

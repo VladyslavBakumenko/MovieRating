@@ -26,13 +26,13 @@ class RegistrationActivity : AppCompatActivity() {
         addTextChangeListeners()
         observeViewModel()
 
-        binding.registrationButtonRegistrationActivity.setOnClickListener {
+/*        binding.registrationButtonRegistrationActivity.setOnClickListener {
 
             viewModel.addUserToData(
                 binding.etEMailRegistrationActivity.text.toString(),
                 binding.etPasswordRegistrationActivity.text.toString(),
             )
-        }
+        }*/
     }
 
 

@@ -2,24 +2,23 @@ package com.example.movierating.presentation.ui.activitys.mainActivity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movierating.R
-import com.example.movierating.data.internet.ApiFactory
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
+import com.example.movierating.presentation.ui.activitys.loginActivity.LoginViewModel
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
 import com.example.movierating.presentation.ui.fragments.moviesFragment.MoviesFragment
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
 

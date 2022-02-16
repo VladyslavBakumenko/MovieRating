@@ -1,4 +1,4 @@
-package com.example.movierating.data.internet.session
+package com.example.movierating.data.internet.session.requests
 
 import com.google.gson.annotations.SerializedName
 
@@ -11,6 +11,6 @@ data class AuthRequest(
     val password: String,
 
     @SerializedName("request_token")
-    val token: String
+    val token: String?
 
 )

@@ -7,5 +7,5 @@ data class SessionId(
 
     @SerializedName("session_id")
     @Expose
-    val sessionId: String
+    val sessionId: String?
 )

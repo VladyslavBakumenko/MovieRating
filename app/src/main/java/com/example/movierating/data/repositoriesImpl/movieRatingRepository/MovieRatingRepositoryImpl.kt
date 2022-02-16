@@ -1,9 +1,9 @@
-package com.example.movierating.data.repositoriesImpl
+package com.example.movierating.data.repositoriesImpl.movieRatingRepository
 
 import androidx.lifecycle.LiveData
 import com.example.movierating.data.database.AppDataBase
-import com.example.movierating.data.internet.ApiFactory
-import com.example.movierating.data.internet.MovieResult
+import com.example.movierating.data.internet.api.ApiFactory
+import com.example.movierating.data.internet.movies.MovieResult
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,4 +1,4 @@
-package com.example.movierating.data.internet
+package com.example.movierating.data.internet.api
 
 
 import okhttp3.OkHttpClient

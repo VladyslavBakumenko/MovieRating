@@ -1,9 +1,7 @@
 package com.example.movierating.data.hilt.di
 
-import com.example.movierating.data.repositoriesImpl.MovieRatingRepository
-import com.example.movierating.data.repositoriesImpl.MovieRatingRepositoryImpl
-import com.example.movierating.data.repositoriesImpl.UserRepository
-import com.example.movierating.data.repositoriesImpl.UserRepositoryImpl
+import com.example.movierating.data.repositoriesImpl.movieRatingRepository.MovieRatingRepository
+import com.example.movierating.data.repositoriesImpl.movieRatingRepository.MovieRatingRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,10 +12,5 @@ import dagger.hilt.components.SingletonComponent
 interface RepositoryModule {
 
     @Binds
-    fun provideUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
-
-
-    @Binds
     fun provideMovieRepository(movieRepositoryImpl: MovieRatingRepositoryImpl): MovieRatingRepository
-
 }

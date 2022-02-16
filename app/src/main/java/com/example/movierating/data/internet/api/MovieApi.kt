@@ -1,8 +1,9 @@
-package com.example.movierating.data.internet
+package com.example.movierating.data.internet.api
 
-import com.example.movierating.data.internet.session.AuthRequest
+import com.example.movierating.data.internet.movies.MoviePages
+import com.example.movierating.data.internet.session.requests.AuthRequest
 import com.example.movierating.data.internet.session.MovieToken
-import com.example.movierating.data.internet.session.RequestToken
+import com.example.movierating.data.internet.session.requests.RequestToken
 import com.example.movierating.data.internet.session.SessionId
 import retrofit2.Response
 import retrofit2.http.Body

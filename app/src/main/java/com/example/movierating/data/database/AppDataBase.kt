@@ -4,12 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.movierating.data.internet.MovieResult
+import com.example.movierating.data.internet.movies.MovieResult
 
-@Database(entities = [UsersDatabase::class, MovieResult::class], version = 2, exportSchema = false)
+@Database(entities = [MovieResult::class], version = 3, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
 
-    abstract fun usersDatabaseDao(): UsersDataBaseDao
     abstract fun moviesDatabaseDao(): MoviesDatabaseDao
 
     companion object {
