@@ -36,12 +36,6 @@ interface MovieApi {
         @Body token: RequestToken
     ): Response<SessionId>
 
-//    @DELETE("/3/authentication/session")
-//    suspend fun deleteSession(
-//        @Query(QUERY_PARAM_API_KEY) api_key: String = API_KEY,
-//        @Body sessionId: SessionIdRequest
-//    ): DeleteSessionResult
-
 
     @HTTP(method = "DELETE", hasBody = true)
     suspend fun deleteSession(
