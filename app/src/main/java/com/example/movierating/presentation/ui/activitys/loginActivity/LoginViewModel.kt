@@ -1,13 +1,11 @@
 package com.example.movierating.presentation.ui.activitys.loginActivity
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.movierating.data.internet.api.ApiFactory
 import com.example.movierating.data.internet.session.requests.AuthRequest
 import com.example.movierating.data.internet.session.requests.RequestToken
-import com.example.movierating.data.sharedPreferencesManager.ISharedPreferencesManager
 import com.example.movierating.data.sharedPreferencesManager.SharedPreferencesManager
 import com.example.movierating.utils.checkEmailOnValid
 import com.example.movierating.utils.checkPasswordOnValid
@@ -19,8 +17,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
+
+
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     private val coroutineScopeIo = CoroutineScope(Dispatchers.IO)
 
@@ -38,7 +39,7 @@ class LoginViewModel @Inject constructor(
 
 
     fun checkUserToLogin(): Boolean {
-        return sharedPreferences.getString(
+        return sharedPreferencesManager.getString(
             SharedPreferencesManager.SESSION_ID,
             SharedPreferencesManager.EMPTY_FIELD
         ) != SharedPreferencesManager.EMPTY_FIELD
@@ -71,9 +72,6 @@ class LoginViewModel @Inject constructor(
         requestTokenForCreateNewSession: String?,
         sessionId: String?
     ) {
-
-        val sharedPreferencesManager =
-            SharedPreferencesManager(sharedPreferences) as ISharedPreferencesManager
 
         with(sharedPreferencesManager) {
             putString(SharedPreferencesManager.REQUEST_TOKEN, requestToken)

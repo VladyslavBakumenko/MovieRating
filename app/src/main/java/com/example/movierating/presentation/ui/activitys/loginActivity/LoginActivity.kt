@@ -9,7 +9,6 @@ import androidx.core.widget.doOnTextChanged
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityLoginBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
-import com.example.movierating.presentation.ui.activitys.registrationActivity.RegistrationActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,10 +27,7 @@ class LoginActivity : AppCompatActivity() {
         addTextChangeListeners()
         observeViewModel()
 
-        binding.registrationButton.setOnClickListener {
-            val intent = Intent(this, RegistrationActivity::class.java)
-            startActivity(intent)
-        }
+
 
         binding.loginButton.setOnClickListener {
             viewModel.loginUser(

@@ -46,7 +46,7 @@ interface MovieApi {
 
     @HTTP(method = "DELETE", hasBody = true)
     suspend fun deleteSession(
-        @Url url: String,
+        @Url url: String = URL_FOR_DELETE_SESSION,
         @Body sessionId: SessionIdRequest,
         @Query(QUERY_PARAM_API_KEY) api_key: String = API_KEY
     ): DeleteSessionResult

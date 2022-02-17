@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.movierating.databinding.FragmentProfileBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
-import com.example.movierating.presentation.ui.activitys.registrationActivity.RegistrationActivity
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
@@ -27,8 +26,6 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         userFromLoginActivity = requireArguments()[LoginActivity.USER_LOGIN_ACTIVITY].toString()
-        userFromRegistrationActivity =
-            requireArguments()[RegistrationActivity.USER_REGISTRATION_ACTIVITY].toString()
 
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding?.root
@@ -59,14 +56,7 @@ class ProfileFragment : Fragment() {
             val userFromLoginActivity: String =
                 intent.getStringExtra(LoginActivity.USER_LOGIN_ACTIVITY).toString()
 
-            val userFromRegistrationActivity: String =
-                intent.getStringExtra(RegistrationActivity.USER_REGISTRATION_ACTIVITY).toString()
-
             args.putString(LoginActivity.USER_LOGIN_ACTIVITY, userFromLoginActivity)
-            args.putString(
-                RegistrationActivity.USER_REGISTRATION_ACTIVITY,
-                userFromRegistrationActivity
-            )
 
             fragment.arguments = args
             return fragment
