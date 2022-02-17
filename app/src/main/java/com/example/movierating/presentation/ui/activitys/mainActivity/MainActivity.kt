@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             viewModel.unLoginUser()
             viewModel.unLoginSuccess.observe(this) {
                 if (it) {
-                   // viewModel.removeUserData()
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                 }

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.movierating.data.internet.api.MovieApi
-import com.example.movierating.data.internet.movies.MovieResult
+import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 import com.example.movierating.databinding.FragmentDetailsBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import com.squareup.picasso.Picasso

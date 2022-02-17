@@ -1,13 +1,12 @@
 package com.example.movierating.data.internet.api
 
-import androidx.room.Delete
-import com.example.movierating.data.internet.movies.MoviePages
-import com.example.movierating.data.internet.session.DeleteSessionResult
-import com.example.movierating.data.internet.session.requests.AuthRequest
-import com.example.movierating.data.internet.session.MovieToken
-import com.example.movierating.data.internet.session.requests.RequestToken
-import com.example.movierating.data.internet.session.SessionId
-import com.example.movierating.data.internet.session.requests.SessionIdRequest
+import com.example.movierating.data.internet.requestResults.moviesRequestResult.MoviePages
+import com.example.movierating.data.internet.requestResults.sessionRequestResult.DeleteSessionResult
+import com.example.movierating.data.internet.requests.AuthRequest
+import com.example.movierating.data.internet.requestResults.sessionRequestResult.MovieToken
+import com.example.movierating.data.internet.requests.RequestToken
+import com.example.movierating.data.internet.requestResults.sessionRequestResult.SessionId
+import com.example.movierating.data.internet.requests.SessionIdRequest
 import retrofit2.Response
 import retrofit2.http.*
 

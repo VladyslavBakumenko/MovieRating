@@ -3,7 +3,7 @@ package com.example.movierating.presentation.ui.fragments.moviesFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.movierating.data.internet.movies.MovieResult
+import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 import com.example.movierating.data.movieRatingRepository.MovieRatingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope

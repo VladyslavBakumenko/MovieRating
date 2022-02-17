@@ -1,4 +1,4 @@
-package com.example.movierating.data.internet.session
+package com.example.movierating.data.internet.requestResults.sessionRequestResult
 
 import com.google.gson.annotations.SerializedName
 

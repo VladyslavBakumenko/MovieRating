@@ -1,4 +1,4 @@
-package com.example.movierating.data.internet.movies
+package com.example.movierating.data.internet.requestResults.moviesRequestResult
 
 import android.os.Parcelable
 import androidx.room.Entity

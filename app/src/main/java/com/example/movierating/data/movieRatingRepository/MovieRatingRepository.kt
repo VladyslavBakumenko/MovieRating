@@ -1,6 +1,6 @@
 package com.example.movierating.data.movieRatingRepository
 
-import com.example.movierating.data.internet.movies.MovieResult
+import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 
 interface MovieRatingRepository {
     suspend fun loadData(page: Int) : List<MovieResult>?

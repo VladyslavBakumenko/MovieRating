@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.movierating.data.internet.api.ApiFactory
-import com.example.movierating.data.internet.session.requests.AuthRequest
-import com.example.movierating.data.internet.session.requests.RequestToken
+import com.example.movierating.data.internet.requests.AuthRequest
+import com.example.movierating.data.internet.requests.RequestToken
 import com.example.movierating.data.sharedPreferencesManager.SharedPreferencesManager
 import com.example.movierating.utils.checkEmailOnValid
 import com.example.movierating.utils.checkPasswordOnValid

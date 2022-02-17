@@ -1,4 +1,4 @@
-package com.example.movierating.data.hilt.di
+package com.example.movierating.data.hilt.di.sharedPreferanceModules
 
 import android.content.Context
 import android.content.SharedPreferences

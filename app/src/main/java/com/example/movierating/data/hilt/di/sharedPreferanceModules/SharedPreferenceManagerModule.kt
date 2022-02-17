@@ -1,4 +1,4 @@
-package com.example.movierating.data.hilt.di
+package com.example.movierating.data.hilt.di.sharedPreferanceModules
 
 import com.example.movierating.data.sharedPreferencesManager.ISharedPreferencesManager
 import com.example.movierating.data.sharedPreferencesManager.SharedPreferencesManager

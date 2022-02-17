@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.R
-import com.example.movierating.data.internet.movies.MovieResult
+import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 
 class MovieListTableAdapter :
     RecyclerView.Adapter<MovieItemTableViewHolder>() {

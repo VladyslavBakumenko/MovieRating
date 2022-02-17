@@ -1,7 +1,7 @@
 package com.example.movierating.data.movieRatingRepository
 
 import com.example.movierating.data.internet.api.ApiFactory
-import com.example.movierating.data.internet.movies.MovieResult
+import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 import javax.inject.Inject
 import javax.inject.Singleton
 

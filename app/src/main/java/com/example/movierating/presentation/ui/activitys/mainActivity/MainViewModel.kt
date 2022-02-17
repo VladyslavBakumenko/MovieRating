@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.movierating.data.internet.api.ApiFactory
-import com.example.movierating.data.internet.session.requests.SessionIdRequest
+import com.example.movierating.data.internet.requests.SessionIdRequest
 import com.example.movierating.data.sharedPreferencesManager.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
