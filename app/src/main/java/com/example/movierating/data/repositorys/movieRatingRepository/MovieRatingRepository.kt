@@ -1,4 +1,4 @@
-package com.example.movierating.data.movieRatingRepository
+package com.example.movierating.data.repositorys.movieRatingRepository
 
 import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 

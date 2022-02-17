@@ -57,7 +57,6 @@ class SharedPreferencesManager @Inject constructor() : ISharedPreferencesManager
     }
 
     companion object {
-        //const val SHARED_PREFERENCE_USER_DATA: String = "sharedPreferenceUserData"
         const val REQUEST_TOKEN = "requestToken"
         const val REQUEST_TOKEN_FOR_CREATE_SESSION = "tokenForCreateSession"
         const val SESSION_ID = "sessionId"
