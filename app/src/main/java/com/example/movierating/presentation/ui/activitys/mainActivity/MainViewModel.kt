@@ -28,6 +28,7 @@ class MainViewModel @Inject constructor(
     val networkError: LiveData<Boolean>
         get() = _networkError
 
+
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
@@ -45,6 +46,7 @@ class MainViewModel @Inject constructor(
             _unLoginSuccess.postValue(true)
         }
     }
+
 
     private fun getSessionId(): String? {
         return sharedPreferencesManager

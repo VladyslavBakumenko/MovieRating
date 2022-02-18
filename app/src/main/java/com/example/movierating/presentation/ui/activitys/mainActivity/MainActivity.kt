@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         observeViewModel()
         launchMoviesFragment()
         binding.navigationView.itemIconTintList
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun observeViewModel() {
         viewModel.networkError.observe(this) {
-            if(it) createToast(resources.getString(R.string.something_went_wrong))
+            if (it) createToast(resources.getString(R.string.something_went_wrong))
         }
     }
 
@@ -73,6 +75,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         return result
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val drawer = binding.drawerLayout
+
+        if (item.itemId == android.R.id.home) {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START, true)
+            } else drawer.openDrawer(GravityCompat.START, true)
+        }
+        return true
+    }
+
+    override fun onBackPressed() {
+        binding.drawerLayout.closeDrawer(GravityCompat.START, true)
     }
 
     companion object {
