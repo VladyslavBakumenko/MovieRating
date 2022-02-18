@@ -31,7 +31,6 @@ class LoginActivity : AppCompatActivity() {
 
 
         binding.loginButton.setOnClickListener {
-            createToast(this, "fddfghgfd")
             viewModel.loginUser(
                 binding.etUserName.text?.trim().toString(),
                 binding.etPassword.text.toString()
@@ -63,25 +62,12 @@ class LoginActivity : AppCompatActivity() {
         viewModel.userFound.observe(this) {
             if (it) {
                 startMainActivity()
-            } else {
-                val toast = Toast.makeText(
-                    this,
-                    resources.getString(R.string.login_error),
-                    Toast.LENGTH_SHORT
-                )
-                toast.show()
-            }
+
+            } else createToast(resources.getString(R.string.login_error))
         }
         
         viewModel.networkError.observe(this)  {
-            if(it) {
-                val toast = Toast.makeText(
-                    this,
-                    resources.getString(R.string.something_went_wrong),
-                    Toast.LENGTH_SHORT
-                )
-                toast.show()
-            }
+            if(it) createToast(resources.getString(R.string.something_went_wrong))
         }
     }
 
@@ -96,7 +82,6 @@ class LoginActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
-
 
     companion object {
         const val USER_LOGIN_ACTIVITY = "userLoginActivity"

@@ -56,7 +56,6 @@ class MovieListLinealAdapter() :
 
     fun toggleType() {
         currentType = if (currentType == Type.LIST) Type.GRID else Type.LIST
-//        notifyDataSetChanged()
     }
 
     fun setMovies(movies: List<MovieResult>) {

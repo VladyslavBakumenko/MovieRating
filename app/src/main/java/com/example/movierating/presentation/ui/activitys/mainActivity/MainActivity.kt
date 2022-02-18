@@ -11,6 +11,7 @@ import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
 import com.example.movierating.presentation.ui.fragments.moviesFragment.MoviesFragment
+import com.example.movierating.utils.createToast
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,12 +49,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun observeViewModel() {
         viewModel.networkError.observe(this) {
-            if(it) {
-
-            }
+            if(it) createToast(resources.getString(R.string.something_went_wrong))
         }
     }
-
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId

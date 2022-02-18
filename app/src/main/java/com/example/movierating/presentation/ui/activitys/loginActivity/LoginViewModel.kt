@@ -15,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,12 +43,6 @@ class LoginViewModel @Inject constructor(
     val networkError: LiveData<Boolean>
         get() = _networkError
 
-    private val _requestToken = MutableLiveData<String?>()
-
-    private val _requestTokenForCreateNewSession = MutableLiveData<String?>()
-
-    private val _sessionId = MutableLiveData<String?>()
-
 
     fun checkUserToLogin(): Boolean {
         return sharedPreferencesManager.getString(
@@ -59,71 +52,67 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginUser(userName: String, password: String) {
-        if (setInputErrors(userName, password)) {
-            coroutineScopeIo.launch {
-
-                getRequestToken()
-                createSessionWithLogin(userName, password)
-                createNewSession()
-
-                saveUserData(
-                    _requestToken.value,
-                    _requestTokenForCreateNewSession.value,
-                    _sessionId.value
-                )
-                Log.d("ffgdfddff", _sessionId.value.toString())
-                if (_sessionId.value != null) _userFound.postValue(true)
-            }
-        }
+        if (setInputErrors(userName, password)) getRequestToken(userName, password)
     }
 
-    private fun getRequestToken() {
+    private fun getRequestToken(userName: String, password: String) {
         coroutineScopeIo.launch {
             safeApiCall({ userRepository.getRequestToken() },
                 {
-                    _requestToken.postValue(it?.requestToken)
+                    sharedPreferencesManager.putString(
+                        SharedPreferencesManager.REQUEST_TOKEN,
+                        it.toString()
+                    )
+
+                    createSessionWithLogin(userName, password, it?.requestToken.toString())
                 }, {
                     _networkError.postValue(true)
                 })
         }
     }
 
-    private fun createSessionWithLogin(userName: String, password: String) {
+    private fun createSessionWithLogin(userName: String, password: String, requestToken: String) {
         coroutineScopeIo.launch {
             safeApiCall({
                 userRepository.createSessionWithLogin(
                     AuthRequest(
                         userName,
                         password,
-                        _requestToken.value
+                        requestToken
                     )
                 )
             }, {
-                _requestTokenForCreateNewSession.postValue(it?.requestToken)
+                sharedPreferencesManager.putString(
+                    SharedPreferencesManager.REQUEST_TOKEN_FOR_CREATE_SESSION, it.toString())
+
+                createNewSession(it?.requestToken.toString())
             }, {
                 _networkError.postValue(true)
             })
         }
     }
 
-    private fun createNewSession() {
+    private fun createNewSession(requestTokenForCreateNewSession: String?) {
         coroutineScopeIo.launch {
             safeApiCall({
                 userRepository.createNewSession(
-                    RequestToken(
-                        _requestTokenForCreateNewSession.value
-                    )
+                    RequestToken(requestTokenForCreateNewSession)
                 )
             },
                 {
-                    _sessionId.postValue(it?.sessionId)
+                    if(!it?.sessionId.isNullOrBlank())  {
+                        sharedPreferencesManager
+                            .putString(SharedPreferencesManager.SESSION_ID, it.toString())
+                        _userFound.postValue(true)
+                    }
+
                 }, {
                     _networkError.postValue(true)
                 })
         }
     }
 
-    private fun saveUserData(
+/*    private fun saveUserData(
         requestToken: String?,
         requestTokenForCreateNewSession: String?,
         sessionId: String?
@@ -137,7 +126,7 @@ class LoginViewModel @Inject constructor(
             )
             putString(SharedPreferencesManager.SESSION_ID, sessionId)
         }
-    }
+    }*/
 
     private fun setInputErrors(userName: String, password: String): Boolean {
         var counter = 1

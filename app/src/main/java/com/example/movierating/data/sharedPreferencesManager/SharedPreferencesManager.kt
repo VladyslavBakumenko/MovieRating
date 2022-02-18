@@ -3,10 +3,10 @@ package com.example.movierating.data.sharedPreferencesManager
 import android.content.SharedPreferences
 import javax.inject.Inject
 
-class SharedPreferencesManager @Inject constructor() : ISharedPreferencesManager {
+class SharedPreferencesManager @Inject constructor(
+    private val sharedPreferences: SharedPreferences
+) : ISharedPreferencesManager {
 
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
 
     override fun putString(var1: String?, var2: String?) {
         sharedPreferences.edit().putString(var1, var2).commit()
