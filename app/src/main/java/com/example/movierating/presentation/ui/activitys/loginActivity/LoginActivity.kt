@@ -9,6 +9,7 @@ import androidx.core.widget.doOnTextChanged
 import com.example.movierating.R
 import com.example.movierating.databinding.ActivityLoginBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
+import com.example.movierating.utils.createToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
 
 
         binding.loginButton.setOnClickListener {
+            createToast(this, "fddfghgfd")
             viewModel.loginUser(
                 binding.etUserName.text?.trim().toString(),
                 binding.etPassword.text.toString()
@@ -65,6 +67,17 @@ class LoginActivity : AppCompatActivity() {
                 val toast = Toast.makeText(
                     this,
                     resources.getString(R.string.login_error),
+                    Toast.LENGTH_SHORT
+                )
+                toast.show()
+            }
+        }
+        
+        viewModel.networkError.observe(this)  {
+            if(it) {
+                val toast = Toast.makeText(
+                    this,
+                    resources.getString(R.string.something_went_wrong),
                     Toast.LENGTH_SHORT
                 )
                 toast.show()

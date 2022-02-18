@@ -24,8 +24,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
+        observeViewModel()
         launchMoviesFragment()
         binding.navigationView.itemIconTintList
         binding.navigationView.setNavigationItemSelectedListener(this)
@@ -44,6 +44,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .addToBackStack(null)
             .replace(R.id.fragmentContainerView, ProfileFragment.newInstance(intent))
             .commit()
+    }
+
+    private fun observeViewModel() {
+        viewModel.networkError.observe(this) {
+            if(it) {
+
+            }
+        }
     }
 
 

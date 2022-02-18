@@ -3,6 +3,7 @@ package com.example.movierating.presentation.ui.activitys.mainActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movierating.data.internet.erorHandling.safeApiCall
 import com.example.movierating.data.internet.requests.SessionIdRequest
 import com.example.movierating.data.repositorys.userRepository.UserRepositoryImpl
 import com.example.movierating.data.sharedPreferencesManager.SharedPreferencesManager
@@ -23,22 +24,34 @@ class MainViewModel @Inject constructor(
     val unLoginSuccess: LiveData<Boolean>
         get() = _unLoginSuccess
 
+    private val _networkError = MutableLiveData<Boolean>()
+    val networkError: LiveData<Boolean>
+        get() = _networkError
+
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     fun unLoginUser() {
         coroutineScope.launch {
 
-            val sessionId = sharedPreferencesManager
-                .getString(
-                    SharedPreferencesManager.SESSION_ID,
-                    SharedPreferencesManager.EMPTY_FIELD
-                )
-            userRepository.deleteSession(SessionIdRequest(sessionId))
+            safeApiCall({ userRepository.deleteSession(SessionIdRequest(getSessionId())) },
+                {
+                    _unLoginSuccess.postValue(true)
+                }, {
+                    _networkError.postValue(true)
+                })
 
             removeUserData()
             _unLoginSuccess.postValue(true)
         }
+    }
+
+    private fun getSessionId(): String? {
+        return sharedPreferencesManager
+           .getString(
+               SharedPreferencesManager.SESSION_ID,
+               SharedPreferencesManager.EMPTY_FIELD
+           )
     }
 
     private fun removeUserData() {

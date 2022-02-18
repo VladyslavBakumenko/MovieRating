@@ -1,8 +1,10 @@
 package com.example.movierating.presentation.ui.fragments.moviesFragment
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movierating.data.internet.erorHandling.safeApiCall
 import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 import com.example.movierating.data.repositorys.movieRatingRepository.MovieRatingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,12 +28,16 @@ class MoviesFragmentViewModel @Inject constructor
 
     fun loadData(page: Int) {
         coroutineScope.launch {
-            val moviesData = movieRepository.loadData(page)
 
-            moviesData?.let {
-                loadedMovies.addAll(moviesData)
-            }
-            _movies.postValue(moviesData)
+            safeApiCall({ movieRepository.loadData(page) },
+                {
+                    it?.let {
+                        loadedMovies.addAll(it)
+                        _movies.postValue(it)
+                    }
+                }, {
+                    Log.d("dfdgfgfggdg", "went wrong")
+                })
         }
     }
 

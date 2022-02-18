@@ -1,8 +1,10 @@
 package com.example.movierating.presentation.ui.activitys.loginActivity
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movierating.data.internet.erorHandling.safeApiCall
 import com.example.movierating.data.internet.requests.AuthRequest
 import com.example.movierating.data.internet.requests.RequestToken
 import com.example.movierating.data.repositorys.userRepository.UserRepositoryImpl
@@ -13,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,6 +40,16 @@ class LoginViewModel @Inject constructor(
     val userFound: LiveData<Boolean>
         get() = _userFound
 
+    private val _networkError = MutableLiveData<Boolean>()
+    val networkError: LiveData<Boolean>
+        get() = _networkError
+
+    private val _requestToken = MutableLiveData<String?>()
+
+    private val _requestTokenForCreateNewSession = MutableLiveData<String?>()
+
+    private val _sessionId = MutableLiveData<String?>()
+
 
     fun checkUserToLogin(): Boolean {
         return sharedPreferencesManager.getString(
@@ -49,23 +62,64 @@ class LoginViewModel @Inject constructor(
         if (setInputErrors(userName, password)) {
             coroutineScopeIo.launch {
 
-                val requestToken = userRepository.getRequestToken()?.requestToken
+                getRequestToken()
+                createSessionWithLogin(userName, password)
+                createNewSession()
 
-                val requestTokenForCreateNewSession = userRepository.createSessionWithLogin(
+                saveUserData(
+                    _requestToken.value,
+                    _requestTokenForCreateNewSession.value,
+                    _sessionId.value
+                )
+                Log.d("ffgdfddff", _sessionId.value.toString())
+                if (_sessionId.value != null) _userFound.postValue(true)
+            }
+        }
+    }
+
+    private fun getRequestToken() {
+        coroutineScopeIo.launch {
+            safeApiCall({ userRepository.getRequestToken() },
+                {
+                    _requestToken.postValue(it?.requestToken)
+                }, {
+                    _networkError.postValue(true)
+                })
+        }
+    }
+
+    private fun createSessionWithLogin(userName: String, password: String) {
+        coroutineScopeIo.launch {
+            safeApiCall({
+                userRepository.createSessionWithLogin(
                     AuthRequest(
                         userName,
                         password,
-                        requestToken
+                        _requestToken.value
                     )
-                )?.requestToken
+                )
+            }, {
+                _requestTokenForCreateNewSession.postValue(it?.requestToken)
+            }, {
+                _networkError.postValue(true)
+            })
+        }
+    }
 
-                val sessionId = userRepository
-                    .createNewSession(RequestToken(requestTokenForCreateNewSession))?.sessionId
-
-                saveUserData(requestToken, requestTokenForCreateNewSession, sessionId)
-
-                if (sessionId != null) _userFound.postValue(true)
-            }
+    private fun createNewSession() {
+        coroutineScopeIo.launch {
+            safeApiCall({
+                userRepository.createNewSession(
+                    RequestToken(
+                        _requestTokenForCreateNewSession.value
+                    )
+                )
+            },
+                {
+                    _sessionId.postValue(it?.sessionId)
+                }, {
+                    _networkError.postValue(true)
+                })
         }
     }
 
@@ -106,6 +160,4 @@ class LoginViewModel @Inject constructor(
     fun resetErrorInputPassword() {
         _errorInputPassword.value = false
     }
-
-
 }

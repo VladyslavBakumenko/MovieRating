@@ -15,5 +15,4 @@ interface UserRepository {
     suspend fun createNewSession(token: RequestToken) : SessionId?
 
     suspend fun deleteSession(sessionId: SessionIdRequest)
-
 }
