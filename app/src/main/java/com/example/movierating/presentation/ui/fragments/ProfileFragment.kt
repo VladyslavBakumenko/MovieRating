@@ -17,8 +17,6 @@ class ProfileFragment : Fragment() {
     @Inject
     lateinit var userFromLoginActivity: String
 
-    @Inject
-    lateinit var userFromRegistrationActivity: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,11 +33,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.let {
-            if (userFromLoginActivity == "null") {
-                it.textViewProfile.text = userFromRegistrationActivity
-            } else {
-                it.textViewProfile.text = userFromLoginActivity
-            }
+            it.textViewProfile.text = userFromLoginActivity
         }
     }
 
@@ -49,6 +43,8 @@ class ProfileFragment : Fragment() {
     }
 
     companion object {
+        const val PROFILE_FRAGMENT = "ProfileFragment"
+
         fun newInstance(intent: Intent): ProfileFragment {
             val fragment = ProfileFragment()
             val args = Bundle()

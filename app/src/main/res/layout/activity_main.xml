@@ -10,7 +10,7 @@
         android:id="@+id/fragmentContainerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_lineal" />
+        tools:layout="@layout/fragment_movies" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
@@ -18,6 +18,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:menu="@menu/nav_menu" />
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

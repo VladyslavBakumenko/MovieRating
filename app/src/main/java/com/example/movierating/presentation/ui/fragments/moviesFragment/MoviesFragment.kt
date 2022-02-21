@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierating.R
 import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 import com.example.movierating.databinding.FragmentMoviesBinding
+import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import com.example.movierating.presentation.ui.fragments.DetailsFragment
 import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -112,6 +113,8 @@ class MoviesFragment : Fragment() {
     }
 
     companion object {
+        const val MOVIE_FRAGMENT = "MovieFragment"
+
         fun newInstance(): MoviesFragment = MoviesFragment()
     }
 }
