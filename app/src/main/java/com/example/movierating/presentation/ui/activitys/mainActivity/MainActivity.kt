@@ -1,24 +1,22 @@
 package com.example.movierating.presentation.ui.activitys.mainActivity
 
 import android.content.Intent
-import android.graphics.Movie
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.movierating.R
-import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
-import com.example.movierating.presentation.ui.fragments.DetailsFragment
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
 import com.example.movierating.presentation.ui.fragments.moviesFragment.MoviesFragment
 import com.example.movierating.utils.createToast
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -29,59 +27,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_dialog_dialer);
+
         observeViewModel()
-        launchMoviesFragment()
+        if (savedInstanceState == null) {
+            launchMoviesFragment()
+        }
+
         binding.navigationView.itemIconTintList
         binding.navigationView.setNavigationItemSelectedListener(this)
-
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        supportFragmentManager.fragments.forEachIndexed { index, fragment ->
-            outState.putString(
-                index.toString(), fragment.toString()
-                    .replaceAfter("Fragment", "")
-            )
-        }
-        outState.putInt(FRAGMENTS_IN_BACK_STACK, supportFragmentManager.fragments.size)
-
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        var index = 0
-        while (index < savedInstanceState.getInt(FRAGMENTS_IN_BACK_STACK)) {
-            recoveryFragments(savedInstanceState.getString(index.toString()))
-            index++
-        }
-    }
-
-    private fun recoveryFragments(fragmentName: String?) {
-        when (fragmentName) {
-            MoviesFragment.MOVIE_FRAGMENT -> launchMoviesFragment()
-            ProfileFragment.PROFILE_FRAGMENT -> launchProfileFragment()
-            DetailsFragment.DETAILS_FRAGMENT -> {
-                supportFragmentManager.beginTransaction()
-                    .addToBackStack(null)
-                    .add(
-                        R.id.fragmentContainerView,
-                        DetailsFragment.newInstance(MovieResult())
-                    ).commit()
-            }
-        }
     }
 
 
     private fun launchMoviesFragment() {
         supportFragmentManager.beginTransaction()
-            .addToBackStack(null)
-            .replace(R.id.fragmentContainerView, MoviesFragment.newInstance())
+            .replace(
+                R.id.fragmentContainerView,
+                MoviesFragment.newInstance(),
+                MoviesFragment::class.simpleName
+            )
             .commit()
     }
 
@@ -127,10 +94,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (item.itemId == android.R.id.home) {
             if (drawer.isDrawerOpen(GravityCompat.START)) {
-                supportActionBar?.setIcon(R.drawable.ic_menu_camera)
-
+                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_dialog_dialer);
                 drawer.closeDrawer(GravityCompat.START, true)
-            } else drawer.openDrawer(GravityCompat.START, true)
+            } else  {
+                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_revert);
+                drawer.openDrawer(GravityCompat.START, true)
+            }
         }
         return true
     }
@@ -143,7 +112,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     companion object {
         const val MOVIE_RESULT = "movie_result"
-
-        const val FRAGMENTS_IN_BACK_STACK = "fragments_in_back_stack"
     }
 }

@@ -1,7 +1,9 @@
 package com.example.movierating.presentation.ui.fragments.moviesFragment
 
 import PaginationScrollListener
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -94,7 +96,14 @@ class MoviesFragment : Fragment() {
         if (movieListLinealAdapter.currentType == MovieListLinealAdapter.Type.LIST) {
             movieListLinealAdapter.toggleType()
             if (gridLayoutManager == null) {
-                gridLayoutManager = GridLayoutManager(context, 3)
+
+                gridLayoutManager = when (resources.configuration.orientation) {
+                    Configuration.ORIENTATION_PORTRAIT ->
+                        GridLayoutManager(context, 3)
+                    Configuration.ORIENTATION_LANDSCAPE ->
+                        GridLayoutManager(context, 5)
+                    else -> GridLayoutManager(context, 3)
+                }
             }
             binding?.movieRecyclerView?.layoutManager = gridLayoutManager
         } else {

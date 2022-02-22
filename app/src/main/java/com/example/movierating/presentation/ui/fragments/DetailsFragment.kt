@@ -56,6 +56,15 @@ class DetailsFragment : Fragment() {
 
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        val movie = requireArguments()
+            .getParcelable<MovieResult>(MainActivity.MOVIE_RESULT)
+        outState.putParcelable(CURRENT_MOVIE, movie)
+        outState.putInt("2", 2)
+        super.onSaveInstanceState(outState)
+    }
+
+
     override fun onDestroy() {
         super.onDestroy()
         binding = null
@@ -63,6 +72,7 @@ class DetailsFragment : Fragment() {
 
     companion object {
         const val DETAILS_FRAGMENT = "DetailsFragment"
+        const val CURRENT_MOVIE = "current_movie"
 
         fun newInstance(movieResult: MovieResult): DetailsFragment {
             val fragment = DetailsFragment()

@@ -20,8 +20,8 @@
 
         <TextView
             android:id="@+id/tv_movie_name_lineal"
-            android:layout_width="234dp"
-            android:layout_height="21dp"
+            android:layout_width="311dp"
+            android:layout_height="23dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/rectangle"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
@@ -39,14 +39,14 @@
 
         <TextView
             android:id="@+id/tv_movie_description_lineal"
-            android:layout_width="177dp"
-            android:layout_height="87dp"
-            android:layout_marginStart="168dp"
-            android:layout_marginTop="4dp"
+            android:layout_width="515dp"
+            android:layout_height="69dp"
+            android:layout_marginStart="171dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/rectangle"
             android:ellipsize="end"
             android:maxLines="4"
-            app:layout_constraintStart_toStartOf="@+id/guideline6"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_movie_rate_lineal" />
 
         <TextView
@@ -54,7 +54,7 @@
             android:layout_width="98dp"
             android:layout_height="19dp"
             android:layout_marginStart="168dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:background="@drawable/rectangle"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
             app:layout_constraintTop_toTopOf="parent" />
@@ -63,10 +63,10 @@
             android:id="@+id/tv_movie_relise_lineal"
             android:layout_width="100dp"
             android:layout_height="21dp"
-            android:layout_marginStart="244dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="580dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/rectangle"
-            app:layout_constraintStart_toStartOf="@+id/tv_movie_name_lineal"
+            app:layout_constraintStart_toStartOf="@+id/guideline6"
             app:layout_constraintTop_toBottomOf="@+id/tv_movie_description_lineal" />
 
         <androidx.constraintlayout.widget.Guideline
