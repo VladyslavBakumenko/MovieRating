@@ -37,13 +37,11 @@ class MainViewModel @Inject constructor(
 
             safeApiCall({ userRepository.deleteSession(SessionIdRequest(getSessionId())) },
                 {
+                    removeUserData()
                     _unLoginSuccess.postValue(true)
                 }, {
                     _networkError.postValue(true)
                 })
-
-            removeUserData()
-            _unLoginSuccess.postValue(true)
         }
     }
 

@@ -3,10 +3,10 @@ package com.example.movierating.presentation.ui.fragments.moviesFragment
 import PaginationScrollListener
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierating.R
 import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 import com.example.movierating.databinding.FragmentMoviesBinding
-import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import com.example.movierating.presentation.ui.fragments.DetailsFragment
 import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +32,6 @@ class MoviesFragment : Fragment() {
     private var linearLayoutManager: LinearLayoutManager? = null
     private var gridLayoutManager: GridLayoutManager? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,10 +43,26 @@ class MoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.currentRecyclerView.observe(viewLifecycleOwner, Observer {
+        })
+
+        if (savedInstanceState == null) viewModel.setDefaultValue()
+
+        viewModel.networkError.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                Toast.makeText(
+                    activity,
+                    resources.getString(R.string.something_went_wrong),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+
         viewModel.loadData(1)
 
         binding?.changedFormat?.setOnClickListener {
             changeRecyclerView()
+            viewModel.checkLastRecyclerView()
         }
 
         movieListLinealAdapter.onMovieClickListener =
@@ -64,14 +78,37 @@ class MoviesFragment : Fragment() {
                         ).commit()
                 }
             }
+
         setUpRecyclerView()
     }
 
     private fun setUpRecyclerView() {
-        linearLayoutManager = LinearLayoutManager(context)
+        if (checkOrientation() == Configuration.ORIENTATION_PORTRAIT &&
+            viewModel.currentRecyclerView.value == 0 ||
+            checkOrientation() ==
+            Configuration.ORIENTATION_LANDSCAPE &&
+            viewModel.currentRecyclerView.value == 0
+        ) {
+            linearLayoutManager = LinearLayoutManager(context)
+            binding?.movieRecyclerView?.layoutManager = linearLayoutManager
+            binding?.movieRecyclerView?.adapter = movieListLinealAdapter
+        }
 
-        binding?.movieRecyclerView?.layoutManager = linearLayoutManager
-        binding?.movieRecyclerView?.adapter = movieListLinealAdapter
+        if (checkOrientation() ==
+            Configuration.ORIENTATION_PORTRAIT &&
+            viewModel.currentRecyclerView.value == 1 ||
+            checkOrientation() ==
+            Configuration.ORIENTATION_LANDSCAPE &&
+            viewModel.currentRecyclerView.value == 1
+        ) {
+            gridLayoutManager = if (checkOrientation() == Configuration.ORIENTATION_PORTRAIT)
+                GridLayoutManager(context, 3)
+            else
+                GridLayoutManager(context, 5)
+
+            binding?.movieRecyclerView?.layoutManager = gridLayoutManager
+            binding?.movieRecyclerView?.adapter = movieListLinealAdapter
+        }
 
         movieListLinealAdapter.setMovies(viewModel.getLoaded())
 
@@ -83,6 +120,7 @@ class MoviesFragment : Fragment() {
         })
         addPagination()
     }
+
 
     private fun addPagination() {
         binding?.movieRecyclerView?.addOnScrollListener(object : PaginationScrollListener() {
@@ -96,7 +134,6 @@ class MoviesFragment : Fragment() {
         if (movieListLinealAdapter.currentType == MovieListLinealAdapter.Type.LIST) {
             movieListLinealAdapter.toggleType()
             if (gridLayoutManager == null) {
-
                 gridLayoutManager = when (resources.configuration.orientation) {
                     Configuration.ORIENTATION_PORTRAIT ->
                         GridLayoutManager(context, 3)
@@ -107,6 +144,7 @@ class MoviesFragment : Fragment() {
             }
             binding?.movieRecyclerView?.layoutManager = gridLayoutManager
         } else {
+
             movieListLinealAdapter.toggleType()
             if (linearLayoutManager == null) {
                 linearLayoutManager = LinearLayoutManager(context)
@@ -115,6 +153,16 @@ class MoviesFragment : Fragment() {
         }
     }
 
+    private fun checkOrientation(): Int {
+        return when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_PORTRAIT -> Configuration.ORIENTATION_PORTRAIT
+            Configuration.ORIENTATION_LANDSCAPE -> Configuration.ORIENTATION_LANDSCAPE
+
+            else -> Configuration.ORIENTATION_PORTRAIT
+        }
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         linearLayoutManager = null
@@ -122,8 +170,6 @@ class MoviesFragment : Fragment() {
     }
 
     companion object {
-        const val MOVIE_FRAGMENT = "MovieFragment"
-
         fun newInstance(): MoviesFragment = MoviesFragment()
     }
 }

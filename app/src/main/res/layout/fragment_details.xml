@@ -5,94 +5,101 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:layout_editor_absoluteX="-1dp"
-    tools:layout_editor_absoluteY="0dp"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    tools:layout_editor_absoluteX="-1dp"
+    tools:layout_editor_absoluteY="0dp">
 
     <ImageView
         android:id="@+id/image_details_fragment"
-        android:layout_width="165dp"
-        android:layout_height="216dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:background="@drawable/rectangle"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintHorizontal_bias="0.583"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.4"
         app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
         app:srcCompat="@drawable/ic_menu_gallery" />
 
     <TextView
         android:id="@+id/movie_name_details_fragment"
-        android:layout_width="365dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rectangle"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/image_details_fragment" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/image_details_fragment"
+        app:layout_constraintTop_toBottomOf="@+id/barrier3"  />
 
     <TextView
         android:id="@+id/movie_average_details_fragment"
-        android:layout_width="356dp"
-        android:layout_height="411dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rectangle"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="@id/movie_name_details_fragment"
+        app:layout_constraintStart_toStartOf="@+id/movie_name_details_fragment"
         app:layout_constraintTop_toBottomOf="@+id/movie_name_details_fragment" />
 
     <TextView
         android:id="@+id/movie_release_details_fragment"
-        android:layout_width="162dp"
-        android:layout_height="22dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rectangle"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/movie_popularity_details_fragment" />
+        app:layout_constraintEnd_toEndOf="@id/movie_rate_details_fragment"
+        app:layout_constraintStart_toStartOf="@+id/movie_rate_details_fragment"
+        app:layout_constraintTop_toBottomOf="@+id/movie_rate_details_fragment" />
 
     <TextView
         android:id="@+id/movie_rate_details_fragment"
-        android:layout_width="92dp"
-        android:layout_height="25dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rectangle"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/movie_release_details_fragment" />
+
+        app:layout_constraintEnd_toEndOf="@id/movie_popularity_details_fragment"
+        app:layout_constraintStart_toStartOf="@+id/movie_popularity_details_fragment"
+        app:layout_constraintTop_toBottomOf="@+id/movie_popularity_details_fragment" />
 
     <TextView
         android:id="@+id/movie_original_language_details_fragment"
-        android:layout_width="173dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="35dp"
         android:background="@drawable/rectangle"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/posterBarrier"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/movie_popularity_details_fragment"
-        android:layout_width="133dp"
-        android:layout_height="25dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rectangle"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="@id/movie_original_language_details_fragment"
+        app:layout_constraintStart_toStartOf="@+id/movie_original_language_details_fragment"
         app:layout_constraintTop_toBottomOf="@+id/movie_original_language_details_fragment" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="189dp" />
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/posterBarrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="image_details_fragment"
+        tools:layout_editor_absoluteX="173dp" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="4dp" />
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="image_details_fragment" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

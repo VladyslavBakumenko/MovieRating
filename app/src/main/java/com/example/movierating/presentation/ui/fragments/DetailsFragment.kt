@@ -71,7 +71,6 @@ class DetailsFragment : Fragment() {
     }
 
     companion object {
-        const val DETAILS_FRAGMENT = "DetailsFragment"
         const val CURRENT_MOVIE = "current_movie"
 
         fun newInstance(movieResult: MovieResult): DetailsFragment {

@@ -11,70 +11,81 @@
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
-
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="147dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_movie_name_lineal"
-            android:layout_width="234dp"
-            android:layout_height="21dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/rectangle"
-            app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toBottomOf="@+id/image_movie_item_lineal" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/image_movie_item_lineal"
+            app:layout_constraintTop_toBottomOf="@+id/barrier6"  />
 
         <ImageView
             android:id="@+id/image_movie_item_lineal"
-            android:layout_width="156dp"
-            android:layout_height="107dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/rectangle"
-            app:layout_constraintStart_toStartOf="@+id/guideline6"
+            app:layout_constraintHeight_percent="0.8"
+            app:layout_constraintWidth_percent="0.4"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_launcher_background" />
 
         <TextView
             android:id="@+id/tv_movie_description_lineal"
-            android:layout_width="177dp"
-            android:layout_height="87dp"
-            android:layout_marginStart="168dp"
-            android:layout_marginTop="4dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="@drawable/rectangle"
             android:ellipsize="end"
-            android:maxLines="4"
-            app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toBottomOf="@+id/tv_movie_rate_lineal" />
+            android:maxLines="3"
+            app:layout_constraintEnd_toEndOf="@+id/tv_movie_relise_lineal"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_movie_relise_lineal"
+            app:layout_constraintTop_toBottomOf="@+id/tv_movie_relise_lineal" />
 
         <TextView
             android:id="@+id/tv_movie_rate_lineal"
-            android:layout_width="98dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="168dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/rectangle"
-            app:layout_constraintStart_toStartOf="@+id/guideline6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/barrier4"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_movie_relise_lineal"
-            android:layout_width="100dp"
-            android:layout_height="21dp"
-            android:layout_marginStart="244dp"
-            android:layout_marginTop="4dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="@drawable/rectangle"
-            app:layout_constraintStart_toStartOf="@+id/tv_movie_name_lineal"
-            app:layout_constraintTop_toBottomOf="@+id/tv_movie_description_lineal" />
+            app:layout_constraintEnd_toEndOf="@+id/tv_movie_rate_lineal"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_movie_rate_lineal"
+            app:layout_constraintTop_toBottomOf="@+id/tv_movie_rate_lineal" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline6"
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="3dp" />
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="image_movie_item_lineal"
+            tools:layout_editor_absoluteX="157dp" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="image_movie_item_lineal" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

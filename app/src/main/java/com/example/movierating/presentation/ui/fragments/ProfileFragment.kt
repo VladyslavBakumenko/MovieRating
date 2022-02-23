@@ -43,7 +43,6 @@ class ProfileFragment : Fragment() {
     }
 
     companion object {
-        const val PROFILE_FRAGMENT = "ProfileFragment"
 
         fun newInstance(intent: Intent): ProfileFragment {
             val fragment = ProfileFragment()

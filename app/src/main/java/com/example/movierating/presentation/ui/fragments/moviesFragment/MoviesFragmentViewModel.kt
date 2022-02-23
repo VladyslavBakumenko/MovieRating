@@ -1,6 +1,5 @@
 package com.example.movierating.presentation.ui.fragments.moviesFragment
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +9,6 @@ import com.example.movierating.data.repositorys.movieRatingRepository.MovieRatin
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,28 +21,43 @@ class MoviesFragmentViewModel @Inject constructor
     val movies: LiveData<List<MovieResult>?>
         get() = _movies
 
+    private val _networkError = MutableLiveData<Boolean>()
+    val networkError: LiveData<Boolean>
+        get() = _networkError
+
+    private val _currentRecyclerView = MutableLiveData<Int>()
+    val currentRecyclerView: LiveData<Int>
+        get() = _currentRecyclerView
+
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     fun loadData(page: Int) {
-        coroutineScope.launch {
 
-            safeApiCall({ movieRepository.loadData(page) },
-                {
-                    it?.let {
-                        loadedMovies.addAll(it)
-                        _movies.postValue(it)
-                    }
-                }, {
-                    Log.d("dfdgfgfggdg", "went wrong")
-                })
-        }
+        safeApiCall({ movieRepository.loadData(page) },
+            {
+                it?.let {
+                    loadedMovies.addAll(it)
+                    _movies.postValue(it)
+                }
+            }, {
+                _networkError.value = true
+            })
+    }
+
+
+    fun checkLastRecyclerView() {
+        if (_currentRecyclerView.value == 0) _currentRecyclerView.value = 1
+        else _currentRecyclerView.value = 0
+    }
+
+    fun setDefaultValue() {
+        _currentRecyclerView.value = 0
     }
 
 
     fun getLoaded(): List<MovieResult> {
         return loadedMovies.toList()
     }
-
 
 }
