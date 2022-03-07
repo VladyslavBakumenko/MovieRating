@@ -3,18 +3,24 @@ package com.example.movierating.presentation.ui.fragments.moviesFragment
 import PaginationScrollListener
 import android.content.res.Configuration
 import android.os.Bundle
+import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierating.R
 import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 import com.example.movierating.databinding.FragmentMoviesBinding
+import com.example.movierating.databinding.LinealMovieItemBinding
 import com.example.movierating.presentation.ui.fragments.DetailsFragment
 import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +37,15 @@ class MoviesFragment : Fragment() {
 
     private var linearLayoutManager: LinearLayoutManager? = null
     private var gridLayoutManager: GridLayoutManager? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val animation = TransitionInflater.from(requireContext()).inflateTransition(
+            android.R.transition.move
+        )
+        sharedElementEnterTransition = animation
+        sharedElementReturnTransition = animation
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,8 +72,8 @@ class MoviesFragment : Fragment() {
                 ).show()
             }
         })
-
         viewModel.loadData(1)
+
 
         binding?.changedFormat?.setOnClickListener {
             changeRecyclerView()
@@ -67,15 +82,15 @@ class MoviesFragment : Fragment() {
 
         movieListLinealAdapter.onMovieClickListener =
             object : MovieListLinealAdapter.OnMovieClickListener {
-                override fun onMovieClick(
-                    movieResult: MovieResult
-                ) {
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .addToBackStack(null)
-                        .add(
-                            R.id.fragmentContainerView,
-                            DetailsFragment.newInstance(movieResult)
-                        ).commit()
+                override fun onMovieClick(movieResult: MovieResult, imageView: ImageView) {
+
+                    findNavController().navigate(
+
+                        MoviesFragmentDirections.actionMoviesFragmentToDetailsFragment(movieResult),
+                        FragmentNavigatorExtras(
+                            imageView to "details_fragment_transition"
+                        )
+                    )
                 }
             }
 

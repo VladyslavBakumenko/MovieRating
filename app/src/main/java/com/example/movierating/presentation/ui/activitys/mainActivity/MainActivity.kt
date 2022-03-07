@@ -33,16 +33,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_dialog_dialer);
 
         observeViewModel()
-        if (savedInstanceState == null) {
+/*        if (savedInstanceState == null) {
             launchMoviesFragment()
-        }
+        }*/
 
         binding.navigationView.itemIconTintList
         binding.navigationView.setNavigationItemSelectedListener(this)
     }
 
 
-    private fun launchMoviesFragment() {
+/*    private fun launchMoviesFragment() {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.fragmentContainerView,
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 MoviesFragment::class.simpleName
             )
             .commit()
-    }
+    }*/
 
     private fun launchProfileFragment() {
         supportFragmentManager.beginTransaction()

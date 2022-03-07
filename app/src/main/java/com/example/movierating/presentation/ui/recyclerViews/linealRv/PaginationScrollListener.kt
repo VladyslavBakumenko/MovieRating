@@ -1,3 +1,4 @@
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,7 @@ abstract class PaginationScrollListener :
         if (!isLoading && (totalItemCount - visibleItemCount) <= (firstVisibleItemPosition + visibleThreshold)) {
             currentPage++
             loadMoreItems(currentPage)
+            Log.d("ffffdfdffd", "load")
             isLoading = true
 
         }

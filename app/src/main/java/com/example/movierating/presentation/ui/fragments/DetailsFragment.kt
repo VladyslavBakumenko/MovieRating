@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.example.movierating.data.internet.api.MovieApi
 import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
 import com.example.movierating.databinding.FragmentDetailsBinding
@@ -15,13 +16,13 @@ import com.squareup.picasso.Picasso
 class DetailsFragment : Fragment() {
 
     private var binding: FragmentDetailsBinding? = null
+    private val args by navArgs<DetailsFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        parseArgs()
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding?.root
     }
@@ -32,26 +33,22 @@ class DetailsFragment : Fragment() {
     }
 
 
-    private fun parseArgs(): MovieResult {
-        return requireArguments()
-            .getParcelable<MovieResult>(MainActivity.MOVIE_RESULT) as MovieResult
-    }
+
 
     @SuppressLint("SetTextI18n")
     private fun setFields() {
 
         binding?.let {
-            val args = parseArgs()
 
-            Picasso.get().load("${MovieApi.IMAGE_TMDB_BEST_QUALITY}${args.posterPath}")
+            Picasso.get().load("${MovieApi.IMAGE_TMDB_BEST_QUALITY}${args.movie.posterPath}")
                 .into(it.imageDetailsFragment)
-            it.movieNameDetailsFragment.text = "Title: ${args.title}"
-            it.movieAverageDetailsFragment.text = "Description: ${args.overview}"
-            it.movieReleaseDetailsFragment.text = "Realise: ${args.releaseDate}"
-            it.movieRateDetailsFragment.text = "Rate: ${args.voteAverage}"
+            it.movieNameDetailsFragment.text = "Title: ${args.movie.title}"
+            it.movieAverageDetailsFragment.text = "Description: ${args.movie.overview}"
+            it.movieReleaseDetailsFragment.text = "Realise: ${args.movie.releaseDate}"
+            it.movieRateDetailsFragment.text = "Rate: ${args.movie.voteAverage}"
             it.movieOriginalLanguageDetailsFragment.text =
-                "Original language: ${args.originalLanguage}"
-            it.moviePopularityDetailsFragment.text = "Popularity: ${args.popularity}"
+                "Original language: ${args.movie.originalLanguage}"
+            it.moviePopularityDetailsFragment.text = "Popularity: ${args.movie.popularity}"
         }
 
     }
@@ -79,7 +76,9 @@ class DetailsFragment : Fragment() {
             args.putParcelable(MainActivity.MOVIE_RESULT, movieResult)
 
             fragment.arguments = args
+
             return fragment
+
         }
     }
 }

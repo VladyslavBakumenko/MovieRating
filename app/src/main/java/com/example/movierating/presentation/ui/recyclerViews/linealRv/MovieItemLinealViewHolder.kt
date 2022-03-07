@@ -32,7 +32,7 @@ class MovieItemLinealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             tvMovieRate.text = "Rate: ${voteAverage.toString()}"
 
             itemView.setOnClickListener {
-                onMovieClickListener?.onMovieClick(movieResult)
+                onMovieClickListener?.onMovieClick(movieResult, imageMovie)
             }
         }
     }

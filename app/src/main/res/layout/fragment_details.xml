@@ -21,6 +21,7 @@
         app:layout_constraintWidth_percent="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:transitionName="details_fragment_transition"
 
         app:srcCompat="@drawable/ic_menu_gallery" />
 

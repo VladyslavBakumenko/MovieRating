@@ -10,8 +10,7 @@
     android:layout_marginBottom="4dp"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
-    app:cardUseCompatPadding="true"
-    >
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,7 +23,7 @@
             android:background="@drawable/rectangle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/image_movie_item_lineal"
-            app:layout_constraintTop_toBottomOf="@+id/barrier6"  />
+            app:layout_constraintTop_toBottomOf="@+id/barrier6" />
 
         <ImageView
             android:id="@+id/image_movie_item_lineal"
@@ -33,10 +32,13 @@
             android:layout_marginTop="4dp"
             android:background="@drawable/rectangle"
             app:layout_constraintHeight_percent="0.8"
-            app:layout_constraintWidth_percent="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_launcher_background" />
+            app:layout_constraintWidth_percent="0.4"
+            app:srcCompat="@drawable/ic_launcher_background"
+            android:transitionName="details_fragment_transition"
+
+            />
 
         <TextView
             android:id="@+id/tv_movie_description_lineal"

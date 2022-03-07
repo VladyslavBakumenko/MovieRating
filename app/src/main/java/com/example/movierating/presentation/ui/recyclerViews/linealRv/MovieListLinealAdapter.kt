@@ -3,6 +3,7 @@ package com.example.movierating.presentation.ui.recyclerViews.linealRv
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.R
 import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
@@ -78,7 +79,7 @@ class MovieListLinealAdapter() :
     }
 
     interface OnMovieClickListener {
-        fun onMovieClick(movieResult: MovieResult)
+        fun onMovieClick(movieResult: MovieResult, imageView: ImageView)
     }
 }
 

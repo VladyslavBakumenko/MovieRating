@@ -29,7 +29,7 @@ class MovieItemTableViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             nameMovie.text = movieResult.originalTitle
 
             itemView.setOnClickListener {
-                onMovieClickListener?.onMovieClick(movieResult)
+                onMovieClickListener?.onMovieClick(movieResult, imageMovie)
             }
         }
     }
