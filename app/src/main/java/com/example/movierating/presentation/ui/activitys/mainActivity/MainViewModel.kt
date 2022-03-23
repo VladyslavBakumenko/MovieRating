@@ -61,4 +61,5 @@ class MainViewModel @Inject constructor(
             remove(SharedPreferencesManager.REQUEST_TOKEN_FOR_CREATE_SESSION)
         }
     }
+
 }

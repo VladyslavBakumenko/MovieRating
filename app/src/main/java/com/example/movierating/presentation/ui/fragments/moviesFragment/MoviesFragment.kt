@@ -85,7 +85,6 @@ class MoviesFragment : Fragment() {
                 override fun onMovieClick(movieResult: MovieResult, imageView: ImageView) {
 
                     findNavController().navigate(
-
                         MoviesFragmentDirections.actionMoviesFragmentToDetailsFragment(movieResult),
                         FragmentNavigatorExtras(
                             imageView to "details_fragment_transition"
@@ -93,7 +92,6 @@ class MoviesFragment : Fragment() {
                     )
                 }
             }
-
         setUpRecyclerView()
     }
 

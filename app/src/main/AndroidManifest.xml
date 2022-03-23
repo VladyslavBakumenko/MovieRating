@@ -3,6 +3,8 @@
     package="com.example.movierating">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
 
     <application
         android:name=".data.hilt.MyApplication"
@@ -31,6 +33,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="com.example.movierating"
+            android:name=".data.ContactListProvider"
+            android:exported="true">
+        </provider>
 
 
     </application>

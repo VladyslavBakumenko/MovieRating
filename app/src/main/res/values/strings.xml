@@ -23,6 +23,7 @@
     <string name="login_error">Не вірна пара логін-пароль</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="LogOut">Вийти</string>
+    <string name="getContacts">Отримати контакти</string>
     <string name="Profile">Профіль</string>
     <string name="moviename">MovieName</string>
     <string name="change_format">Change format</string>
