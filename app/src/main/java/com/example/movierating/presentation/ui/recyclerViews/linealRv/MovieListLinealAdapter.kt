@@ -53,6 +53,7 @@ class MovieListLinealAdapter() :
         } else if (holder is MovieItemTableViewHolder) {
             holder.bind(movieDataList[position], onMovieClickListener)
         }
+
     }
 
     fun toggleType() {

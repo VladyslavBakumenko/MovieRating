@@ -1,5 +1,6 @@
 package com.example.movierating.data.hilt.di
 
+import com.example.movierating.presentation.ui.recyclerViews.cuntactsRv.ContactsListAdapter
 import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
 import com.example.movierating.presentation.ui.recyclerViews.tableRv.MovieListTableAdapter
 import dagger.Module
@@ -19,4 +20,8 @@ class RecyclerViewAdaptersModule {
     @Provides
     @Singleton
     fun provideMovieListTableAdapter(): MovieListTableAdapter = MovieListTableAdapter()
+
+    @Provides
+    @Singleton
+    fun provideContactListAdapter(): ContactsListAdapter = ContactsListAdapter()
 }

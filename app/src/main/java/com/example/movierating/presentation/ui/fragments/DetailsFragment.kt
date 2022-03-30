@@ -33,8 +33,6 @@ class DetailsFragment : Fragment() {
     }
 
 
-
-
     @SuppressLint("SetTextI18n")
     private fun setFields() {
 

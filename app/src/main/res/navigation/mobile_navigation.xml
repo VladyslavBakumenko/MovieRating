@@ -12,6 +12,9 @@
             android:id="@+id/action_moviesFragment_to_detailsFragment"
             app:destination="@id/detailsFragment"
             app:popUpTo="@id/moviesFragment" />
+        <action
+            android:id="@+id/action_moviesFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
@@ -20,5 +23,21 @@
         <argument
             android:name="movie"
             app:argType="com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.example.movierating.presentation.ui.fragments.ContactsFragment"
+        android:label="ContactsFragment" >
+        <action
+            android:id="@+id/action_contactsFragment_to_editContactFragment"
+            app:destination="@id/editContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editContactFragment"
+        android:name="com.example.movierating.presentation.ui.fragments.EditContactFragment"
+        android:label="EditContactFragment" >
+        <argument
+            android:name="contactInfo"
+            app:argType="com.example.movierating.data.ContactInfo" />
     </fragment>
 </navigation>

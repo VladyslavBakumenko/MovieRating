@@ -1,26 +1,25 @@
 package com.example.movierating.presentation.ui.activitys.mainActivity
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.example.movierating.R
-import com.example.movierating.data.ContactInfo
+import com.example.movierating.data.MyWorker
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
+import com.example.movierating.presentation.ui.fragments.ContactsFragment
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
 import com.example.movierating.utils.createToast
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Observer
 
 
 @AndroidEntryPoint
@@ -44,36 +43,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    private fun checkContactPermission() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.READ_CONTACTS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.READ_CONTACTS), READ_CONTACTS_CODE
-            )
-        } else {
-            Log.d("fdfdfd", "${getContacts()}")
-            getContacts()
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == READ_CONTACTS_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getContacts()
-            }
-        }
-    }
 
     private fun launchProfileFragment() {
         supportFragmentManager.beginTransaction()
@@ -115,12 +84,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.getContacts -> {
-                Log.d("fdfdfdf", "tesst")
-                checkContactPermission()
+                binding.drawerLayout.closeDrawer(Gravity.LEFT, true)
+                supportFragmentManager.beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.fragmentContainerView, ContactsFragment.newInstance())
+                    .commit()
             }
         }
-
-
         return result
     }
 
@@ -145,42 +115,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         else super.onBackPressed()
     }
 
-    @SuppressLint("Range")
-    private fun getContacts(): String? {
-        val contacts = contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            null,
-            null,
-            null,
-            null,
-            null
-        )
 
-        val contactList: MutableList<ContactInfo> = ArrayList()
-
-        contacts?.let {
-            while (it.moveToNext()) {
-
-                val name = contacts.getString(
-                    contacts.getColumnIndex(
-                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
-                    )
-                )
-
-                val number =
-                    contacts.
-                    getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-
-                val contact = ContactInfo(name, number)
-                contactList.add(contact)
-            }
-        }
-
-        return null
-    }
 
     companion object {
         const val MOVIE_RESULT = "movie_result"
-        const val READ_CONTACTS_CODE = 1
+        const val PERMISSION_CODE = 1
+
     }
 }
