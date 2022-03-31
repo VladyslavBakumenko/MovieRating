@@ -1,9 +1,9 @@
 package com.example.movierating.data
 
+import android.annotation.SuppressLint
 import android.content.ContentProviderOperation
 import android.content.Context
 import android.provider.ContactsContract
-import android.util.Log
 import androidx.work.*
 
 
@@ -15,14 +15,23 @@ class MyWorker(
 
     override fun doWork(): Result {
 
-        val contactName = inputData.getString(CONTACT_NAME).toString()
-        val contactNumber = inputData.getString(CONTACT_NUMBER).toString()
-        val contactId = inputData.getString(CONTACT_ID).toString()
+        val getContactsMode : Boolean = inputData.getString(CONTACT_ID).isNullOrEmpty()
+        var resultData = workDataOf(Pair("EMPTY", null))
 
-        editContact(contactName, contactNumber, contactId)
 
-        return Result.success()
+        if (getContactsMode) resultData = workDataOf(Pair(CONTACTS_LIST, getContacts()))
+
+         else {
+            val contactName = inputData.getString(CONTACT_NAME).toString()
+            val contactNumber = inputData.getString(CONTACT_NUMBER).toString()
+            val contactId = inputData.getString(CONTACT_ID).toString()
+
+            editContact(contactName, contactNumber, contactId)
+        }
+
+        return Result.success(resultData)
     }
+
 
 
     private fun editContact(contactName: String, contactNumber: String, contactId: String) {
@@ -57,6 +66,45 @@ class MyWorker(
         context.contentResolver.applyBatch(ContactsContract.AUTHORITY, cpo)
     }
 
+    @SuppressLint("Range")
+    private fun getContacts(): List<ContactInfo> {
+        val projection = arrayOf(
+            ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.NUMBER
+        )
+        val cursor =
+            context.contentResolver.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null
+            )
+
+        val contactsList = mutableListOf<ContactInfo>()
+
+        if (cursor != null && cursor.count > 0) {
+            while (cursor.moveToNext()) {
+
+                val id =
+                    cursor.getString(
+                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)
+                    )
+
+                val name =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                val mobileNumber =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+
+
+                contactsList.add(ContactInfo(name, mobileNumber, id))
+            }
+            cursor.close()
+        }
+        return contactsList
+    }
+
 
     companion object {
         const val WORK_NAME = "work_name"
@@ -64,12 +112,13 @@ class MyWorker(
         private const val CONTACT_NAME = "contact_name"
         private const val CONTACT_NUMBER = "contact_number"
         private const val CONTACT_ID = "contact_id"
+        private const val CONTACTS_LIST = "contacts_list"
 
 
         fun makeRequest(
-            contactName: String,
-            contactNumber: String,
-            contactId: String
+            contactName: String?,
+            contactNumber: String?,
+            contactId: String?
         ): OneTimeWorkRequest {
             val contactInputData = Data.Builder()
                 .putString(CONTACT_NAME, contactName)

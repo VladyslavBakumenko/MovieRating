@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/contactsFragment"
-        android:name="com.example.movierating.presentation.ui.fragments.ContactsFragment"
+        android:name="com.example.movierating.presentation.ui.fragments.contactsFragments.ContactsFragment"
         android:label="ContactsFragment" >
         <action
             android:id="@+id/action_contactsFragment_to_editContactFragment"
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/editContactFragment"
-        android:name="com.example.movierating.presentation.ui.fragments.EditContactFragment"
+        android:name="com.example.movierating.presentation.ui.fragments.contactsFragments.EditContactFragment"
         android:label="EditContactFragment" >
         <argument
             android:name="contactInfo"
