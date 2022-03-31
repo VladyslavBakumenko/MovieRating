@@ -19,9 +19,6 @@ class EditContactFragment : Fragment() {
 
     private var binding: FragmentEditContactBinding? = null
     private lateinit var contactInfo: ContactInfo
-    private val viewModel: ContactsFragmentsViewModel by viewModels()
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +38,7 @@ class EditContactFragment : Fragment() {
         binding?.saveButton?.setOnClickListener {
             val contactName = binding?.etName?.text.toString()
             val contactNumber = binding?.etNumber?.text.toString()
-            startService(contactName, contactNumber, contactInfo.id)
+            startService(contactName, contactNumber, contactInfo.id.toString())
         }
     }
 
@@ -51,7 +48,7 @@ class EditContactFragment : Fragment() {
         workManager.enqueueUniqueWork(
             MyWorker.WORK_NAME,
             ExistingWorkPolicy.KEEP,
-            MyWorker.makeRequest(contactName, contactNumber, contactId)
+            MyWorker.makeRequestEditContacts(contactName, contactNumber, contactId)
         )
     }
 

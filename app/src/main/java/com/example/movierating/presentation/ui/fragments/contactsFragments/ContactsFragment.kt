@@ -2,6 +2,7 @@ package com.example.movierating.presentation.ui.fragments.contactsFragments
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.movierating.R
 import com.example.movierating.data.ContactInfo
@@ -77,21 +79,33 @@ class ContactsFragment : Fragment() {
         workManager.enqueueUniqueWork(
             MyWorker.WORK_NAME,
             ExistingWorkPolicy.KEEP,
-            MyWorker.makeRequest(null, null, null)
+            MyWorker.makeRequestGetContacts()
         )
 
-        val oneTimeRequest = MyWorker.makeRequest("contacts_list", "contacts_list", "contacts_list")
-
+        val oneTimeRequest = MyWorker.makeRequestGetContacts()
 
         workManager.getWorkInfoByIdLiveData(oneTimeRequest.id)
             .observe(viewLifecycleOwner, Observer {
-                //val contactList = it.outputData
-                //setUpRecyclerView(contactList)
+               // Log.d("ssssss", "test")
+
+                if (it.state == WorkInfo.State.SUCCEEDED) {
+                    //Log.d("ssssss", "test")
+                    val contactsList = mutableListOf<ContactInfo>()
+
+                    for (i in 0..it.outputData.getInt(MyWorker.CONTACTS_LIST_SIZE, 0)) {
+                        val contactName = it.outputData.getString(MyWorker.CONTACT_NAME + i)
+                        val contactNumber = it.outputData.getString(MyWorker.CONTACT_NUMBER + i)
+                        val contactId = it.outputData.getString(MyWorker.CONTACT_ID + i)
+
+                        val contact = ContactInfo(contactName, contactNumber, contactId)
+                        contactsList.add(contact)
+
+                        setUpRecyclerView(contactsList)
+                    }
+                }
+
             })
 
-
-/*        val test =  workManager.getWorkInfoById(oneTimeRequest.id).get().outputData.getString("contacts_list")
-        Log.d("fdffd", test.toString())*/
     }
 
     private fun setContactListener() {

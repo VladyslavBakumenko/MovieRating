@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentProviderOperation
 import android.content.Context
 import android.provider.ContactsContract
+import android.util.Log
 import androidx.work.*
 
 
@@ -14,14 +15,13 @@ class MyWorker(
     Worker(context, workerParameters) {
 
     override fun doWork(): Result {
+        val getContactsMode: Boolean = inputData.getString(CONTACT_ID).isNullOrEmpty()
+        //var resultData = workDataOf(Pair("EMPTY", null))
+        var outputData = Data.Builder().build()
 
-        val getContactsMode : Boolean = inputData.getString(CONTACT_ID).isNullOrEmpty()
-        var resultData = workDataOf(Pair("EMPTY", null))
 
-
-        if (getContactsMode) resultData = workDataOf(Pair(CONTACTS_LIST, getContacts()))
-
-         else {
+        if (getContactsMode) outputData = convertOutputData()
+        else {
             val contactName = inputData.getString(CONTACT_NAME).toString()
             val contactNumber = inputData.getString(CONTACT_NUMBER).toString()
             val contactId = inputData.getString(CONTACT_ID).toString()
@@ -29,9 +29,21 @@ class MyWorker(
             editContact(contactName, contactNumber, contactId)
         }
 
-        return Result.success(resultData)
+        return Result.success(outputData)
     }
 
+    private fun convertOutputData(): Data {
+        val outputData = Data.Builder()
+        val resultData = getContacts()
+
+        outputData.putString(CONTACTS_LIST_SIZE, resultData.size.toString())
+        resultData.forEachIndexed { index, contactInfo ->
+            outputData.putString(CONTACT_NAME + index.toString(), contactInfo.name)
+            outputData.putString(CONTACT_NUMBER + index.toString(), contactInfo.number)
+            outputData.putString(CONTACT_ID + index.toString(), contactInfo.id)
+        }
+        return outputData.build()
+    }
 
 
     private fun editContact(contactName: String, contactNumber: String, contactId: String) {
@@ -109,13 +121,14 @@ class MyWorker(
     companion object {
         const val WORK_NAME = "work_name"
 
-        private const val CONTACT_NAME = "contact_name"
-        private const val CONTACT_NUMBER = "contact_number"
-        private const val CONTACT_ID = "contact_id"
-        private const val CONTACTS_LIST = "contacts_list"
+        const val CONTACT_NAME = "contact_name"
+        const val CONTACT_NUMBER = "contact_number"
+        const val CONTACT_ID = "contact_id"
+
+        const val CONTACTS_LIST_SIZE = "contacts_list_size"
 
 
-        fun makeRequest(
+        fun makeRequestEditContacts(
             contactName: String?,
             contactNumber: String?,
             contactId: String?
@@ -124,6 +137,15 @@ class MyWorker(
                 .putString(CONTACT_NAME, contactName)
                 .putString(CONTACT_NUMBER, contactNumber)
                 .putString(CONTACT_ID, contactId)
+                .build()
+
+            return OneTimeWorkRequestBuilder<MyWorker>()
+                .setInputData(contactInputData)
+                .build()
+        }
+
+        fun makeRequestGetContacts(): OneTimeWorkRequest {
+            val contactInputData = Data.Builder()
                 .build()
 
             return OneTimeWorkRequestBuilder<MyWorker>()
