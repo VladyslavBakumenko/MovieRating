@@ -6,14 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.work.ExistingWorkPolicy
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
+import androidx.work.*
 import com.example.movierating.R
 import com.example.movierating.data.ContactInfo
 import com.example.movierating.data.MyWorker
@@ -21,6 +20,11 @@ import com.example.movierating.databinding.FragmentContactsBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import com.example.movierating.presentation.ui.recyclerViews.cuntactsRv.ContactsListAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 
@@ -75,37 +79,36 @@ class ContactsFragment : Fragment() {
 
     private fun startService() {
 
+        val oneTimeRequest = MyWorker.makeRequestGetContacts()
         val workManager = WorkManager.getInstance(requireContext())
         workManager.enqueueUniqueWork(
             MyWorker.WORK_NAME,
             ExistingWorkPolicy.KEEP,
-            MyWorker.makeRequestGetContacts()
+            oneTimeRequest
         )
-
-        val oneTimeRequest = MyWorker.makeRequestGetContacts()
 
         workManager.getWorkInfoByIdLiveData(oneTimeRequest.id)
             .observe(viewLifecycleOwner, Observer {
-               // Log.d("ssssss", "test")
 
-                if (it.state == WorkInfo.State.SUCCEEDED) {
-                    //Log.d("ssssss", "test")
-                    val contactsList = mutableListOf<ContactInfo>()
+                if (it.state.isFinished) {
+                    if (it.state == WorkInfo.State.SUCCEEDED) {
+                        val contactsList = mutableListOf<ContactInfo>()
+                        val data = it.outputData
 
-                    for (i in 0..it.outputData.getInt(MyWorker.CONTACTS_LIST_SIZE, 0)) {
-                        val contactName = it.outputData.getString(MyWorker.CONTACT_NAME + i)
-                        val contactNumber = it.outputData.getString(MyWorker.CONTACT_NUMBER + i)
-                        val contactId = it.outputData.getString(MyWorker.CONTACT_ID + i)
+                        val countOfContacts = data.getInt(MyWorker.CONTACTS_LIST_SIZE, 0)
 
-                        val contact = ContactInfo(contactName, contactNumber, contactId)
-                        contactsList.add(contact)
+                        for (i in 0..countOfContacts) {
+                            val contactName = data.getString(MyWorker.CONTACT_NAME + i)
+                            val contactNumber = data.getString(MyWorker.CONTACT_NUMBER + i)
+                            val contactId = data.getString(MyWorker.CONTACT_ID + i)
 
-                        setUpRecyclerView(contactsList)
+                            val contact = ContactInfo(contactName, contactNumber, contactId)
+                            contactsList.add(contact)
+                            setUpRecyclerView(contactsList)
+                        }
                     }
                 }
-
             })
-
     }
 
     private fun setContactListener() {

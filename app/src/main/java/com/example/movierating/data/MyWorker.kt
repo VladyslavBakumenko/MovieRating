@@ -12,13 +12,12 @@ class MyWorker(
     private val context: Context,
     private val workerParameters: WorkerParameters
 ) :
-    Worker(context, workerParameters) {
+    CoroutineWorker(context, workerParameters) {
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         val getContactsMode: Boolean = inputData.getString(CONTACT_ID).isNullOrEmpty()
-        //var resultData = workDataOf(Pair("EMPTY", null))
-        var outputData = Data.Builder().build()
 
+        var outputData = Data.Builder().build()
 
         if (getContactsMode) outputData = convertOutputData()
         else {
@@ -36,7 +35,8 @@ class MyWorker(
         val outputData = Data.Builder()
         val resultData = getContacts()
 
-        outputData.putString(CONTACTS_LIST_SIZE, resultData.size.toString())
+        outputData.putInt(CONTACTS_LIST_SIZE, resultData.size - 1)
+
         resultData.forEachIndexed { index, contactInfo ->
             outputData.putString(CONTACT_NAME + index.toString(), contactInfo.name)
             outputData.putString(CONTACT_NUMBER + index.toString(), contactInfo.number)
