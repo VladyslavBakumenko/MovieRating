@@ -12,6 +12,10 @@ import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListL
 class ContactsListAdapter: RecyclerView.Adapter<ContactItemViewHolder>() {
 
     var contactsList = listOf<ContactInfo>()
+    set(value) {
+        field = value
+        notifyItemInserted(contactsList.size)
+    }
 
     var onContactClickListener: OnContactClickListener? = null
 

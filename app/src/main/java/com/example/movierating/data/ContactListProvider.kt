@@ -2,23 +2,38 @@ package com.example.movierating.data
 
 import android.content.ContentProvider
 import android.content.ContentValues
+import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
 import android.util.Log
 
-class ContactListProvider: ContentProvider() {
+class ContactListProvider : ContentProvider() {
+
+    private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
+        addURI("com.example.movierating", "movies", 100)
+    }
+
     override fun onCreate(): Boolean {
         return true
     }
 
     override fun query(
-        url: Uri,
-        p1: Array<out String>?,
-        p2: String?,
-        p3: Array<out String>?,
-        p4: String?
+        uri: Uri,
+        projection: Array<out String>?,
+        selection: String?,
+        selectionArgs: Array<out String>?,
+        sortetOrder: String?
     ): Cursor? {
-        Log.d("istFirstTest", "query $url")
+        val code = uriMatcher.match(uri)
+
+        when (code) {
+            GET_SHOP_ITEMS_QUERY -> {
+
+            }
+            else -> {
+                return null
+            }
+        }
         return null
     }
 
@@ -36,5 +51,9 @@ class ContactListProvider: ContentProvider() {
 
     override fun update(p0: Uri, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int {
         TODO("Not yet implemented")
+    }
+
+    companion object {
+        private val GET_SHOP_ITEMS_QUERY = 100
     }
 }

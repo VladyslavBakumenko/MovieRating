@@ -1,6 +1,7 @@
 package com.example.movierating.presentation.ui.activitys.mainActivity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
@@ -8,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.movierating.R
+import com.example.movierating.data.MyForegroundService
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
 import com.example.movierating.presentation.ui.fragments.contactsFragments.ContactsFragment
@@ -30,12 +32,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_dialog_dialer);
-
         observeViewModel()
 
         binding.navigationView.itemIconTintList
         binding.navigationView.setNavigationItemSelectedListener(this)
+        contentProviderTest()
+    }
 
+    private fun contentProviderTest() {
+        contentResolver.query(
+            Uri.parse("content://com.example.movierating/movies") ,
+            null,
+            null,
+            null,
+            null,
+            null,
+        )
     }
 
 
@@ -114,7 +126,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     companion object {
         const val MOVIE_RESULT = "movie_result"
-        const val PERMISSION_CODE = 1
+        const val CONTACTS_RC = 1
 
     }
 }
