@@ -17,7 +17,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import org.greenrobot.eventbus.EventBus
 
 
 class MyForegroundService() : Service() {
@@ -32,7 +31,7 @@ class MyForegroundService() : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         coroutineScope.launch {
             val getContactsMode: Boolean =
-                intent?.getStringExtra(MyWorker.CONTACT_ID).isNullOrEmpty()
+                intent?.getStringExtra(CONTACT_ID).isNullOrEmpty()
 
             if (getContactsMode) {
                 getContacts()
@@ -117,11 +116,18 @@ class MyForegroundService() : Service() {
                     )
 
                 val name =
-                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                    cursor.getString(cursor.getColumnIndex(
+                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
                 val mobileNumber =
-                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                    cursor.getString(cursor.getColumnIndex(
+                        ContactsContract.CommonDataKinds.Phone.NUMBER))
 
-                EventBus.getDefault().post(ContactInfo(name, mobileNumber, id))
+                sendBroadcast(
+                    Intent(ACTION_CONTACTS).putExtra(
+                        CONTACT_KEY,
+                        ContactInfo(name, mobileNumber, id)
+                    )
+                )
             }
             cursor.close()
         }
@@ -168,5 +174,8 @@ class MyForegroundService() : Service() {
         private const val CHANNEL_ID = "channel_id"
         private const val CHANNEL_NAME = "channel_name"
         private const val NOTIFICATION_ID = 8
+
+        const val ACTION_CONTACTS = "action_contacts"
+        const val CONTACT_KEY = "contact_key"
     }
 }

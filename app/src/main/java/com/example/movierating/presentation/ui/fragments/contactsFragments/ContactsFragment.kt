@@ -2,7 +2,6 @@ package com.example.movierating.presentation.ui.fragments.contactsFragments
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,22 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.work.ExistingWorkPolicy
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import com.example.movierating.R
 import com.example.movierating.data.ContactInfo
 import com.example.movierating.data.MyForegroundService
-import com.example.movierating.data.MyWorker
 import com.example.movierating.databinding.FragmentContactsBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import com.example.movierating.presentation.ui.recyclerViews.cuntactsRv.ContactsListAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 
@@ -36,7 +26,6 @@ class ContactsFragment : Fragment() {
 
     private var binding: FragmentContactsBinding? = null
     private val viewModel: ContactsFragmentsViewModel by viewModels()
-    private val contactList = mutableListOf<ContactInfo>()
 
     @Inject
     lateinit var contactsListAdapter: ContactsListAdapter
@@ -52,10 +41,10 @@ class ContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        EventBus.getDefault().register(this)
         viewModel.checkContactsPermission()
         setContactListener()
-
+        setUpRecyclerView()
+        updateContactsListRV()
         viewModel.permissionGranted.observe(viewLifecycleOwner, Observer {
             if (it) {
                 starsService()
@@ -75,9 +64,14 @@ class ContactsFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         val linearLayoutManager = LinearLayoutManager(context)
-        binding?.movieRecyclerView?.layoutManager = linearLayoutManager
-        binding?.movieRecyclerView?.adapter = contactsListAdapter
-       // contactsListAdapter.contactsList = contactList
+        binding?.contactsRecyclerView?.layoutManager = linearLayoutManager
+        binding?.contactsRecyclerView?.adapter = contactsListAdapter
+    }
+
+    private fun updateContactsListRV() {
+        viewModel.contacts.observe(viewLifecycleOwner, Observer {
+            contactsListAdapter.contactsList = it
+        })
     }
 
     private fun setContactListener() {
@@ -119,18 +113,7 @@ class ContactsFragment : Fragment() {
                 requireContext()
             )
         )
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
-    fun onEvent(contactInfo: ContactInfo) {
-        if(contactList.size == 0) setUpRecyclerView()
-        contactList.add(contactInfo)
-        contactsListAdapter.contactsList = contactList
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
+        viewModel.getContactsFromService()
     }
 
     companion object {
