@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierating.R
 import com.example.movierating.data.ContactInfo
@@ -25,7 +25,8 @@ import javax.inject.Inject
 class ContactsFragment : Fragment() {
 
     private var binding: FragmentContactsBinding? = null
-    private val viewModel: ContactsFragmentsViewModel by viewModels()
+   // private val viewModel: ContactsFragmentsViewModel by viewModels()
+    private lateinit var model: ContactsFragmentsViewModel
 
     @Inject
     lateinit var contactsListAdapter: ContactsListAdapter
@@ -41,11 +42,12 @@ class ContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.checkContactsPermission()
+        model = ViewModelProvider(this)[ContactsFragmentsViewModel::class.java]
+        model.checkContactsPermission()
         setContactListener()
         setUpRecyclerView()
         updateContactsListRV()
-        viewModel.permissionGranted.observe(viewLifecycleOwner, Observer {
+        model.permissionGranted.observe(viewLifecycleOwner, Observer {
             if (it) {
                 starsService()
             } else getPermission()
@@ -69,7 +71,7 @@ class ContactsFragment : Fragment() {
     }
 
     private fun updateContactsListRV() {
-        viewModel.contacts.observe(viewLifecycleOwner, Observer {
+        model.contacts.observe(viewLifecycleOwner, Observer {
             contactsListAdapter.contactsList = it
         })
     }
@@ -113,7 +115,12 @@ class ContactsFragment : Fragment() {
                 requireContext()
             )
         )
-        viewModel.getContactsFromService()
+        model.getContactsFromService()
+    }
+
+    override fun onDestroy() {
+        model.loadedContacts.clear()
+        super.onDestroy()
     }
 
     companion object {

@@ -17,5 +17,4 @@ class DataModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context)
             : AppDataBase = AppDataBase.getInstance(context)
-
 }

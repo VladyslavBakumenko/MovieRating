@@ -83,6 +83,8 @@ dependencies {
 
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
     implementation("org.greenrobot:eventbus:3.3.1")
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
 
 
 

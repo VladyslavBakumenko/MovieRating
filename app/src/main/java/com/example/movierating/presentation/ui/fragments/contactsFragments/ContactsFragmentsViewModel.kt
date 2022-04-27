@@ -21,7 +21,7 @@ import javax.inject.Inject
 class ContactsFragmentsViewModel @Inject constructor(private val application: Application) :
     ViewModel() {
 
-    private val loadedContacts = mutableListOf<ContactInfo>()
+    val loadedContacts = mutableListOf<ContactInfo>()
 
     private val _contacts = MutableLiveData<List<ContactInfo>>()
     val contacts: LiveData<List<ContactInfo>>
@@ -34,8 +34,7 @@ class ContactsFragmentsViewModel @Inject constructor(private val application: Ap
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val contact =
-                intent.
-                getParcelableExtra<ContactInfo>(MyForegroundService.CONTACT_KEY) as ContactInfo
+                intent.getParcelableExtra<ContactInfo>(MyForegroundService.CONTACT_KEY) as ContactInfo
             loadedContacts.add(contact)
             _contacts.value = loadedContacts
         }
@@ -60,6 +59,8 @@ class ContactsFragmentsViewModel @Inject constructor(private val application: Ap
 
     override fun onCleared() {
         super.onCleared()
+        Log.d("ffdffdfdfdf", "clear")
+        loadedContacts.clear()
         application.unregisterReceiver(broadcastReceiver)
     }
 }
