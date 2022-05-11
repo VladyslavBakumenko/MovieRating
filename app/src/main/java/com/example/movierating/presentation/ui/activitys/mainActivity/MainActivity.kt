@@ -8,9 +8,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.movierating.R
-import com.example.movierating.data.MyForegroundService
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
 import com.example.movierating.presentation.ui.fragments.contactsFragments.ContactsFragment
@@ -18,7 +16,6 @@ import com.example.movierating.presentation.ui.fragments.ProfileFragment
 import com.example.movierating.utils.createToast
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint

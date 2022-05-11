@@ -1,4 +1,4 @@
-package com.example.movierating.data
+package com.example.movierating.data.contactsAndContactsServices
 
 import android.annotation.SuppressLint
 import android.app.Notification

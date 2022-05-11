@@ -1,10 +1,9 @@
-package com.example.movierating.data
+package com.example.movierating.data.contactsAndContactsServices
 
 import android.annotation.SuppressLint
 import android.content.ContentProviderOperation
 import android.content.Context
 import android.provider.ContactsContract
-import android.util.Log
 import androidx.work.*
 
 

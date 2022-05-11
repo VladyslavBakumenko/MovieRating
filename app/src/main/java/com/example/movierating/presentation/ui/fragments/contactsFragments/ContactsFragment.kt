@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierating.R
-import com.example.movierating.data.ContactInfo
-import com.example.movierating.data.MyForegroundService
+import com.example.movierating.data.contactsAndContactsServices.ContactInfo
+import com.example.movierating.data.contactsAndContactsServices.MyForegroundService
 import com.example.movierating.databinding.FragmentContactsBinding
 import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import com.example.movierating.presentation.ui.recyclerViews.cuntactsRv.ContactsListAdapter
@@ -25,8 +25,8 @@ import javax.inject.Inject
 class ContactsFragment : Fragment() {
 
     private var binding: FragmentContactsBinding? = null
-   // private val viewModel: ContactsFragmentsViewModel by viewModels()
-    private lateinit var model: ContactsFragmentsViewModel
+    private val viewModel: ContactsFragmentsViewModel by viewModels()
+   // private lateinit var viewModel: ContactsFragmentsViewModel
 
     @Inject
     lateinit var contactsListAdapter: ContactsListAdapter
@@ -42,12 +42,12 @@ class ContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        model = ViewModelProvider(this)[ContactsFragmentsViewModel::class.java]
-        model.checkContactsPermission()
+        //viewModel = ViewModelProvider(this)[ContactsFragmentsViewModel::class.java]
+        viewModel.checkContactsPermission()
         setContactListener()
         setUpRecyclerView()
         updateContactsListRV()
-        model.permissionGranted.observe(viewLifecycleOwner, Observer {
+        viewModel.permissionGranted.observe(viewLifecycleOwner, Observer {
             if (it) {
                 starsService()
             } else getPermission()
@@ -71,7 +71,7 @@ class ContactsFragment : Fragment() {
     }
 
     private fun updateContactsListRV() {
-        model.contacts.observe(viewLifecycleOwner, Observer {
+        viewModel.contacts.observe(viewLifecycleOwner, Observer {
             contactsListAdapter.contactsList = it
         })
     }
@@ -115,11 +115,11 @@ class ContactsFragment : Fragment() {
                 requireContext()
             )
         )
-        model.getContactsFromService()
+        viewModel.getContactsFromService()
     }
 
     override fun onDestroy() {
-        model.loadedContacts.clear()
+        viewModel.loadedContacts.clear()
         super.onDestroy()
     }
 

@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.movierating.data.ContactInfo
-import com.example.movierating.data.MyForegroundService
+import com.example.movierating.data.contactsAndContactsServices.ContactInfo
+import com.example.movierating.data.contactsAndContactsServices.MyForegroundService
 import com.example.movierating.databinding.FragmentEditContactBinding
 import dagger.hilt.android.AndroidEntryPoint
 

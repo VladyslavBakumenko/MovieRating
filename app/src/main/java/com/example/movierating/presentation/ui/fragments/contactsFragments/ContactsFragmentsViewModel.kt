@@ -11,9 +11,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.movierating.data.ContactInfo
-import com.example.movierating.data.MyForegroundService
-import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
+import com.example.movierating.data.contactsAndContactsServices.ContactInfo
+import com.example.movierating.data.contactsAndContactsServices.MyForegroundService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

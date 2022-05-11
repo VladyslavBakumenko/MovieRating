@@ -2,12 +2,9 @@ package com.example.movierating.presentation.ui.recyclerViews.cuntactsRv
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierating.R
-import com.example.movierating.data.ContactInfo
-import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
-import com.example.movierating.presentation.ui.recyclerViews.linealRv.MovieListLinealAdapter
+import com.example.movierating.data.contactsAndContactsServices.ContactInfo
 
 class ContactsListAdapter: RecyclerView.Adapter<ContactItemViewHolder>() {
 

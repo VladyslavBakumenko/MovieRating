@@ -1,4 +1,4 @@
-package com.example.movierating.data
+package com.example.movierating.data.contactsAndContactsServices
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

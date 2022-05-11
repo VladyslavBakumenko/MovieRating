@@ -2,7 +2,7 @@ package com.example.movierating.presentation.ui.recyclerViews.cuntactsRv
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movierating.data.ContactInfo
+import com.example.movierating.data.contactsAndContactsServices.ContactInfo
 import com.example.movierating.databinding.ContactItemBinding
 
 class ContactItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {

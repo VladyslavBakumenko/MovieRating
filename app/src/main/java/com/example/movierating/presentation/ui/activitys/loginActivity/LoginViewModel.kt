@@ -11,8 +11,6 @@ import com.example.movierating.data.sharedPreferencesManager.SharedPreferencesMa
 import com.example.movierating.utils.checkEmailOnValid
 import com.example.movierating.utils.checkPasswordOnValid
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,24 +21,9 @@ class LoginViewModel @Inject constructor(
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
-    private val coroutineScopeIo = CoroutineScope(Dispatchers.IO)
-
-    private val _errorInputEMail = MutableLiveData<Boolean>()
-    val errorInputEMail: LiveData<Boolean>
-        get() = _errorInputEMail
-
-    private val _errorInputPassword = MutableLiveData<Boolean>()
-    val errorInputPassword: LiveData<Boolean>
-        get() = _errorInputPassword
-
-    private val _userFound = MutableLiveData<Boolean>()
-    val userFound: LiveData<Boolean>
-        get() = _userFound
-
-    private val _networkError = MutableLiveData<Boolean>()
-    val networkError: LiveData<Boolean>
-        get() = _networkError
-
+    private val _state = MutableLiveData<LoginActivityState>()
+    val state: LiveData<LoginActivityState>
+        get() = _state
 
     fun checkUserToLogin(): Boolean {
         return sharedPreferencesManager.getString(
@@ -62,7 +45,7 @@ class LoginViewModel @Inject constructor(
                 )
                 createSessionWithLogin(userName, password, it?.requestToken.toString())
             }, {
-                _networkError.value = true
+                _state.value = NetworkError
             })
 
     }
@@ -83,7 +66,7 @@ class LoginViewModel @Inject constructor(
 
             createNewSession(it?.requestToken.toString())
         }, {
-            _networkError.value = true
+            _state.value = NetworkError
         })
 
     }
@@ -98,11 +81,11 @@ class LoginViewModel @Inject constructor(
                 if (!it?.sessionId.isNullOrBlank()) {
                     sharedPreferencesManager
                         .putString(SharedPreferencesManager.SESSION_ID, it.toString())
-                    _userFound.postValue(true)
-                } else _userFound.postValue(false)
+                   _state.postValue(UserFound(true))
+                } else _state.postValue(UserFound(false))
 
             }, {
-                _networkError.value = true
+                _state.value = NetworkError
             })
 
     }
@@ -112,21 +95,21 @@ class LoginViewModel @Inject constructor(
         var counter = 1
 
         if (!checkEmailOnValid(userName)) {
-            _errorInputEMail.postValue(true)
+            _state.postValue(ErrorInputEMail(true))
             counter--
         }
         if (!checkPasswordOnValid(password)) {
-            _errorInputPassword.postValue(true)
+            _state.postValue(ErrorInputPassword(true))
             counter--
         }
         return counter == 1
     }
 
     fun resetErrorInputEMail() {
-        _errorInputEMail.value = false
+        _state.value = ErrorInputEMail(false)
     }
 
     fun resetErrorInputPassword() {
-        _errorInputPassword.value = false
+        _state.value = ErrorInputPassword(false)
     }
 }

@@ -34,11 +34,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".data.MyForegroundService"></service>
+        <service android:name=".data.contactsAndContactsServices.MyForegroundService"></service>
 
         <provider
             android:authorities="com.example.movierating"
-            android:name=".data.ContactListProvider"
+            android:name=".data.contactsAndContactsServices.ContactListProvider"
             android:exported="true">
         </provider>
 

@@ -2,7 +2,6 @@ package com.example.movierating.presentation.ui.activitys.loginActivity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -28,8 +27,6 @@ class LoginActivity : AppCompatActivity() {
         addTextChangeListeners()
         observeViewModel()
 
-
-
         binding.loginButton.setOnClickListener {
             viewModel.loginUser(
                 binding.etUserName.text?.trim().toString(),
@@ -39,35 +36,39 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun addTextChangeListeners() {
-        binding.etUserName.doOnTextChanged { text, start, before, count ->
+        binding.etUserName.doOnTextChanged { _, _, _, _ ->
             viewModel.resetErrorInputEMail()
         }
-        binding.etPassword.doOnTextChanged { text, start, before, count ->
+        binding.etPassword.doOnTextChanged { _, _, _, _ ->
             viewModel.resetErrorInputPassword()
         }
     }
 
     private fun observeViewModel() {
-        viewModel.errorInputEMail.observe(this) {
-            val message = if (it) resources.getString(R.string.invalid_user_name)
-            else null
-            binding.tilUserName.error = message
-        }
-        viewModel.errorInputPassword.observe(this) {
-            val message = if (it) resources.getString(R.string.invalid_password)
-            else null
-            binding.tilPassword.error = message
-        }
+        viewModel.state.observe(this) {
+            when(it){
+                is ErrorInputEMail -> {
+                    val message = if (it.value) resources.getString(R.string.invalid_user_name)
+                    else null
+                    binding.tilUserName.error = message
+                }
 
-        viewModel.userFound.observe(this) {
-            if (it) {
-                startMainActivity()
+                is ErrorInputPassword -> {
+                    val message = if (it.value) resources.getString(R.string.invalid_password)
+                    else null
+                    binding.tilPassword.error = message
+                }
 
-            } else createToast(resources.getString(R.string.login_error))
-        }
-        
-        viewModel.networkError.observe(this)  {
-            if(it) createToast(resources.getString(R.string.something_went_wrong))
+                is UserFound -> {
+                    if (it.value) {
+                        startMainActivity()
+                    } else createToast(resources.getString(R.string.login_error))
+                }
+
+                is NetworkError -> {
+                    createToast(resources.getString(R.string.something_went_wrong))
+                }
+            }
         }
     }
 

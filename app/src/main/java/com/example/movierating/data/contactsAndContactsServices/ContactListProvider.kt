@@ -1,11 +1,10 @@
-package com.example.movierating.data
+package com.example.movierating.data.contactsAndContactsServices
 
 import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import android.util.Log
 
 class ContactListProvider : ContentProvider() {
 
