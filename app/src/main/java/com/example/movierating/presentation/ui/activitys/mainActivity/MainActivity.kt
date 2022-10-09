@@ -12,10 +12,10 @@ import com.example.movierating.R
 import com.example.movierating.databinding.ActivityMainBinding
 import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
 import com.example.movierating.presentation.ui.fragments.ProfileFragment
-import com.example.movierating.presentation.ui.fragments.moviesFragment.MoviesFragment
 import com.example.movierating.utils.createToast
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.text.Typography.dagger
 
 
 @AndroidEntryPoint
@@ -105,6 +105,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START))
             binding.drawerLayout.closeDrawer(GravityCompat.START, true)

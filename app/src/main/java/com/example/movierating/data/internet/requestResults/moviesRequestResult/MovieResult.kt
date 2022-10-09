@@ -1,14 +1,11 @@
 package com.example.movierating.data.internet.requestResults.moviesRequestResult
 
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity(tableName = "movies_info")
 data class MovieResult(
 
     @SerializedName("adult")
@@ -19,7 +16,6 @@ data class MovieResult(
     @Expose
     var backdropPath: String? = null,
 
-    @PrimaryKey
     @SerializedName("id")
     @Expose
     var id: Int? = null,
