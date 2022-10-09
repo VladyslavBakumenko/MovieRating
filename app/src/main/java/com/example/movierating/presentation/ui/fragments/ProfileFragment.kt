@@ -1,19 +1,22 @@
 package com.example.movierating.presentation.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.movierating.R
-import com.example.movierating.presentation.ui.login_activity.LoginActivity
-import com.example.movierating.presentation.ui.regestration_activity.RegistrationActivity
+import com.example.movierating.databinding.FragmentProfileBinding
+import com.example.movierating.presentation.ui.activitys.loginActivity.LoginActivity
+import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
-    private lateinit var userTextView: TextView
-    private lateinit var userFromLoginActivity: String
-    private lateinit var userFromRegistrationActivity: String
+
+    private var binding: FragmentProfileBinding? = null
+
+    @Inject
+    lateinit var userFromLoginActivity: String
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,20 +24,37 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         userFromLoginActivity = requireArguments()[LoginActivity.USER_LOGIN_ACTIVITY].toString()
-        userFromRegistrationActivity =
-            requireArguments()[RegistrationActivity.USER_REGISTRATION_ACTIVITY].toString()
 
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userTextView = view.findViewById(R.id.text_view_profile)
 
-        if (userFromLoginActivity == "null") {
-            userTextView.text = userFromRegistrationActivity
-        } else {
-            userTextView.text = userFromLoginActivity
+        binding?.let {
+            it.textViewProfile.text = userFromLoginActivity
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
+    companion object {
+
+        fun newInstance(intent: Intent): ProfileFragment {
+            val fragment = ProfileFragment()
+            val args = Bundle()
+
+            val userFromLoginActivity: String =
+                intent.getStringExtra(LoginActivity.USER_LOGIN_ACTIVITY).toString()
+
+            args.putString(LoginActivity.USER_LOGIN_ACTIVITY, userFromLoginActivity)
+
+            fragment.arguments = args
+            return fragment
         }
     }
 }

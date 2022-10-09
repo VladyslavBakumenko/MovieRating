@@ -5,79 +5,80 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.movierating.R
-import com.example.movierating.data.internet.MovieApi
+import androidx.navigation.fragment.navArgs
+import com.example.movierating.data.internet.api.MovieApi
+import com.example.movierating.data.internet.requestResults.moviesRequestResult.MovieResult
+import com.example.movierating.databinding.FragmentDetailsBinding
+import com.example.movierating.presentation.ui.activitys.mainActivity.MainActivity
 import com.squareup.picasso.Picasso
-
 
 class DetailsFragment : Fragment() {
 
-    private lateinit var title: String
-    private lateinit var description: String
-    private lateinit var realise: String
-    private lateinit var rate: String
-    private lateinit var originalLanguage: String
-    private lateinit var popularity: String
-    private lateinit var image: String
-
-    private lateinit var movieImage: ImageView
-    private lateinit var movieTitle: TextView
-    private lateinit var movieDescription: TextView
-    private lateinit var movieRealise: TextView
-    private lateinit var movieRate: TextView
-    private lateinit var movieOriginalLanguage: TextView
-    private lateinit var moviePopularity: TextView
-
+    private var binding: FragmentDetailsBinding? = null
+    private val args by navArgs<DetailsFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initArgs()
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews(view)
         setFields()
     }
 
-    private fun initViews(view: View) {
-        movieImage = view.findViewById(R.id.image_details_fragment)
-        movieTitle = view.findViewById(R.id.movie_name_details_fragment)
-        movieDescription = view.findViewById(R.id.movie_average_details_fragment)
-        movieRealise = view.findViewById(R.id.movie_release_details_fragment)
-        movieRate = view.findViewById(R.id.movie_rate_details_fragment)
-        movieOriginalLanguage = view.findViewById(R.id.movie_original_language_details_fragment)
-        moviePopularity = view.findViewById(R.id.movie_popularity_details_fragment)
-    }
 
-    private fun initArgs() {
-        arguments?.let {
-            title = it.getString(LinealFragment.TITLE).toString()
-            description = it.getString(LinealFragment.DESCRIPTION).toString()
-            realise = it.getString(LinealFragment.REALISE).toString()
-            rate = it.getString(LinealFragment.RATE).toString()
-            originalLanguage = it.getString(LinealFragment.ORIGINAL_LANGUAGE).toString()
-            popularity = it.getString(LinealFragment.POPULARITY).toString()
-            image = it.getString(LinealFragment.IMAGE).toString()
-        }
-    }
+
 
     @SuppressLint("SetTextI18n")
     private fun setFields() {
-        Picasso.get().load("${MovieApi.IMAGE_TMDB_BEST_QUALITY}$image").into(movieImage)
-        movieTitle.text = "Title: $title"
-        movieDescription.text = "Description: $description"
-        movieRealise.text = "Realise: $realise"
-        movieRate.text = "Rate: $rate"
-        movieOriginalLanguage.text = "Original language: $originalLanguage"
-        moviePopularity.text = "Popularity: $popularity"
+
+        binding?.let {
+
+            Picasso.get().load("${MovieApi.IMAGE_TMDB_BEST_QUALITY}${args.movie.posterPath}")
+                .into(it.imageDetailsFragment)
+            it.movieNameDetailsFragment.text = "Title: ${args.movie.title}"
+            it.movieAverageDetailsFragment.text = "Description: ${args.movie.overview}"
+            it.movieReleaseDetailsFragment.text = "Realise: ${args.movie.releaseDate}"
+            it.movieRateDetailsFragment.text = "Rate: ${args.movie.voteAverage}"
+            it.movieOriginalLanguageDetailsFragment.text =
+                "Original language: ${args.movie.originalLanguage}"
+            it.moviePopularityDetailsFragment.text = "Popularity: ${args.movie.popularity}"
+        }
+
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        val movie = requireArguments()
+            .getParcelable<MovieResult>(MainActivity.MOVIE_RESULT)
+        outState.putParcelable(CURRENT_MOVIE, movie)
+        outState.putInt("2", 2)
+        super.onSaveInstanceState(outState)
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
+    companion object {
+        const val CURRENT_MOVIE = "current_movie"
+
+        fun newInstance(movieResult: MovieResult): DetailsFragment {
+            val fragment = DetailsFragment()
+            val args = Bundle()
+            args.putParcelable(MainActivity.MOVIE_RESULT, movieResult)
+
+            fragment.arguments = args
+
+            return fragment
+
+        }
+    }
 }
